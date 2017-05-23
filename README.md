@@ -1,0 +1,1 @@
+# symphony-api-spec
