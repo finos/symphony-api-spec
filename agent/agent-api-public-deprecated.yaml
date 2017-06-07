@@ -562,60 +562,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v3/stream/{sid}/share':
-    post:
-      summary: PROVISIONAL -  Share a piece of content into Symphony
-      description: |
-        Given a 3rd party content (eg. news article), it can share to the given stream.
-        The stream can be a chatroom, an IM or a multiparty IM.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sid
-          description: Stream ID
-          in: path
-          required: true
-          type: string
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: false
-          type: string
-        - name: shareContent
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ShareContent'
-      tags:
-        - Share
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/V2Message'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/util/echo':
     post:
                   summary: Test endpoint, returns input.
@@ -1038,7 +984,6 @@ paths:
   '/v3/stream/{sid}/attachment/create':
     post:
       deprecated: true
-      summary: PROVISIONAL - Upload an attachment.
       description: |
         Upload an attachment to the given stream. The stream can be a chatroom,
         an IM or a multiparty IM.
@@ -1417,7 +1362,6 @@ paths:
   '/v3/stream/{sid}/message/create':
     post:
       deprecated: true
-      summary: PROVISIONAL - Post a message to one existing stream.
       description: |
         Post a new message to the given stream. The stream can be a chatroom,
         an IM or a multiparty IM.

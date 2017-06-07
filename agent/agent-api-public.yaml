@@ -562,22 +562,14 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v3/stream/{sid}/share':
+  '/v1/util/echo':
     post:
-      summary: PROVISIONAL -  Share a piece of content into Symphony
-      description: |
-        Given a 3rd party content (eg. news article), it can share to the given stream.
-        The stream can be a chatroom, an IM or a multiparty IM.
+      summary: Test endpoint, returns input.
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
-        - name: sid
-          description: Stream ID
-          in: path
-          required: true
-          type: string
         - name: sessionToken
           description: Session authentication token.
           in: header
@@ -586,20 +578,22 @@ paths:
         - name: keyManagerToken
           description: Key Manager authentication token.
           in: header
-          required: false
+          required: true
           type: string
-        - name: shareContent
+        - name: echoInput
+          description: |
+            Message in plain text
           in: body
           required: true
           schema:
-            $ref: '#/definitions/ShareContent'
+            $ref: '#/definitions/SimpleMessage'
       tags:
-        - Share
+        - Util
       responses:
         '200':
-          description: Success
+          description: Message sent.
           schema:
-            $ref: '#/definitions/V2Message'
+            $ref: '#/definitions/SimpleMessage'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -616,54 +610,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/util/echo':
-    post:
-                  summary: Test endpoint, returns input.
-                  consumes:
-                    - application/json
-                  produces:
-                    - application/json
-                  parameters:
-                    - name: sessionToken
-                      description: Session authentication token.
-                      in: header
-                      required: true
-                      type: string
-                    - name: keyManagerToken
-                      description: Key Manager authentication token.
-                      in: header
-                      required: true
-                      type: string
-                    - name: echoInput
-                      description: |
-                        Message in plain text
-                      in: body
-                      required: true
-                      schema:
-                        $ref: '#/definitions/SimpleMessage'
-                  tags:
-                    - Util
-                  responses:
-                    '200':
-                      description: Message sent.
-                      schema:
-                        $ref: '#/definitions/SimpleMessage'
-                    '400':
-                      description: 'Client error, see response body for further details.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '401':
-                      description: 'Unauthorized: Session tokens invalid.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '403':
-                      description: 'Forbidden: Caller lacks necessary entitlement.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '500':
-                      description: 'Server error, see response body for further details.'
-                      schema:
-                        $ref: '#/definitions/Error'
 
 definitions:
   Error:

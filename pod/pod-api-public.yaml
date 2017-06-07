@@ -3033,43 +3033,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/admin/system/roles/list':
-    get:
-      summary: PROVISIONAL Get a list of all roles available in the company (pod)
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-      tags:
-        - System
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/StringList'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-
 definitions:
   Error:
     type: object
