@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.46.0'
+  version: '1.46.3'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -564,52 +564,52 @@ paths:
             $ref: '#/definitions/Error'
   '/v1/util/echo':
     post:
-      summary: Test endpoint, returns input.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-        - name: echoInput
-          description: |
-            Message in plain text
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/SimpleMessage'
-      tags:
-        - Util
-      responses:
-        '200':
-          description: Message sent.
-          schema:
-            $ref: '#/definitions/SimpleMessage'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
+                  summary: Test endpoint, returns input.
+                  consumes:
+                    - application/json
+                  produces:
+                    - application/json
+                  parameters:
+                    - name: sessionToken
+                      description: Session authentication token.
+                      in: header
+                      required: true
+                      type: string
+                    - name: keyManagerToken
+                      description: Key Manager authentication token.
+                      in: header
+                      required: true
+                      type: string
+                    - name: echoInput
+                      description: |
+                        Message in plain text
+                      in: body
+                      required: true
+                      schema:
+                        $ref: '#/definitions/SimpleMessage'
+                  tags:
+                    - Util
+                  responses:
+                    '200':
+                      description: Message sent.
+                      schema:
+                        $ref: '#/definitions/SimpleMessage'
+                    '400':
+                      description: 'Client error, see response body for further details.'
+                      schema:
+                        $ref: '#/definitions/Error'
+                    '401':
+                      description: 'Unauthorized: Session tokens invalid.'
+                      schema:
+                        $ref: '#/definitions/Error'
+                    '403':
+                      description: 'Forbidden: Caller lacks necessary entitlement.'
+                      schema:
+                        $ref: '#/definitions/Error'
+                    '500':
+                      description: 'Server error, see response body for further details.'
+                      schema:
+                        $ref: '#/definitions/Error'
 
 definitions:
   Error:
@@ -1175,6 +1175,17 @@ definitions:
         type: boolean
       membersCanInvite:
         type: boolean
+      keywords:
+        type: array
+        items:
+          $ref: '#/definitions/V4KeyValuePair'
+  V4KeyValuePair:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
   V4MessageSent:
     type: object
     properties:
