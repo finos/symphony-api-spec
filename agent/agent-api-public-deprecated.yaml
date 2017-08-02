@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.46.0'
+  version: '1.46.3'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -2114,6 +2114,17 @@ definitions:
         type: boolean
       membersCanInvite:
         type: boolean
+      keywords:
+        type: array
+        items:
+          $ref: '#/definitions/V4KeyValuePair'
+  V4KeyValuePair:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
   V4MessageSent:
     type: object
     properties:
