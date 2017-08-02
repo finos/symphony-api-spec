@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.46.3'
+  version: '1.47.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -1204,70 +1204,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/user/presence':
-    get:
-      summary: Get presence information about the requesting user.
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-      tags:
-        - Presence
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Presence'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Invalid session token'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Set the presence of the requesting user.
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: presence
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Presence'
-      tags:
-        - Presence
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Presence'
-        '400':
-          description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Invalid session token.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/user/presence/register':
     post:
       summary: Register interest in a user's presence status
@@ -1294,6 +1230,129 @@ paths:
             $ref: '#/definitions/SuccessResponse'
         '400':
           description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: user id cannot be located.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/user/presence':
+    get:
+      summary: Get presence information about the requesting user.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2Presence'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Invalid session token'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Set the presence of the requesting user.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: presence
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V2PresenceStatus'
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2Presence'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Invalid session token.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/user/{uid}/presence':
+    get:
+      summary: Get presence information about a particular user.
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: local
+          description: |
+              If true, a local query will be performed and the presence will be
+              set to OFFLINE for users who are not local to the calling user's
+              pod. If false or absent, then the presence of all local users and
+              the presence of all external users to whom the calling user is
+              connected will be queried.
+
+              For external users, a "presence interest" should be registered through
+              /v1/user/presence/register before querying for presence.
+          in: query
+          type: boolean
+          required: false
+          default: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2Presence'
+        '400':
+          description: 'Client error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
         '401':
@@ -1366,65 +1425,6 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v2/user/{uid}/presence':
-    get:
-      summary: Get presence information about a particular user.
-      produces:
-        - application/json
-      parameters:
-        - name: uid
-          description: |
-            User ID as a decimal integer
-          in: path
-          required: true
-          type: integer
-          format: int64
-        - name: local
-          description: |
-              If true, a local query will be performed and the presence will be
-              set to OFFLINE for users who are not local to the calling user's
-              pod. If false or absent, then the presence of all local users and
-              the presence of all external users to whom the calling user is
-              connected will be queried.
-
-              For external users, a "presence interest" should be registered through
-              /v1/user/presence/register before querying for presence.
-          in: query
-          type: boolean
-          required: false
-          default: false
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-      tags:
-        - Presence
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Presence'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Not Found: user id cannot be located.'
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -2317,6 +2317,143 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/user/find':
+    post:
+      summary: Find a user based on attributes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserFilter'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserDetailList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/user/{uid}/roles/add':
+    post:
+      summary: Add a role to a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/String'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/user/{uid}/roles/remove':
+    post:
+      summary: Remove a role from a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/String'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/user/{uid}/app/entitlement/list':
     get:
       summary: Get the list of application entitlements for this user
@@ -3033,6 +3170,85 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/system/roles/list':
+    get:
+      summary: Get a list of all roles available in the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - System
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/RoleDetailList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/message/{mid}/status':
+    get:
+      summary: Get the read status of a particular message.
+      produces:
+        - application/json
+      parameters:
+        - name: mid
+          description: Message ID
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Message
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MessageStatus'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not found: The informed Message ID does not exist'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 #
 # Deprecated paths
 #
@@ -3162,6 +3378,80 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/user/presence':
+    get:
+      deprecated: true
+      summary: Get presence information about the requesting user.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Presence'
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Invalid session token'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      deprecated: true
+      summary: Set the presence of the requesting user.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: presence
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Presence'
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Presence'
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Invalid session token.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/user/{uid}/presence':
     get:
       deprecated: true
@@ -3269,6 +3559,70 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: user id cannot be located.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/user/{uid}/presence':
+    get:
+      deprecated: true
+      summary: Get presence information about a particular user.
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: local
+          description: |
+              If true, a local query will be performed and the presence will be
+              set to OFFLINE for users who are not local to the calling user's
+              pod. If false or absent, then the presence of all local users and
+              the presence of all external users to whom the calling user is
+              connected will be queried.
+
+              For external users, a "presence interest" should be registered through
+              /v1/user/presence/register before querying for presence.
+          in: query
+          type: boolean
+          required: false
+          default: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Presence'
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
             $ref: '#/definitions/Error'
         '404':
@@ -3615,20 +3969,6 @@ definitions:
         type: string
       value:
         type: string
-  Presence:
-    type: object
-    properties:
-      category:
-        type: string
-        enum:
-          - UNDEFINED
-          - AVAILABLE
-          - BUSY
-          - DO_NOT_DISTURB
-          - ON_THE_PHONE
-          - BE_RIGHT_BACK
-          - AWAY
-          - OFFLINE
   Stream:
     type: object
     properties:
@@ -4092,7 +4432,6 @@ definitions:
     type: object
     required:
       - appId
-      - appName
       - listed
       - install
     properties:
@@ -4153,6 +4492,27 @@ definitions:
         type: string
       description:
         type: string
+  RoleDetailList:
+    type: array
+    items:
+      $ref: '#/definitions/RoleDetail'
+  RoleDetail:
+    description: Role detailed.
+    type: object
+    properties:
+      id:
+        type: string
+        format: long
+      name:
+        type: string
+      userTypes:
+        type: array
+        items:
+          type: string
+      optionalActions:
+        type: array
+        items:
+          type: string
   GroupList:
     type: array
     items:
@@ -4329,10 +4689,10 @@ definitions:
       lastPasswordReset:
         type: integer
         format: int64
-  UserList:
+  UserDetailList:
     type: array
     items:
-      $ref: '#/definitions/UserInfo'
+      $ref: '#/definitions/UserDetail'
   Password:
     description: Password. Stored as derived password in both the Pod and the Key Manager using PBKDF2 function. Number of iterations should be 10000 and desired length 256 bits.
     type: object
@@ -4700,6 +5060,88 @@ definitions:
       justification:
         description: The reason for the requested action.
         type: string
+  MessageStatusUser:
+    type: object
+    properties:
+      userId:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      displayName:
+        type: string
+      email:
+        type: string
+      userName:
+        type: string
+      timestamp:
+        type: string
+  MessageStatus:
+    description: |
+      Holds the status of a particular message, indicating which user the message has been sent, delivered or read.
+    type: object
+    properties:
+      read:
+        description: All users who have read that message, in any Symphony client.
+        type: array
+        items:
+          $ref: '#/definitions/MessageStatusUser'
+      delivered:
+        description: |
+          All users who have at least one Symphony client to which the message has been delivered, and not read yet.
+        type: array
+        items:
+          $ref: '#/definitions/MessageStatusUser'
+      sent:
+        description: |
+          All users to whom the message has been sent and received by the Symphony system,
+          but not yet delivered to any user's Symphony client.
+        type: array
+        items:
+          $ref: '#/definitions/MessageStatusUser'
+  V2PresenceList:
+    type: array
+    items:
+      $ref: '#/definitions/V2Presence'
+  V2Presence:
+    allOf:
+      - $ref: '#/definitions/V2UserPresence'
+      - type: object
+        properties:
+          timestamp:
+            type: integer
+            format: int64
+            description: The time, in milliseconds since Jan 1 1970, when the presence state was set.
+  V2UserPresence:
+    allOf:
+      - $ref: '#/definitions/V2PresenceStatus'
+      - type: object
+        properties:
+          userId:
+            type: integer
+            format: int64
+            description: The ID of the user to whom the presence state relates.
+  V2PresenceStatus:
+    type: object
+    properties:
+      category:
+        type: string
+        description: |
+          Presence status. Possible values are:
+            - UNDEFINED
+            - AVAILABLE
+            - BUSY
+            - DO_NOT_DISTURB
+            - ON_THE_PHONE
+            - BE_RIGHT_BACK
+            - IN_A_MEETING
+            - AWAY
+            - OUT_OF_OFFICE
+            - OFF_WORK
+            - OFFLINE
+    required:
+      - category
 
   SessionInfo:
     description: Information about the current user's session
@@ -4725,5 +5167,19 @@ definitions:
         format: int64
       emailAddress:
         type: string
-        format: email
+        format:
+  Presence:
+    type: object
+    properties:
+      category:
+        type: string
+        enum:
+          - UNDEFINED
+          - AVAILABLE
+          - BUSY
+          - DO_NOT_DISTURB
+          - ON_THE_PHONE
+          - BE_RIGHT_BACK
+          - AWAY
+          - OFFLINE
 
