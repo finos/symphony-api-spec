@@ -107,7 +107,112 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
+  '/v1/app/authenticate':
+    post:
+      summary: PROVISIONAL - Authenticate an application in a delegated context.
+      description: |
+        Based on the SSL client certificate presented by the TLS layer, authenticate
+        the API caller and return an application session.
+      produces:
+        - application/json
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/app/user/{uid}/authenticate':
+    post:
+      summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
+      parameters:
+        - name: uid
+          description: user id
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: sessionToken
+          description: Authorization token obtains from app/authenicate API
+          in: header
+          required: true
+          type: string
+      produces:
+        - application/json
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/OboAuthResponse'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'User id not found'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/app/username/{username}/authenticate':
+      post:
+        summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
+        parameters:
+          - name: username
+            description: username
+            in: path
+            required: true
+            type: string
+          - name: sessionToken
+            description: Authorization token obtains from app/authenicate API
+            in: header
+            required: true
+            type: string
+        produces:
+          - application/json
+        tags:
+          - Authentication
+        responses:
+          '200':
+            description: OK.
+            schema:
+              $ref: '#/definitions/OboAuthResponse'
+          '400':
+            description: 'Client error.'
+            schema:
+              $ref: '#/definitions/Error'
+          '403':
+            description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+            schema:
+              $ref: '#/definitions/Error'
+          '404':
+            description: 'Username not found'
+            schema:
+              $ref: '#/definitions/Error'
+          '500':
+            description: 'Server error, see response body for further details.'
+            schema:
+              $ref: '#/definitions/Error'
 #
 # Deprecated paths
 #
@@ -160,6 +265,15 @@ definitions:
         type: integer
         format: int64
         description: unix timestamp when the token expired
+  OboAuthResponse:
+    type: object
+    properties:
+      sessionToken:
+        type: string
+        description: |
+          The token which should be passed. This should be considered opaque data by
+          the client. It is not intended to conatain any data interpretable by the
+          client. The format is secret and subject to change without notice.
   PodCertificate:
     type: object
     properties:
