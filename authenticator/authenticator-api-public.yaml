@@ -213,6 +213,38 @@ paths:
             description: 'Server error, see response body for further details.'
             schema:
               $ref: '#/definitions/Error'
+  '/v1/logout':
+    post:
+      summary: Logout.
+      description: |
+        Logout a users session.
+      parameters:
+        - name: sessionToken
+          description: the session token to logout.
+          in: header
+          required: true
+          type: string
+      produces:
+        - application/json
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
