@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.46.3'
+  version: '1.47.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -129,22 +129,36 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/HealthCheck':
-    get:
-      summary: Checks the health of the Agent.
-      description: |
-          Used to validate the configuration of the agent.
-          Makes a request to the HealthCheck on the Symphony cloud.
-          Makes a request to the HealthCheck on the Key Manager service.
-      produces:
-        - application/json
-      tags:
-        - System
-      responses:
-        '200':
-          description: The Agent is functioning properly.
-          schema:
-            $ref: '#/definitions/V1HealthCheckResponse'
+  '/v2/HealthCheck':
+     get:
+       summary: Checks the health of the Agent.
+       description: |
+           Used to validate the configuration of the agent.
+           Makes a request to the HealthCheck on the Symphony cloud.
+           Makes a request to the HealthCheck on the Key Manager service.
+           Encryts and decrypts a message inside either agent or user SbeSession with wall thread id.
+       parameters:
+       - name: sessionToken
+         description: Session authentication token.
+         in: header
+         required: false
+         type: string
+       - name: keyManagerToken
+         description: Key Manager authentication token.
+         in: header
+         required: false
+         type: string
+       consumes:
+         - application/json
+       produces:
+         - application/json
+       tags:
+         - System
+       responses:
+         '200':
+           description: The Agent is functioning properly.
+           schema:
+             $ref: '#/definitions/V2HealthCheckResponse'
   '/v4/message/import':
     post:
       summary: Import messages from other systems into Symphony.
@@ -522,7 +536,7 @@ paths:
           description: The message payload in MessageML.
           in: formData
           type: string
-          required: true
+          required: false
         - name: data
           description: Optional message data in EntityJSON.
           in: formData
@@ -539,6 +553,12 @@ paths:
           in: formData
           type: file
           required: false
+        - name: preview
+          description: Optional attachment preview.
+          in: formData
+          type: file
+          required: false
+
       tags:
         - Messages
       responses:
@@ -546,6 +566,60 @@ paths:
           description: Message sent.
           schema:
             $ref: '#/definitions/V4Message'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/stream/{sid}/share':
+    post:
+      summary: PROVISIONAL -  Share a piece of content into Symphony
+      description: |
+        Given a 3rd party content (eg. news article), it can share to the given stream.
+        The stream can be a chatroom, an IM or a multiparty IM.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sid
+          description: Stream ID
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: shareContent
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ShareContent'
+      tags:
+        - Share
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V2Message'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -732,6 +806,27 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/HealthCheck':
+    get:
+      deprecated: true
+      summary: Checks the health of the Agent.
+      description: |
+          Used to validate the configuration of the agent.
+          Makes a request to the HealthCheck on the Symphony cloud.
+          Makes a request to the HealthCheck on the Key Manager service.
+      produces:
+        - application/json
+      tags:
+        - System
+      responses:
+        '200':
+          description: The Agent is functioning properly.
+          schema:
+            $ref: '#/definitions/V1HealthCheckResponse'
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
   '/v2/datafeed/{id}/read':
     get:
       deprecated: true
@@ -984,6 +1079,7 @@ paths:
   '/v3/stream/{sid}/attachment/create':
     post:
       deprecated: true
+      summary: PROVISIONAL - Upload an attachment.
       description: |
         Upload an attachment to the given stream. The stream can be a chatroom,
         an IM or a multiparty IM.
@@ -1362,6 +1458,7 @@ paths:
   '/v3/stream/{sid}/message/create':
     post:
       deprecated: true
+      summary: PROVISIONAL - Post a message to one existing stream.
       description: |
         Post a new message to the given stream. The stream can be a chatroom,
         an IM or a multiparty IM.
@@ -1854,24 +1951,33 @@ definitions:
         description: Type of content to be shared.  Currently only support "com.symphony.sharing.article"
       content:
         $ref: '#/definitions/ShareArticle'
-  V1HealthCheckResponse:
-    type: object
-    properties:
-      podConnectivity:
-        type: boolean
-        description: Indicates whether the Agent server can connect to the Pod
-      podConnectivityError:
-        type: string
-        description: Error details in case of no Pod connectivity
-      keyManagerConnectivity:
-        type: boolean
-        description: Indicates whether the Agent server can connect to the Key Manager
-      keyManagerConnectivityError:
-        type: string
-        description: Error details in case of no Key Manager connectivity
-      version:
-        type: string
-        description: The version number of the Agent server
+  V2HealthCheckResponse:
+     type: object
+     properties:
+       podConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to the Pod
+       podConnectivityError:
+         type: string
+         description: Error details in case of no Pod connectivity
+       keyManagerConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to the Key Manager
+       keyManagerConnectivityError:
+         type: string
+         description: Error details in case of no Key Manager connectivity
+       encryptDecryptSuccess:
+         type: boolean
+         description: Indicates whether the Agent can successfully decrypt and encrypt messages
+       encryptDecryptError:
+         type: string
+         description: Error details in case of the encryption or decryption of the message fails
+       podVersion:
+         type: string
+         description: The version number of the pod
+       agentVersion:
+         type: string
+         description: The version number of the Agent server
   MessageSearchQuery:
     type: object
     properties:
@@ -2002,10 +2108,23 @@ definitions:
         type: integer
         format: int64
         description: Size in bytes.
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/V4ThumbnailInfo'
     required:
     - id
     - name
     - size
+  V4ThumbnailInfo:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The thumbnail ID.
+      dimension:
+        type: string
+        description: The thumbnail pixel size.
   V4MessageList:
     type: array
     items:
@@ -2482,6 +2601,25 @@ definitions:
     - messageType
     - timestamp
     - streamId
+  V1HealthCheckResponse:
+    deprecated: true
+    type: object
+    properties:
+      podConnectivity:
+        type: boolean
+        description: Indicates whether the Agent server can connect to the Pod
+      podConnectivityError:
+        type: string
+        description: Error details in case of no Pod connectivity
+      keyManagerConnectivity:
+        type: boolean
+        description: Indicates whether the Agent server can connect to the Key Manager
+      keyManagerConnectivityError:
+        type: string
+        description: Error details in case of no Key Manager connectivity
+      version:
+        type: string
+        description: The version number of the Agent server
   Message:
     type: object
     description: A representation of a message sent by a user of Symphony.
