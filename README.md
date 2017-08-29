@@ -9,3 +9,5 @@ Branching and versioning of this repository will match those of the Symphony pla
 There are three sets of definition files (authenticator, agent and pod) and each set has two files: a "-public" file which contains all the current endpoint definitions and a "-public-deprecated" file which contains all the current and the all the deprecated endpoint definitions.
 
 You can paste the contents of these files into [Swagger Editor](http://editor.swagger.io/), from which you can generate client code.
+
+API defintiion for future branches are made available here when the release candidate is branch is created in Symphony.  They are put into a new "rc-" branch. The API will be _mostly_ stable at this point. Watch this repository to get notifications when new branches are added or updated.  When the Symphony release goes to production, the rc- branch will be merged to master.
