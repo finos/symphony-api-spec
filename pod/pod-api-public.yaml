@@ -3484,6 +3484,8 @@ definitions:
     properties:
       id:
         type: string
+  String:
+    type: string
   RoomAttributes:
     type: object
     properties:
