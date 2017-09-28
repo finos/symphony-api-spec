@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.49.0-SNAPSHOT'
+  version: '1.48.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -113,160 +113,6 @@ paths:
             $ref: '#/definitions/V4EventList'
         '204':
           description: No Messages.
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v5/firehose/create':
-    post:
-      summary: Create a new real time stream for all events in a pod.
-      description: |
-          A firehose provides all user entered messages that occur within a
-          Symphony pod beginning at the point in time that it is created.
-
-          Note that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations
-          for which it will receive messages.
-
-          A firehose can be created and accessed by a user with CAN_READ_FIREHOSE entitlement.
-
-          A firehose can be deleted by using the delete firehose endpoint.
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      tags:
-        - Firehose
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/V5Firehose'
-        '400':
-          description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v5/firehose/{id}/read':
-    get:
-      summary: Read a given firehose.
-      description: |
-          Read messages from the given firehose. The client should use the acknowledgementId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.
-          A firehose can be read by a user with CAN_READ_FIREHOSE entitlement.
-      parameters:
-      - name: id
-        description: |
-          Firehose ID
-        in: path
-        required: true
-        type: string
-      - name: acknowledgementId
-        description: |
-            Acknowledge that all messages corresponding to this acknowledgementId were successfully received by the client
-        in: query
-        type: string
-      - name: sessionToken
-        description: Session authentication token.
-        in: header
-        required: true
-        type: string
-      - name: keyManagerToken
-        description: Key Manager authentication token.
-        in: header
-        required: true
-        type: string
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      tags:
-        - Firehose
-      responses:
-        '200':
-          description: List of messages that have occurred since last time this URL was polled. If the list is empty, it may mean that all the messages have been read and acknowleged by the client and there are no more messages.
-          schema:
-            $ref: '#/definitions/V5EventList'
-        '204':
-          description: No Messages.
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Not Found: Firehose Id cannot be found.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v5/firehose/{id}/delete':
-    delete:
-      summary: Delete a firehose
-      description: |
-        Deletes a firehose.
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-        - name: firehoseId
-          in: path
-          required: true
-          type: string
-          description: Unique firehose identifier
-      tags:
-        - Firehose
-      responses:
-        '204':
-          description: Successfully deleted the firehose
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -2565,22 +2411,6 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/V4Event'
-  V5Firehose:
-    type: object
-    properties:
-      id:
-        type: string
-  V5EventList:
-    type: object
-    properties:
-      events:
-        type: array
-        items:
-          $ref: '#/definitions/V4Event'
-      acknowledgementId:
-        type: string
-        description: The acknowledgementId which acknowledges that the current batch of messages have been successfully received by the client
-
 #
 # Deprecated definitions
 #
