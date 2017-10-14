@@ -2453,7 +2453,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/String'
+            $ref: '#/definitions/SymString'
       tags:
         - User
       responses:
@@ -2501,7 +2501,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/String'
+            $ref: '#/definitions/SymString'
       tags:
         - User
       responses:
@@ -4539,7 +4539,7 @@ definitions:
     properties:
       id:
         type: string
-  String:
+  SymString:
       type: string
   RoomAttributes:
     type: object
