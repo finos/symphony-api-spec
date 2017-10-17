@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.48.0'
+  version: '1.48.1'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -651,7 +651,7 @@ paths:
         - Connection
       responses:
         '200':
-          description: Success
+          description: OK
           schema:
             $ref: '#/definitions/SuccessResponse'
         '400':
@@ -664,6 +664,10 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Connection cannot be found.'
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -712,6 +716,129 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Stream'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/presence/feed/create':
+    post:
+      summary: Create Presence status feed.
+      description: |
+            Create a new stream capturing presence status changes ("presence feed").
+            When read from, the feed will return the current presence status of company (pod) users
+            if it has changed since the last read.
+
+            Returns the ID of the presence feed to be used in subsequent read operations.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StringId'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/presence/feed/{feedId}/read':
+    get:
+      summary: Read a presence status feed.
+      description: |
+            Returns the current presence status of company (pod) users
+            if it has changed since the last read. Returns up to 500 records at a time.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: feedId
+          description: Presence feed ID.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2PresenceList'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/presence/feed/{feedId}/delete':
+    post:
+      summary: Delete a presence status feed.
+      description: |
+            Returns the ID of the deleted feed.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: feedId
+          description: Presence feed ID.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StringId'
         '400':
           description: 'Client error.'
           schema:
@@ -2453,7 +2580,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/SymString'
+            $ref: '#/definitions/StringId'
       tags:
         - User
       responses:
@@ -2501,7 +2628,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/SymString'
+            $ref: '#/definitions/StringId'
       tags:
         - User
       responses:
@@ -4539,8 +4666,6 @@ definitions:
     properties:
       id:
         type: string
-  SymString:
-      type: string
   RoomAttributes:
     type: object
     properties:
