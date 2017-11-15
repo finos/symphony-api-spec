@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.47.0'
+  version: '1.48.1'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -373,6 +373,23 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/podcert':
+    get:
+      summary: |
+        Retrieve the pod certificate that can be use to validate signed JWT tokens generated from the pod
+      produces:
+        - application/json
+      tags:
+        - Pod
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PodCertificate'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/connection/list':
     get:
       summary: List of requesting user's connection
@@ -610,6 +627,53 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/connection/user/{uid}/remove':
+    post:
+      summary: Removes a connection with a user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Connection
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Connection cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/im/create':
     post:
       summary: Create a new single or multi party instant message conversation between the caller and specified users.
@@ -668,35 +732,30 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/room/create':
+  '/v1/presence/feed/create':
     post:
-      summary: Create a new chatroom.
+      summary: Create Presence status feed.
       description: |
-        Create a new chatroom.
+            Create a new stream capturing presence status changes ("presence feed").
+            When read from, the feed will return the current presence status of company (pod) users
+            if it has changed since the last read.
 
-        If no  attributes are specified, the room is created as a private chatroom.
-      consumes:
-        - application/json
+            Returns the ID of the presence feed to be used in subsequent read operations.
       produces:
         - application/json
       parameters:
-        - name: payload
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/V2RoomAttributes'
         - name: sessionToken
           description: Session authentication token.
           in: header
           required: true
           type: string
       tags:
-        - Streams
+        - Presence
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/V2RoomDetail'
+            $ref: '#/definitions/StringId'
         '400':
           description: 'Client error.'
           schema:
@@ -713,7 +772,135 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/room/search':
+  '/v1/presence/feed/{feedId}/read':
+    get:
+      summary: Read a presence status feed.
+      description: |
+            Returns the current presence status of company (pod) users
+            if it has changed since the last read. Returns up to 500 records at a time.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: feedId
+          description: Presence feed ID.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2PresenceList'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/presence/feed/{feedId}/delete':
+    post:
+      summary: Delete a presence status feed.
+      description: |
+            Returns the ID of the deleted feed.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: feedId
+          description: Presence feed ID.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StringId'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/room/create':
+    post:
+      summary: Create a new chatroom.
+      description: |
+        Create a new chatroom.
+
+        If no  attributes are specified, the room is created as a private chatroom.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V3RoomAttributes'
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V3RoomDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/room/search':
     post:
       summary: Search rooms according to the specified criteria.
       produces:
@@ -750,7 +937,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/RoomSearchResults'
+            $ref: '#/definitions/V3RoomSearchResults'
         '400':
           description: 'Client error.'
           schema:
@@ -767,7 +954,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/room/{id}/info':
+  '/v3/room/{id}/info':
     get:
       summary: Get information about a partcular chatroom.
       produces:
@@ -789,7 +976,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/V2RoomDetail'
+            $ref: '#/definitions/V3RoomDetail'
         '400':
           description: 'Client error.'
           schema:
@@ -849,7 +1036,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/room/{id}/update':
+  '/v3/room/{id}/update':
     post:
       summary: Update the attributes of an existing chatroom.
       produces:
@@ -864,7 +1051,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/V2RoomAttributes'
+            $ref: '#/definitions/V3RoomAttributes'
         - name: sessionToken
           description: Session authentication token.
           in: header
@@ -876,7 +1063,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/V2RoomDetail'
+            $ref: '#/definitions/V3RoomDetail'
         '400':
           description: 'Client error.'
           schema:
@@ -2330,6 +2517,17 @@ paths:
           in: header
           required: true
           type: string
+        - name: skip
+          description: Number of users to skip. Default is 0. Must be a integer equals or bigger than 0.
+          in: query
+          type: integer
+          required: false
+        - name: limit
+          description: Maximum number of users to return. Default is 100. Must be a positive
+            integer and must not exceed 1000.
+          in: query
+          type: integer
+          required: false
         - name: payload
           in: body
           required: true
@@ -2382,7 +2580,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/String'
+            $ref: '#/definitions/StringId'
       tags:
         - User
       responses:
@@ -2430,7 +2628,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/String'
+            $ref: '#/definitions/StringId'
       tags:
         - User
       responses:
@@ -3249,6 +3447,178 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/app/create':
+    post:
+      summary: Creates a new app
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: applicationDetail
+          description: Application detail to create the app with
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationDetail'
+      tags:
+        - Application
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/app/{id}/update':
+    post:
+      summary: Updates a app
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: id
+          description: Id of the app
+          in: path
+          required: true
+          type: string
+        - name: applicationDetail
+          description: Details to update the app with
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationDetail'
+      tags:
+        - Application
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/app/{id}/delete':
+    post:
+      summary: Deletes a app
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: id
+          description: The id of the app
+          in: path
+          required: true
+          type: string
+      tags:
+        - Application
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/app/{id}/get':
+    get:
+      summary: Gets a app
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: id
+          description: the id of the app to get
+          in: path
+          required: true
+          type: string
+      tags:
+        - Application
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -3359,6 +3729,12 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/NameValuePair'
+  PodCertificate:
+    type: object
+    properties:
+      certificate:
+        description: Certificate in PEM format
+        type: string
   NameValuePair:
     type: object
     properties:
@@ -3499,7 +3875,7 @@ definitions:
       discoverable:
         type: boolean
         description: If true, this chatroom (name, description and messages) can be searched and listed by non-participants. If false, only participants can search this room.
-  V2RoomAttributes:
+  V3RoomAttributes:
     type: object
     properties:
       name:
@@ -3528,6 +3904,13 @@ definitions:
       copyProtected:
         type: boolean
         description: If true, clients disable the clipboard copy for content in this stream.
+      crossPod:
+        type: boolean
+        description: If true, this room is a cross pod room
+      viewHistory:
+        type: boolean
+        description: If true, new members can view the room chat history of the room.
+
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
     properties:
@@ -3564,7 +3947,7 @@ definitions:
           - RELEVANCE
     required:
     - query
-  RoomSearchResults:
+  V3RoomSearchResults:
     description: A list of search results and counts per search parameter.
     properties:
       count:
@@ -3584,7 +3967,7 @@ definitions:
         description: A list of rooms matched by the query.
         type: array
         items:
-          $ref: '#/definitions/V2RoomDetail'
+          $ref: '#/definitions/V3RoomDetail'
       facetedMatchCount:
         description: Detailed counts of matched rooms per search criterion.
         type: array
@@ -3648,11 +4031,11 @@ definitions:
         $ref: '#/definitions/RoomSystemInfo'
       immutableRoomAttributes:
         $ref: '#/definitions/ImmutableRoomAttributes'
-  V2RoomDetail:
+  V3RoomDetail:
     type: object
     properties:
       roomAttributes:
-        $ref: '#/definitions/V2RoomAttributes'
+        $ref: '#/definitions/V3RoomAttributes'
       roomSystemInfo:
         $ref: '#/definitions/RoomSystemInfo'
   SuccessResponse:
@@ -3706,6 +4089,8 @@ definitions:
       role:
         type: string
         format: long
+      feature:
+        type: string
       status:
         type: string
         enum:
@@ -4457,6 +4842,12 @@ definitions:
       justification:
         description: The reason for the requested action.
         type: string
+  AdminJustifiedAction:
+    type: object
+    properties:
+      justification:
+        description: The reason for the requested action.
+        type: string
   MessageStatusUser:
     type: object
     properties:
@@ -4497,6 +4888,67 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/MessageStatusUser'
+  ApplicationInfo:
+    description: |
+      Required information for creating an application.
+    type: object
+    properties:
+      appId:
+        description: An unique id for the application.
+        type: string
+      name:
+        description: User defined name for the application.
+        type: string
+      appUrl:
+        description: The url for the app. Must start with "https://".
+        type: string
+      domain:
+        description: Domain for app, that must match app url domain.
+        type: string
+      publisher:
+        description: The publisher for this application.
+        type: string
+  ApplicationDetail:
+    description: Detailed record of application.
+    type: object
+    properties:
+      applicationInfo:
+        description: Required info for the creation of an application.
+        $ref: '#/definitions/ApplicationInfo'
+      id:
+        description: An unique id, used for for updating, getting and deleting an application.
+        type: string
+      iconUrl:
+        description: Url to a icon to use for app. Must start with "https://".
+        type: string
+      description:
+        description: Description of the application.
+        type: string
+      allowOrigins:
+        description: |
+          The permitted domains to send or receive a request from.
+          The field is for the purpose of CORS which set the app specific "ALLOW-ORIGIN-DOMAINS" header in HTTP.
+        type: string
+      permissions:
+        description: |
+          List of application permissions provisioned for the application
+          Accepted values:
+            - SEND_MESSAGES
+            - GET_USER_CONNECTIONS
+            - REQUEST_USER_CONNECTIONS
+            - SET_PRESENCE
+            - GET_PRESENCE
+            - GET_BASIC_USER_INFO
+            - GET_EXTENDED_USER_INFO
+            - GET_BASIC_CONTACT_INFO
+            - GET_EXTENDED_CONTACT_INFO
+            - ACT_AS_USER
+        type: array
+        items:
+          type: string
+      cert:
+        description: The app public certificate in pem format.
+        type: string
   V2PresenceList:
     type: array
     items:
