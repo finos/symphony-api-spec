@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.48.1'
+  version: '1.49.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -5721,9 +5721,6 @@ definitions:
       applicationInfo:
         description: Required info for the creation of an application.
         $ref: '#/definitions/ApplicationInfo'
-      id:
-        description: An unique id, used for for updating, getting and deleting an application.
-        type: string
       iconUrl:
         description: Url to a icon to use for app. Must start with "https://".
         type: string
