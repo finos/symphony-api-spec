@@ -671,7 +671,6 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
-        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
