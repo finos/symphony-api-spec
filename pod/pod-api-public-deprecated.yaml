@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.49.0'
+  version: '1.50.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -1391,6 +1391,63 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v3/users':
+    get:
+      summary: |
+        Search users by emails or ids.
+        Only one of the search lists should be informed at a time.
+        Search lists may containt up to 100 elements.
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: User IDs as a list of decimal integers separated by comma
+          in: query
+          required: false
+          type: string
+        - name: email
+          description: List of email addresses separated by comma
+          in: query
+          required: false
+          type: string
+        - name: local
+          description: |
+            If true then a local DB search will be performed and only local pod users will be
+            returned. If absent or false then a directory search will be performed and users
+            from other pods who are visible to the calling user will also be returned.
+          in: query
+          required: false
+          type: boolean
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2UserList'
+        '204':
+          description: 'No user found.'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/user/presence/register':
     post:
       summary: Register interest in a user's presence status
@@ -1623,6 +1680,8 @@ paths:
       summary: |
         Retrieve a list of all streams of which the requesting user is a member,
         sorted by creation date (ascending).
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -2204,6 +2263,49 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/room/{id}/setActive':
+      post:
+        summary: Deactivate or reactivate a chatroom via AC Portal.
+        produces:
+          - application/json
+        parameters:
+          - name: id
+            description: Room streamId
+            in: path
+            required: true
+            type: string
+          - name: active
+            in: query
+            required: true
+            type: boolean
+          - name: sessionToken
+            description: Session authentication token.
+            in: header
+            required: true
+            type: string
+        tags:
+          - Streams
+        responses:
+          '200':
+            description: OK
+            schema:
+              $ref: '#/definitions/RoomDetail'
+          '400':
+            description: 'Client error.'
+            schema:
+              $ref: '#/definitions/Error'
+          '401':
+            description: 'Unauthorized: Session tokens invalid.'
+            schema:
+              $ref: '#/definitions/Error'
+          '403':
+            description: 'Forbidden: Caller lacks necessary entitlement.'
+            schema:
+              $ref: '#/definitions/Error'
+          '500':
+            description: 'Server error, see response body for further details.'
+            schema:
+              $ref: '#/definitions/Error'
   '/v1/admin/room/{id}/membership/list':
     get:
       summary: Lists current and previous members of an existing room.
@@ -3197,7 +3299,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/admin/streams/list':
+  '/v2/admin/streams/list':
     post:
       summary: |
         Retrieve all the streams across the enterprise where the membership of the stream has been modified between a given time range
@@ -3230,7 +3332,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/AdminStreamList'
+            $ref: '#/definitions/V2AdminStreamList'
         '400':
           description: 'Client error.'
           schema:
@@ -4424,7 +4526,57 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
+  '/v1/admin/streams/list':
+    post:
+      deprecated: true
+      summary: |
+        Retrieve all the streams across the enterprise where the membership of the stream has been modified between a given time range
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: skip
+          description: |
+           Number of items to skip. Default is 0.
+          in: query
+          type: integer
+        - name: limit
+          description: |
+           Maximum number of items to return. Default is 50.  This value cannot exceed 100.
+          in: query
+          type: integer
+        - name: filter
+          description: Stream filtering criteria.
+          in: body
+          schema:
+            $ref: '#/definitions/AdminStreamFilter'
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AdminStreamList'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -4553,16 +4705,19 @@ definitions:
     properties:
       id:
         type: string
-  User:
-    description: User record.
+  UserError:
+    description: User error information
     type: object
     properties:
-      id:
-        type: integer
-        format: int64
-      emailAddress:
+      error:
         type: string
-        format: email
+        description: 'Error code informing what is wrong'
+      email:
+        type: string
+        description: 'Email with error. Only one of the following fields should be present: email or id'
+      id:
+        type: string
+        description: 'Id with error. Only one of the following fields should be present: email or id'
   UserV2:
     description: User record version 2
     type: object
@@ -4588,7 +4743,7 @@ definitions:
       location:
         type : string
       avatars:
-        description: 'avatar urls for both original size and small size'
+        # avatar urls for both original size and small size
         $ref: '#/definitions/AvatarList'
       workPhoneNumber:
         type: string
@@ -4605,6 +4760,20 @@ definitions:
       division:
         type: string
         description: 'Note: only available if the application has the extended user or contact permission'
+  V2UserList:
+    description: List of User record version 2
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/UserV2'
+        description: 'List of all users found with the search'
+      errors:
+        type: array
+        items:
+          $ref: '#/definitions/UserError'
+        description: 'List of all errors found with the informed search criteria'
   UserSearchResults:
     type: object
     properties:
@@ -4621,8 +4790,7 @@ definitions:
         type: integer
         format: int64
       searchQuery:
-        type: object
-        description: The search query that produced this result.
+        # The search query that produced this result.
         $ref: '#/definitions/UserSearchQuery'
       users:
         description: A list of users which matched by the search criteria.
@@ -4648,7 +4816,7 @@ definitions:
         type: string
         description: search / query term.  This can be firstname, lastname, displayname or email
       filters:
-        description: query filters
+        # query filters
         $ref: '#/definitions/UserSearchFilter'
   UserIdList:
     type: array
@@ -4716,6 +4884,9 @@ definitions:
       viewHistory:
         type: boolean
         description: If true, new members can view the room chat history of the room.
+      multiLateralRoom:
+        type: boolean
+        description: If true, this is a multi latetal room where we can find users belonging to more than 2 companies.
 
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
@@ -4735,13 +4906,13 @@ definitions:
         description: Restrict the search to private rooms. If unspecified, search all rooms.
         type: boolean
       owner:
-        description: Restrict the search to rooms owned by the specified user ID.
+        # Restrict the search to rooms owned by the specified user ID.
         $ref: '#/definitions/UserId'
       creator:
-        description: Restrict the search to rooms created by the specified user ID.
+        # Restrict the search to rooms created by the specified user ID.
         $ref: '#/definitions/UserId'
       member:
-        description: Restrict the search to rooms having the specified user ID as member.
+        # Restrict the search to rooms having the specified user ID as member.
         $ref: '#/definitions/UserId'
       sortOrder:
         description: |
@@ -4767,7 +4938,7 @@ definitions:
         description: The number of returned results.
         type: integer
       query:
-        description: The search query that produced this result.
+        # The search query that produced this result.
         $ref: '#/definitions/RoomSearchCriteria'
       rooms:
         description: A list of rooms matched by the query.
@@ -5210,6 +5381,8 @@ definitions:
         type: string
       displayName:
         type: string
+      companyName:
+        type: string
       department:
         type: string
       division:
@@ -5344,7 +5517,7 @@ definitions:
     type: object
     properties:
       user:
-        description: User detail information include names, userId, email, etc
+        # User detail information include names, userId, email, etc
         $ref: '#/definitions/V2MemberUserDetail'
       isOwner:
         type: boolean
@@ -5460,13 +5633,13 @@ definitions:
         type: boolean
         description: If true, this stream is active.
       streamType:
-        description: The type of the stream (IM, multi-IM, chat room, user wall).
+        # The type of the stream (IM, multi-IM, chat room, user wall).
         $ref: '#/definitions/StreamType'
       streamAttributes:
-        description: Additional stream details applicable to IMs, MIMs and user walls.
+        # Additional stream details applicable to IMs, MIMs and user walls.
         $ref: '#/definitions/ConversationSpecificStreamAttributes'
       roomAttributes:
-        description: Additional stream details applicable to chatrooms.
+        # Additional stream details applicable to chatrooms.
         $ref: '#/definitions/RoomSpecificStreamAttributes'
   StreamType:
     type: object
@@ -5482,7 +5655,7 @@ definitions:
     type: object
     properties:
       members:
-        description: User IDs of the participants of the stream.
+        # User IDs of the participants of the stream.
         $ref: '#/definitions/UserIdList'
   RoomSpecificStreamAttributes:
     type: object
@@ -5554,90 +5727,6 @@ definitions:
           - IM
           - MIM
           - ROOM
-  AdminStreamInfo:
-    description: Stream information
-    type: object
-    properties:
-      id:
-        type: string
-        description: stream id
-      isExternal:
-        type: boolean
-        description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal
-      isActive:
-        type: boolean
-        description: true indicate that this stream has the status of active and false indicate this stream has the scope of inactive
-      isPublic:
-        type: boolean
-        description: true indicate that this stream has a privacy setting of public.  This only apply a ROOM stream type.
-      type:
-        type: string
-        description: type of stream (IM, MIM, ROOM)
-      attributes:
-        description: additional optional properties of the stream
-        $ref: '#/definitions/AdminStreamAttributes'
-  AdminStreamAttributes:
-      description: additional optional properties for the stream
-      type: object
-      properties:
-        roomName:
-          type: string
-          description: room name (room only)
-        roomDescription:
-          type: string
-          description: description of the room (room only)
-        members:
-          type: array
-          description: list of userid who is member of the stream - im or mim only
-          items:
-            type: integer
-            format: int64
-        createdByUserId:
-          type: integer
-          format: int64
-          description: creator user id
-        createdDate:
-          type: integer
-          format: int64
-          description: created date
-        lastModifiedDate:
-          type: integer
-          format: int64
-          description: last modified date
-        originCompany:
-          type: string
-          description: company name of the creator
-        originCompanyId:
-          type: integer
-          description: company id of the creator
-        membersCount:
-          type: integer
-          description: total number of members in the stream
-  AdminStreamInfoList:
-    type: array
-    description: list of stream info
-    items:
-      $ref: '#/definitions/AdminStreamInfo'
-  AdminStreamList:
-    description: list of streams info
-    type: object
-    properties:
-      count:
-        type: integer
-        format: int64
-        description: total number of streams which match the filter criteria
-      skip:
-        type: integer
-        description: number of streams skipped
-      limit:
-        type: integer
-        description: maximum number of streams return
-      filter:
-        description: filter criteria used in the request
-        $ref: '#/definitions/AdminStreamFilter'
-      streams:
-        description: list of streams
-        $ref: '#/definitions/AdminStreamInfoList'
   AdminJustifiedUserAction:
     type: object
     properties:
@@ -5719,7 +5808,7 @@ definitions:
     type: object
     properties:
       applicationInfo:
-        description: Required info for the creation of an application.
+        # Required info for the creation of an application.
         $ref: '#/definitions/ApplicationInfo'
       iconUrl:
         description: Url to a icon to use for app. Must start with "https://".
@@ -5794,6 +5883,94 @@ definitions:
             - OFFLINE
     required:
       - category
+  V2AdminStreamList:
+    description: list of streams info
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int64
+        description: total number of streams which match the filter criteria
+      skip:
+        type: integer
+        description: number of streams skipped
+      limit:
+        type: integer
+        description: maximum number of streams return
+      filter:
+        # filter criteria used in the request
+        $ref: '#/definitions/AdminStreamFilter'
+      streams:
+        # list of streams
+        $ref: '#/definitions/V2AdminStreamInfoList'
+  V2AdminStreamInfoList:
+    type: array
+    description: list of stream info
+    items:
+      $ref: '#/definitions/V2AdminStreamInfo'
+  V2AdminStreamInfo:
+    description: Stream information
+    type: object
+    properties:
+      id:
+        type: string
+        description: stream id
+      isExternal:
+        type: boolean
+        description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal
+      isActive:
+        type: boolean
+        description: true indicate that this stream has the status of active and false indicate this stream has the scope of inactive
+      isPublic:
+        type: boolean
+        description: true indicate that this stream has a privacy setting of public.  This only apply a ROOM stream type.
+      type:
+        type: string
+        description: type of stream (IM, MIM, ROOM)
+      attributes:
+        # additional optional properties of the stream
+        $ref: '#/definitions/V2AdminStreamAttributes'
+  V2AdminStreamAttributes:
+    description: additional optional properties for the stream
+    type: object
+    properties:
+      roomName:
+        type: string
+        description: room name (room only)
+      roomDescription:
+        type: string
+        description: description of the room (room only)
+      members:
+        type: array
+        description: list of userid who is member of the stream - im or mim only
+        items:
+          type: integer
+          format: int64
+      createdByUserId:
+        type: integer
+        format: int64
+        description: creator user id
+      createdDate:
+        type: integer
+        format: int64
+        description: created date
+      lastModifiedDate:
+        type: integer
+        format: int64
+        description: last modified date
+      originCompany:
+        type: string
+        description: company name of the creator
+      originCompanyId:
+        type: integer
+        description: company id of the creator
+      membersCount:
+        type: integer
+        description: total number of members in the stream
+      lastMessageDate:
+        type: integer
+        format: int64
+        description: last date a message was sent in this stream
 
   SessionInfo:
     description: Information about the current user's session
@@ -5819,7 +5996,6 @@ definitions:
         format: int64
       emailAddress:
         type: string
-        format:
   Presence:
     type: object
     properties:
@@ -5884,7 +6060,7 @@ definitions:
         description: The number of returned results.
         type: integer
       query:
-        description: The search query that produced this result.
+        # The search query that produced this result.
         $ref: '#/definitions/RoomSearchCriteria'
       rooms:
         description: A list of rooms matched by the query.
@@ -5896,5 +6072,87 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/FacetedMatchCount'
-
-
+  AdminStreamList:
+    description: list of streams info
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int64
+        description: total number of streams which match the filter criteria
+      skip:
+        type: integer
+        description: number of streams skipped
+      limit:
+        type: integer
+        description: maximum number of streams return
+      filter:
+        # filter criteria used in the request
+        $ref: '#/definitions/AdminStreamFilter'
+      streams:
+        # list of streams
+        $ref: '#/definitions/AdminStreamInfoList'
+  AdminStreamInfoList:
+    type: array
+    description: list of stream info
+    items:
+      $ref: '#/definitions/AdminStreamInfo'
+  AdminStreamInfo:
+    description: Stream information
+    type: object
+    properties:
+      id:
+        type: string
+        description: stream id
+      isExternal:
+        type: boolean
+        description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal
+      isActive:
+        type: boolean
+        description: true indicate that this stream has the status of active and false indicate this stream has the scope of inactive
+      isPublic:
+        type: boolean
+        description: true indicate that this stream has a privacy setting of public.  This only apply a ROOM stream type.
+      type:
+        type: string
+        description: type of stream (IM, MIM, ROOM)
+      attributes:
+        # additional optional properties of the stream
+        $ref: '#/definitions/AdminStreamAttributes'
+  AdminStreamAttributes:
+    description: additional optional properties for the stream
+    type: object
+    properties:
+      roomName:
+        type: string
+        description: room name (room only)
+      roomDescription:
+        type: string
+        description: description of the room (room only)
+      members:
+        type: array
+        description: list of userid who is member of the stream - im or mim only
+        items:
+          type: integer
+          format: int64
+      createdByUserId:
+        type: integer
+        format: int64
+        description: creator user id
+      createdDate:
+        type: integer
+        format: int64
+        description: created date
+      lastModifiedDate:
+        type: integer
+        format: int64
+        description: last modified date
+      originCompany:
+        type: string
+        description: company name of the creator
+      originCompanyId:
+        type: integer
+        description: company id of the creator
+      membersCount:
+        type: integer
+        description: total number of members in the stream

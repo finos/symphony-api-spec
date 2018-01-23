@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.49.0'
+  version: '1.50.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -65,10 +65,6 @@ paths:
             $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '503':
-          description: 'Max number of data feeds reached.'
           schema:
             $ref: '#/definitions/Error'
   '/v4/datafeed/{id}/read':
@@ -143,7 +139,7 @@ paths:
           Note that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations
           for which it will receive messages.
 
-          A firehose can be created and accessed by a user with canUseFirehose entitlement.
+          A firehose can be created and accessed by a user with CAN_READ_FIREHOSE entitlement.
 
           A firehose can be deleted by using the delete firehose endpoint.
       parameters:
@@ -671,6 +667,7 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
+        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
@@ -949,10 +946,6 @@ paths:
             $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '503':
-          description: 'Max number of data feeds reached.'
           schema:
             $ref: '#/definitions/Error'
   '/v1/datafeed/{id}/read':
@@ -2204,6 +2197,18 @@ definitions:
        agentVersion:
          type: string
          description: The version number of the Agent server
+       agentServiceUser:
+         type: boolean
+         description: Indicates whether agent service user is setup correctly.
+       agentServiceUserError:
+         type: string
+         description: Error details in case agent service user is setup incorrectly.
+       ceServiceUser:
+         type: boolean
+         description: Indicates whether CEService user is setup correctly.
+       ceServiceUserError:
+         type: string
+         description: Error details in case CEService user is setup incorrectly.
   MessageSearchQuery:
     type: object
     properties:
@@ -2381,10 +2386,8 @@ definitions:
           $ref: '#/definitions/V4AttachmentInfo'
       user:
         $ref: '#/definitions/V4User'
-        description: Message author
       stream:
         $ref: '#/definitions/V4Stream'
-        description: Message destination
       externalRecipients:
         description: Indicates if the message have external recipients. Only present on real time messaging.
         type: boolean
@@ -2527,7 +2530,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. added to the room)
+        # User who was affected by the action (i.e. added to the room)
         $ref: '#/definitions/V4User'
   V4UserLeftRoom:
     type: object
@@ -2535,7 +2538,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. left the room)
+        # User who was affected by the action (i.e. left the room)
         $ref: '#/definitions/V4User'
   V4RoomMemberPromotedToOwner:
     type: object
@@ -2543,7 +2546,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. promoted to owner)
+        # User who was affected by the action (i.e. promoted to owner)
         $ref: '#/definitions/V4User'
   V4RoomMemberDemotedFromOwner:
     type: object
@@ -2551,19 +2554,19 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. demoted from owner)
+        # User who was affected by the action (i.e. demoted from owner)
         $ref: '#/definitions/V4User'
   V4ConnectionRequested:
     type: object
     properties:
       toUser:
-        description: User who received the connection request
+        # User who received the connection request
         $ref: '#/definitions/V4User'
   V4ConnectionAccepted:
     type: object
     properties:
       fromUser:
-        description: User who sent the connection request
+        # User who sent the connection request
         $ref: '#/definitions/V4User'
   V4MessageSuppressed:
     type: object
@@ -2571,7 +2574,7 @@ definitions:
       messageId:
         type: string
       stream:
-        description: the stream holding the suppressed message
+        # the stream holding the suppressed message
         $ref: '#/definitions/V4Stream'
   V4Payload:
     type: object
@@ -2638,10 +2641,10 @@ definitions:
           Details if event failed to parse for any reason.  The contents of this field may not be useful,
           depending on the nature of the error. Only present when error occurs.
       initiator:
-        description: Actor who initiated the event
+        # Actor who initiated the event
         $ref: '#/definitions/V4Initiator'
       payload:
-        description: Holds payload for all event types
+        # Holds payload for all event types
         $ref: '#/definitions/V4Payload'
   V4EventList:
     type: array
@@ -2710,6 +2713,42 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Signal'
+  ChannelSubscriptionResponse:
+    type: object
+    properties:
+      requestedSubscription:
+        type: integer
+        format: int64
+        description: The number of requested userIds to subscribe
+      successfulSubscription:
+        type: integer
+        format: int64
+        description: The number of successful subscriptions done
+      failedSubscription:
+        type: integer
+        format: int64
+        description: The number of subscription failures
+      subscriptionErrors:
+        type: array
+        items:
+          $ref: '#/definitions/ChannelSubscriptionError'
+  ChannelSubscriptionError:
+    type: object
+    properties:
+      userId:
+        type: integer
+        format: int64
+        description: The userId on which failure happened
+      code:
+        type: string
+        description: subscription failure code
+      message:
+        type: string
+        description: subscription failure message
+
+
+
+
 
 #
 # Deprecated definitions
@@ -2902,7 +2941,6 @@ definitions:
     - timestamp
     - streamId
   V1HealthCheckResponse:
-    deprecated: true
     type: object
     properties:
       podConnectivity:
