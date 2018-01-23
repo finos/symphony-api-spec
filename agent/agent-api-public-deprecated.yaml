@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.48.1'
+  version: '1.49.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -67,6 +67,10 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+        '503':
+          description: 'Max number of data feeds reached.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v4/datafeed/{id}/read':
     get:
       summary: Read a given datafeed.
@@ -113,6 +117,160 @@ paths:
             $ref: '#/definitions/V4EventList'
         '204':
           description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v5/firehose/create':
+    post:
+      summary: Create a new real time stream for all events in a pod.
+      description: |
+          A firehose provides all user entered messages that occur within a
+          Symphony pod beginning at the point in time that it is created.
+
+          Note that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations
+          for which it will receive messages.
+
+          A firehose can be created and accessed by a user with canUseFirehose entitlement.
+
+          A firehose can be deleted by using the delete firehose endpoint.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Firehose
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V5Firehose'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v5/firehose/{id}/read':
+    post:
+      summary: Read a given firehose.
+      description: |
+          Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.
+          A firehose can be read by a user with CAN_READ_FIREHOSE entitlement.
+      parameters:
+      - name: id
+        description: |
+          Firehose ID
+        in: path
+        required: true
+        type: string
+      - name: sessionToken
+        description: Session authentication token.
+        in: header
+        required: true
+        type: string
+      - name: keyManagerToken
+        description: Key Manager authentication token.
+        in: header
+        required: true
+        type: string
+      - name: payload
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/V5FirehoseReadRequest'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Firehose
+      responses:
+        '200':
+          description: List of messages that have occurred since last time this URL was polled. If the list is empty, it may mean that all the messages have been read and acknowleged by the client and there are no more messages.
+          schema:
+            $ref: '#/definitions/V5EventList'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Firehose Id cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v5/firehose/{id}/delete':
+    delete:
+      summary: Delete a firehose
+      description: |
+        Deletes a firehose.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+          description: Unique firehose identifier
+      tags:
+        - Firehose
+      responses:
+        '204':
+          description: Successfully deleted the firehose
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -513,7 +671,6 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
-        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
@@ -638,52 +795,107 @@ paths:
             $ref: '#/definitions/Error'
   '/v1/util/echo':
     post:
-                  summary: Test endpoint, returns input.
-                  consumes:
-                    - application/json
-                  produces:
-                    - application/json
-                  parameters:
-                    - name: sessionToken
-                      description: Session authentication token.
-                      in: header
-                      required: true
-                      type: string
-                    - name: keyManagerToken
-                      description: Key Manager authentication token.
-                      in: header
-                      required: true
-                      type: string
-                    - name: echoInput
-                      description: |
-                        Message in plain text
-                      in: body
-                      required: true
-                      schema:
-                        $ref: '#/definitions/SimpleMessage'
-                  tags:
-                    - Util
-                  responses:
-                    '200':
-                      description: Message sent.
-                      schema:
-                        $ref: '#/definitions/SimpleMessage'
-                    '400':
-                      description: 'Client error, see response body for further details.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '401':
-                      description: 'Unauthorized: Session tokens invalid.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '403':
-                      description: 'Forbidden: Caller lacks necessary entitlement.'
-                      schema:
-                        $ref: '#/definitions/Error'
-                    '500':
-                      description: 'Server error, see response body for further details.'
-                      schema:
-                        $ref: '#/definitions/Error'
+      summary: Test endpoint, returns input.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: echoInput
+          description: |
+            Message in plain text
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SimpleMessage'
+      tags:
+        - Util
+      responses:
+        '200':
+          description: Message sent.
+          schema:
+            $ref: '#/definitions/SimpleMessage'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/signals/list':
+    get:
+      summary: |
+          List signals for the requesting user. This includes signals that the user has created and public signals
+          to which they subscribed.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: skip
+          description: |
+            No. of signals to skip.
+          in: query
+          type: integer
+        - name: limit
+          description: |
+            Max no. of signals to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: List of signals for the requesting user.
+          schema:
+            $ref: '#/definitions/SignalList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
 
 #
 # Deprecated paths
@@ -737,6 +949,10 @@ paths:
             $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '503':
+          description: 'Max number of data feeds reached.'
           schema:
             $ref: '#/definitions/Error'
   '/v1/datafeed/{id}/read':
@@ -1656,6 +1872,16 @@ definitions:
         format: int32
       message:
         type: string
+  SuccessResponse:
+    type: object
+    properties:
+      format:
+        type: string
+        enum:
+          - TEXT
+          - XML
+      message:
+        type: string
   V2BaseMessage:
     type: object
     discriminator: v2messageType
@@ -2162,6 +2388,11 @@ definitions:
       externalRecipients:
         description: Indicates if the message have external recipients. Only present on real time messaging.
         type: boolean
+      diagnostic:
+        type: string
+        description: |
+          Details if event failed to parse for any reason.  The contents of this field may not be useful,
+          depending on the nature of the error. Only present when error occurs.
   V4User:
     type: object
     properties:
@@ -2401,6 +2632,11 @@ definitions:
             - CONNECTIONREQUESTED
             - CONNECTIONACCEPTED
             - MESSAGESUPPRESSED
+      diagnostic:
+        type: string
+        description: |
+          Details if event failed to parse for any reason.  The contents of this field may not be useful,
+          depending on the nature of the error. Only present when error occurs.
       initiator:
         description: Actor who initiated the event
         $ref: '#/definitions/V4Initiator'
@@ -2411,6 +2647,70 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/V4Event'
+  V5Firehose:
+    type: object
+    properties:
+      id:
+        type: string
+  V5FirehoseReadRequest:
+    type: object
+    properties:
+      ackId:
+        type: string
+        description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
+      maxMsgs:
+        type: integer
+        format: int32
+        description: The maximum number of messages which should be retrieved by this read request
+      timeout:
+        type: integer
+        format: int32
+        description: The time in seconds for which the server will wait before timing out
+  V5EventList:
+    type: object
+    properties:
+      events:
+        type: array
+        items:
+          $ref: '#/definitions/V4Event'
+      ackId:
+        type: string
+        description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
+  BaseSignal:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Signal name
+      query:
+        type: string
+        description: |
+          The query used to define this signal. The query is defined as "field:value" pairs combined by the operators
+          "AND" or "OR". Supported fields are (case-insensitive): "author", "hashtag" and "cashtag".
+          MUST contain at least one "hashtag" or "cashtag" definition.
+      visibleOnProfile:
+        type: boolean
+        description: Whether the signal is visible on its creator's profile
+      companyWide:
+        type: boolean
+        description: Whether the signal is a push signal
+  Signal:
+    allOf:
+      - $ref: '#/definitions/BaseSignal'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Signal ID
+          timestamp:
+            type: integer
+            format: int64
+            description: Timestamp when the signal was created, in milliseconds since Jan 1 1970
+  SignalList:
+    type: array
+    items:
+      $ref: '#/definitions/Signal'
+
 #
 # Deprecated definitions
 #
