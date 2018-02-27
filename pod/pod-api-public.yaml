@@ -502,6 +502,8 @@ paths:
   '/v1/connection/accept':
     post:
       summary: Accept the connection request for the requesting user
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -548,6 +550,8 @@ paths:
       description: |
         Reject the connection between the requesting user and request sender. If both users are in the same private pod,
         an error will be returned because both users have an implicit connection which cannot be rejected.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1039,6 +1043,8 @@ paths:
   '/v3/room/{id}/update':
     post:
       summary: Update the attributes of an existing chatroom.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1083,6 +1089,8 @@ paths:
   '/v1/room/{id}/membership/add':
     post:
       summary: Adds new member to an existing room.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1127,6 +1135,8 @@ paths:
   '/v1/room/{id}/membership/remove':
     post:
       summary: Removes member from an existing room.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1171,6 +1181,8 @@ paths:
   '/v1/room/{id}/membership/promoteOwner':
     post:
       summary: Promotes user to owner.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1215,6 +1227,8 @@ paths:
   '/v1/room/{id}/membership/demoteOwner':
     post:
       summary: Demotes room owner.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1394,6 +1408,8 @@ paths:
   '/v1/user/presence/register':
     post:
       summary: Register interest in a user's presence status
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1467,6 +1483,8 @@ paths:
             $ref: '#/definitions/Error'
     post:
       summary: Set the presence of the requesting user.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -1623,6 +1641,8 @@ paths:
       summary: |
         Retrieve a list of all streams of which the requesting user is a member,
         sorted by creation date (ascending).
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -2251,6 +2271,8 @@ paths:
   '/v1/admin/room/{id}/membership/add':
     post:
       summary: Add a member to an existing room.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -2295,6 +2317,8 @@ paths:
   '/v1/admin/room/{id}/membership/remove':
     post:
       summary: Remove a member from a room.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -3201,6 +3225,8 @@ paths:
     post:
       summary: |
         Retrieve all the streams across the enterprise where the membership of the stream has been modified between a given time range
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
