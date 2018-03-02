@@ -54,23 +54,23 @@ paths:
         '400':
           description: 'Client error.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '503':
           description: 'Max number of data feeds reached.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v4/datafeed/{id}/read':
     get:
       summary: Read a given datafeed.
@@ -120,19 +120,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/create':
     post:
       summary: Create a new real time stream for all events in a pod.
@@ -171,19 +171,19 @@ paths:
         '400':
           description: 'Client error.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/{id}/read':
     post:
       summary: Read a given firehose.
@@ -228,23 +228,23 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '404':
           description: 'Not Found: Firehose Id cannot be found.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/{id}/delete':
     delete:
       summary: Delete a firehose
@@ -274,23 +274,23 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '404':
           description: 'Not Found: Firehose Id cannot be found.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v2/HealthCheck':
      get:
        summary: Checks the health of the Agent.
@@ -361,19 +361,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/message/search':
     get:
       summary: Search messages
@@ -433,19 +433,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
     post:
       summary: Search messages
       description: |
@@ -499,19 +499,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/stream/{sid}/attachment':
     get:
       summary: Download an attachment.
@@ -638,19 +638,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v4/stream/{sid}/message/create':
     post:
       summary: Post a message to one existing stream.
@@ -731,19 +731,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v3/stream/{sid}/share':
     post:
       summary: PROVISIONAL -  Share a piece of content into Symphony
@@ -887,19 +887,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/get':
     get:
       summary: Get details of the requested signal.
@@ -934,19 +934,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/create':
     post:
       summary: Create a signal.
@@ -981,19 +981,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/update':
     post:
       summary: Update a signal.
@@ -1033,19 +1033,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/delete':
     post:
       summary: Delete a signal.
@@ -1079,19 +1079,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/subscribe':
     post:
       summary: Subscribe to a Signal.
@@ -1139,19 +1139,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/unsubscribe':
     post:
       summary: Unsubscribe to a Signal.
@@ -1194,19 +1194,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/signals/{id}/subscribers':
     get:
       summary: Get the subscribers of a signal
@@ -1252,19 +1252,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
 
 #
 # Deprecated paths
