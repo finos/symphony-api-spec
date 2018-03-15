@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.50.0'
+  version: '1.51.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -1754,7 +1754,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/streams/{sid}/info':
+  '/v2/streams/{sid}/info':
     get:
       summary: Get information about a partcular stream.
       produces:
@@ -1776,7 +1776,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/StreamAttributes'
+            $ref: '#/definitions/V2StreamAttributes'
         '400':
           description: 'Client error.'
           schema:
@@ -2468,47 +2468,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/admin/user/create':
-    post:
-      summary: Create a new user
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: payload
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/UserCreate'
-      tags:
-        - User
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/UserDetail'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/admin/user/list':
     get:
       summary: Retreive a list of all users in the company (pod)
@@ -2529,97 +2488,6 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/UserIdList'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v1/admin/user/{uid}':
-    get:
-      summary: Retreive user details for a particular user
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: uid
-          description: |
-            User ID as a decimal integer
-          in: path
-          required: true
-          type: integer
-          format: int64
-      tags:
-        - User
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/UserDetail'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v1/admin/user/{uid}/update':
-    post:
-      summary: Update an existing user
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: uid
-          description: |
-            User ID as a decimal integer
-          in: path
-          required: true
-          type: integer
-          format: int64
-        - name: payload
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/UserAttributes'
-      tags:
-        - User
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/UserDetail'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -3752,7 +3620,138 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
+  '/v2/admin/user/create':
+    post:
+      summary: Create a new V2 User
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V2UserCreate'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V2UserDetail'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/user/{uid}/update':
+    post:
+      summary: Update an existing V2 User
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V2UserAttributes'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V2UserDetail'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/user/{uid}':
+    get:
+      summary: Retreive V2 User details for a particular user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V2UserDetail'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -4523,12 +4522,12 @@ definitions:
         $ref: '#/definitions/UserAttributes'
       userSystemInfo:
         $ref: '#/definitions/UserSystemInfo'
-  UserDetail:
-    description: Detailed User record.
+  V2UserDetail:
+    description: V2 Detailed User record.
     type: object
     properties:
       userAttributes:
-        $ref: '#/definitions/UserAttributes'
+        $ref: '#/definitions/V2UserAttributes'
       userSystemInfo:
         $ref: '#/definitions/UserSystemInfo'
       features:
@@ -4543,8 +4542,8 @@ definitions:
         $ref: '#/definitions/IntegerList'
       avatar:
         $ref: '#/definitions/Avatar'
-  UserAttributes:
-    description: User record.
+  V2UserAttributes:
+    description: V2 User record.
     type: object
     properties:
       emailAddress:
@@ -4588,12 +4587,39 @@ definitions:
         type: array
         items:
           type: string
-  UserCreate:
-    description: User Creation Object. After creation, modify roles, features etc via the specific API calls.
+      currentKey:
+        $ref: '#/definitions/V2UserKeyRequest'
+      previousKey:
+        $ref: '#/definitions/V2UserKeyRequest'
+  V2UserKeyRequest:
+    description: User RSA key information.
+    type: object
+    properties:
+      key:
+        description: User RSA public key.
+        type: string
+      expirationDate:
+        description: RSA key expiration date. This value is set just for rotated keys.
+        type: integer
+        format: int64
+      action:
+        description: |
+          Action to be performed on the RSA key.
+          The following actions can be performed onto the user's active RSA key:
+            - SAVE
+            - REVOKE
+          The following actions can be performed onto the user's rotated RSA key:
+            - REVOKE
+            - EXTEND
+        type: string
+  V2UserCreate:
+    description: |
+      V2 User Creation Object.
+      After creation, modify roles, features etc via the specific API calls.
     type: object
     properties:
       userAttributes:
-        $ref: '#/definitions/UserAttributes'
+        $ref: '#/definitions/V2UserAttributes'
       password:
         $ref: '#/definitions/Password'
       roles:
@@ -4850,6 +4876,59 @@ definitions:
       includeInactiveStreams:
         description: Whether to include inactive streams in the list of results.
         type: boolean
+  V2StreamAttributes:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The stream ID.
+      crossPod:
+        type: boolean
+        description: If true, this is a cross-pod stream.
+      origin:
+        type: string
+        description: INTERNAL if the creator of this stream belongs to the pod, EXTERNAL otherwise
+        enum:
+         - INTERNAL
+         - EXTERNAL
+      active:
+        type: boolean
+        description: If true, this stream is active.
+      lastMessageDate:
+        type: integer
+        format: int64
+        description: unix timestamp of the last message sent in the stream
+      streamType:
+        # The type of the stream (IM, multi-IM, chat room, user wall).
+        $ref: '#/definitions/V2StreamType'
+      streamAttributes:
+        # Additional stream details applicable to IMs, MIMs and user walls.
+        $ref: '#/definitions/V2ConversationSpecificStreamAttributes'
+      roomAttributes:
+        # Additional stream details applicable to chatrooms.
+        $ref: '#/definitions/V2RoomSpecificStreamAttributes'
+  V2StreamType:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - IM
+          - MIM
+          - ROOM
+          - POST
+  V2ConversationSpecificStreamAttributes:
+    type: object
+    properties:
+      members:
+        # User IDs of the participants of the stream.
+        $ref: '#/definitions/UserIdList'
+  V2RoomSpecificStreamAttributes:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Room name.
   AdminStreamFilter:
     description: stream filter criteria
     type: object
@@ -5093,7 +5172,8 @@ definitions:
         description: stream id
       isExternal:
         type: boolean
-        description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal
+        deprecated: true
+        description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal. Deprecated, use origin
       isActive:
         type: boolean
         description: true indicate that this stream has the status of active and false indicate this stream has the scope of inactive
@@ -5103,6 +5183,15 @@ definitions:
       type:
         type: string
         description: type of stream (IM, MIM, ROOM)
+      crossPod:
+        type: boolean
+        description: If true, this is a cross-pod stream.
+      origin:
+        type: string
+        description: INTERNAL if the creator of this stream belongs to the pod, EXTERNAL otherwise
+        enum:
+         - INTERNAL
+         - EXTERNAL
       attributes:
         # additional optional properties of the stream
         $ref: '#/definitions/V2AdminStreamAttributes'
