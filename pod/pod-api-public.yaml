@@ -2534,7 +2534,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/UserDetailList'
+            $ref: '#/definitions/V2UserDetailList'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -4673,6 +4673,10 @@ definitions:
         type: array
         items:
           type: string
+  V2UserDetailList:
+        type: array
+        items:
+          $ref: '#/definitions/V2UserDetail'
   UserSystemInfo:
     description: User Status Information.
     type: object
