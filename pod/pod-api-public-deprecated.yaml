@@ -3225,7 +3225,7 @@ paths:
           description: Stream filtering criteria.
           in: body
           schema:
-            $ref: '#/definitions/AdminStreamFilter'
+            $ref: '#/definitions/V2AdminStreamFilter'
       tags:
         - Streams
       responses:
@@ -5927,9 +5927,6 @@ definitions:
       origin:
         type: string
         description: INTERNAL if the creator of this stream belongs to the pod, EXTERNAL otherwise
-        enum:
-         - INTERNAL
-         - EXTERNAL
       active:
         type: boolean
         description: If true, this stream is active.
@@ -5938,24 +5935,14 @@ definitions:
         format: int64
         description: unix timestamp of the last message sent in the stream
       streamType:
-        # The type of the stream (IM, multi-IM, chat room, user wall).
-        $ref: '#/definitions/V2StreamType'
+        type: string
+        description: The type of the stream (IM = IM, multi-IM = MIM, chat room = ROOM, user wall = POST).
       streamAttributes:
         # Additional stream details applicable to IMs, MIMs and user walls.
         $ref: '#/definitions/V2ConversationSpecificStreamAttributes'
       roomAttributes:
         # Additional stream details applicable to chatrooms.
         $ref: '#/definitions/V2RoomSpecificStreamAttributes'
-  V2StreamType:
-    type: object
-    properties:
-      type:
-        type: string
-        enum:
-          - IM
-          - MIM
-          - ROOM
-          - POST
   V2ConversationSpecificStreamAttributes:
     type: object
     properties:
@@ -5968,7 +5955,7 @@ definitions:
       name:
         type: string
         description: Room name.
-  AdminStreamFilter:
+  V2AdminStreamFilter:
     description: stream filter criteria
     type: object
     properties:
@@ -5976,34 +5963,31 @@ definitions:
         description: type of streams to search for
         type: array
         items:
-          $ref: '#/definitions/AdminStreamTypeEnum'
+          type: string
+          description: Valid values are IM, MIM or ROOM
       scope:
-        description: scope of the room.  If not specified, it will include both Internal and External scope
+        description: |
+          Scope of the room. Valid values are INTERNAL or EXTERNAL.
+          If not specified, it will include both Internal and External scope
         type: string
-        enum:
-          - INTERNAL
-          - EXTERNAL
       origin:
         description: |
-          Origin of the room. It indicate whether the room was created by a user
-          within the company by another company.  If not specified, it will
-          include both Internal and External origin
+          Origin of the room. It indicates whether the room was created by a user within the company by another company.
+          Valid values are INTERNAL or EXTERNAL.
+          If not specified, it will include both Internal and External origin
         type: string
-        enum:
-          - INTERNAL
-          - EXTERNAL
       status:
-        description: Status of the room. If not specified, it will include both Active and Inactive status
+        description: |
+          Status of the room.
+          Valid values are ACTIVE or INACTIVE.
+          If not specified, it will include both Active and Inactive status
         type: string
-        enum:
-          - ACTIVE
-          - INACTIVE
       privacy:
-        description: Privacy setting of the stream.  If not specified, it will include both public and private stream
+        description: |
+          Privacy setting of the stream.
+          Valid values are PUBLIC or PRIVATE.
+          If not specified, it will include both public and private streams
         type: string
-        enum:
-          - PUBLIC
-          - PRIVATE
       startDate:
         description: Start date in unix timestamp in millseconds
         type: integer
@@ -6012,15 +5996,6 @@ definitions:
         description: End date in unix timestamp in millseconds.  If not specified, it assume to be current time.
         type: integer
         format: int64
-  AdminStreamTypeEnum:
-    type: object
-    properties:
-      type:
-        type: string
-        enum:
-          - IM
-          - MIM
-          - ROOM
   AdminJustifiedUserAction:
     type: object
     properties:
@@ -6193,7 +6168,7 @@ definitions:
         description: maximum number of streams return
       filter:
         # filter criteria used in the request
-        $ref: '#/definitions/AdminStreamFilter'
+        $ref: '#/definitions/V2AdminStreamFilter'
       streams:
         # list of streams
         $ref: '#/definitions/V2AdminStreamInfoList'
@@ -6228,9 +6203,6 @@ definitions:
       origin:
         type: string
         description: INTERNAL if the creator of this stream belongs to the pod, EXTERNAL otherwise
-        enum:
-         - INTERNAL
-         - EXTERNAL
       attributes:
         # additional optional properties of the stream
         $ref: '#/definitions/V2AdminStreamAttributes'
@@ -6537,3 +6509,56 @@ definitions:
         type: array
         items:
           type: string
+  AdminStreamFilter:
+    description: stream filter criteria
+    type: object
+    properties:
+      streamTypes:
+        description: type of streams to search for
+        type: array
+        items:
+          $ref: '#/definitions/AdminStreamTypeEnum'
+      scope:
+        description: scope of the room.  If not specified, it will include both Internal and External scope
+        type: string
+        enum:
+          - INTERNAL
+          - EXTERNAL
+      origin:
+        description: |
+          Origin of the room.
+          It indicate whether the room was created by a user within the company by another company.
+          If not specified, it will include both Internal and External origin.
+        type: string
+        enum:
+          - INTERNAL
+          - EXTERNAL
+      status:
+        description: Status of the room. If not specified, it will include both Active and Inactive status
+        type: string
+        enum:
+          - ACTIVE
+          - INACTIVE
+      privacy:
+        description: Privacy setting of the stream.  If not specified, it will include both public and private stream
+        type: string
+        enum:
+          - PUBLIC
+          - PRIVATE
+      startDate:
+        description: Start date in unix timestamp in millseconds
+        type: integer
+        format: int64
+      endDate:
+        description: End date in unix timestamp in millseconds.  If not specified, it assume to be current time.
+        type: integer
+        format: int64
+  AdminStreamTypeEnum:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - IM
+          - MIM
+          - ROOM

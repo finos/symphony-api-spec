@@ -1127,7 +1127,7 @@ paths:
           schema:
             type: array
             items:
-              type: number
+              type: integer
               format: int64
       tags:
         - Signals
@@ -1182,7 +1182,7 @@ paths:
           schema:
             type: array
             items:
-              type: number
+              type: integer
               format: int64
       tags:
         - Signals
@@ -1234,13 +1234,13 @@ paths:
           description: No. of results to skip.
           in: query
           required: false
-          type: number
+          type: integer
           default: 0
         - name: limit
           description: Max No. of subscribers to return. If no value is provided, 100 is the default.
           in: query
           required: false
-          type: number
+          type: integer
           default: 100
       tags:
         - Signals
