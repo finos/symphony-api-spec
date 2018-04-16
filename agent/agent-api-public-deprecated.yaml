@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.49.0'
+  version: '1.50.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -54,23 +54,23 @@ paths:
         '400':
           description: 'Client error.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '503':
           description: 'Max number of data feeds reached.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v4/datafeed/{id}/read':
     get:
       summary: Read a given datafeed.
@@ -120,19 +120,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/create':
     post:
       summary: Create a new real time stream for all events in a pod.
@@ -143,7 +143,7 @@ paths:
           Note that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations
           for which it will receive messages.
 
-          A firehose can be created and accessed by a user with canUseFirehose entitlement.
+          A firehose can be created and accessed by a user with a "canUseFirehose" entitlement.
 
           A firehose can be deleted by using the delete firehose endpoint.
       parameters:
@@ -171,19 +171,19 @@ paths:
         '400':
           description: 'Client error.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/{id}/read':
     post:
       summary: Read a given firehose.
@@ -228,23 +228,23 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '404':
           description: 'Not Found: Firehose Id cannot be found.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v5/firehose/{id}/delete':
     delete:
       summary: Delete a firehose
@@ -274,19 +274,23 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
+        '404':
+          description: 'Not Found: Firehose Id cannot be found.'
+          schema:
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v2/HealthCheck':
      get:
        summary: Checks the health of the Agent.
@@ -357,19 +361,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/message/search':
     get:
       summary: Search messages
@@ -429,19 +433,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
     post:
       summary: Search messages
       description: |
@@ -495,19 +499,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v1/stream/{sid}/attachment':
     get:
       summary: Download an attachment.
@@ -634,19 +638,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v4/stream/{sid}/message/create':
     post:
       summary: Post a message to one existing stream.
@@ -671,6 +675,7 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
+        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
@@ -726,19 +731,19 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
   '/v3/stream/{sid}/share':
     post:
       summary: PROVISIONAL -  Share a piece of content into Symphony
@@ -859,7 +864,7 @@ paths:
         - name: keyManagerToken
           description: Key Manager authentication token.
           in: header
-          required: true
+          required: false
           type: string
         - name: skip
           description: |
@@ -882,20 +887,384 @@ paths:
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/V2Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/definitions/Error'
-
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/get':
+    get:
+      summary: Get details of the requested signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: |
+            The ID of the signal to display.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: List of signals for the requesting user.
+          schema:
+            $ref: '#/definitions/Signal'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/create':
+    post:
+      summary: Create a signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: signal
+          description: Signal definition.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseSignal'
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal created.
+          schema:
+            $ref: '#/definitions/Signal'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/update':
+    post:
+      summary: Update a signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: The id of the signal.
+          in: path
+          required: true
+          type: string
+        - name: signal
+          description: Signal definition.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseSignal'
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal updated.
+          schema:
+            $ref: '#/definitions/Signal'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/delete':
+    post:
+      summary: Delete a signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: The id of the signal.
+          in: path
+          required: true
+          type: string
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal deleted.
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/subscribe':
+    post:
+      summary: Subscribe to a Signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: The id of the signal.
+          in: path
+          required: true
+          type: string
+        - name: pushed
+          description: Prevent the user to unsubscribe (only for bulk subscription)
+          in: query
+          required: false
+          type: boolean
+        - name: users
+          description: UserIds to subscribe (only for bulk subscription)
+          in: body
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+              format: int64
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal subscribed.
+          schema:
+            $ref: '#/definitions/ChannelSubscriptionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/unsubscribe':
+    post:
+      summary: Unsubscribe to a Signal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: The id of the signal.
+          in: path
+          required: true
+          type: string
+        - name: users
+          description: UserIds to unsubscribe (only for bulk unsubscription)
+          in: body
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+              format: int64
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal unsubscribed.
+          schema:
+            $ref: '#/definitions/ChannelSubscriptionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/signals/{id}/subscribers':
+    get:
+      summary: Get the subscribers of a signal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+        - name: id
+          description: The id of the signal.
+          in: path
+          required: true
+          type: string
+        - name: skip
+          description: No. of results to skip.
+          in: query
+          required: false
+          type: number
+          default: 0
+        - name: limit
+          description: Max No. of subscribers to return. If no value is provided, 100 is the default.
+          in: query
+          required: false
+          type: number
+          default: 100
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Signal Subscribers.
+          schema:
+            $ref: '#/definitions/ChannelSubscriberResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
 
 #
 # Deprecated paths
@@ -1872,6 +2241,19 @@ definitions:
         format: int32
       message:
         type: string
+  V2Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: object
+    required:
+    - code
+    - message
   SuccessResponse:
     type: object
     properties:
@@ -2204,6 +2586,18 @@ definitions:
        agentVersion:
          type: string
          description: The version number of the Agent server
+       agentServiceUser:
+         type: boolean
+         description: Indicates whether agent service user is setup correctly.
+       agentServiceUserError:
+         type: string
+         description: Error details in case agent service user is setup incorrectly.
+       ceServiceUser:
+         type: boolean
+         description: Indicates whether CEService user is setup correctly.
+       ceServiceUserError:
+         type: string
+         description: Error details in case CEService user is setup incorrectly.
   MessageSearchQuery:
     type: object
     properties:
@@ -2381,10 +2775,8 @@ definitions:
           $ref: '#/definitions/V4AttachmentInfo'
       user:
         $ref: '#/definitions/V4User'
-        description: Message author
       stream:
         $ref: '#/definitions/V4Stream'
-        description: Message destination
       externalRecipients:
         description: Indicates if the message have external recipients. Only present on real time messaging.
         type: boolean
@@ -2439,6 +2831,8 @@ definitions:
           $ref: '#/definitions/V4User'
       external:
         type: boolean
+      crossPod:
+        type: boolean
   V4RoomProperties:
     type: object
     properties:
@@ -2454,6 +2848,8 @@ definitions:
         description: Timestamp
       external:
         type: boolean
+      crossPod:
+        type: boolean
       public:
         type: boolean
       copyProtected:
@@ -2468,6 +2864,8 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/V4KeyValuePair'
+      canViewHistory:
+        type: boolean
   V4KeyValuePair:
     type: object
     properties:
@@ -2527,7 +2925,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. added to the room)
+        # User who was affected by the action (i.e. added to the room)
         $ref: '#/definitions/V4User'
   V4UserLeftRoom:
     type: object
@@ -2535,7 +2933,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. left the room)
+        # User who was affected by the action (i.e. left the room)
         $ref: '#/definitions/V4User'
   V4RoomMemberPromotedToOwner:
     type: object
@@ -2543,7 +2941,7 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. promoted to owner)
+        # User who was affected by the action (i.e. promoted to owner)
         $ref: '#/definitions/V4User'
   V4RoomMemberDemotedFromOwner:
     type: object
@@ -2551,19 +2949,19 @@ definitions:
       stream:
         $ref: '#/definitions/V4Stream'
       affectedUser:
-        description: User who was affected by the action (i.e. demoted from owner)
+        # User who was affected by the action (i.e. demoted from owner)
         $ref: '#/definitions/V4User'
   V4ConnectionRequested:
     type: object
     properties:
       toUser:
-        description: User who received the connection request
+        # User who received the connection request
         $ref: '#/definitions/V4User'
   V4ConnectionAccepted:
     type: object
     properties:
       fromUser:
-        description: User who sent the connection request
+        # User who sent the connection request
         $ref: '#/definitions/V4User'
   V4MessageSuppressed:
     type: object
@@ -2571,7 +2969,7 @@ definitions:
       messageId:
         type: string
       stream:
-        description: the stream holding the suppressed message
+        # the stream holding the suppressed message
         $ref: '#/definitions/V4Stream'
   V4Payload:
     type: object
@@ -2638,10 +3036,10 @@ definitions:
           Details if event failed to parse for any reason.  The contents of this field may not be useful,
           depending on the nature of the error. Only present when error occurs.
       initiator:
-        description: Actor who initiated the event
+        # Actor who initiated the event
         $ref: '#/definitions/V4Initiator'
       payload:
-        description: Holds payload for all event types
+        # Holds payload for all event types
         $ref: '#/definitions/V4Payload'
   V4EventList:
     type: array
@@ -2710,6 +3108,79 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Signal'
+  ChannelSubscriptionResponse:
+    type: object
+    properties:
+      requestedSubscription:
+        type: integer
+        format: int64
+        description: The number of requested userIds to subscribe
+      successfulSubscription:
+        type: integer
+        format: int64
+        description: The number of successful subscriptions done
+      failedSubscription:
+        type: integer
+        format: int64
+        description: The number of subscription failures
+      subscriptionErrors:
+        type: array
+        items:
+          $ref: '#/definitions/ChannelSubscriptionError'
+  ChannelSubscriptionError:
+    type: object
+    properties:
+      userId:
+        type: integer
+        format: int64
+        description: The userId on which failure happened
+      code:
+        type: string
+        description: subscription failure code
+      message:
+        type: string
+        description: subscription failure message
+  ChannelSubscriberResponse:
+    type: object
+    properties:
+      offset:
+        type: integer
+        format: int64
+        description: The number of subscribers skipped
+      hasMore:
+        type: boolean
+        description: True if there are more subscribers
+      total:
+        type: integer
+        description: The total number of subscribers
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/ChannelSubscriber'
+  ChannelSubscriber:
+    type: object
+    properties:
+      pushed:
+        type: boolean
+        description: True if the subscriber is allowed to unsubscribe
+      owner:
+        type: boolean
+        description: True if the subscriber is the creator
+      subscriberName:
+        type: string
+        description: User display name
+      userId:
+        type: integer
+        format: int64
+        description: The user ID of the subscriber
+      timestamp:
+        type: integer
+        format: int64
+        description: Timestamp when the signal was subscribed, in milliseconds since Jan 1 1970
+
+
+
+
 
 #
 # Deprecated definitions
