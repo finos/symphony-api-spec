@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.51.0'
+  version: '1.52.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -938,7 +938,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/RoomSearchCriteria'
+            $ref: '#/definitions/V2RoomSearchCriteria'
       tags:
         - Streams
       responses:
@@ -2468,26 +2468,37 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/admin/user/list':
+  '/v2/admin/user/list':
     get:
-      summary: Retreive a list of all users in the company (pod)
+      summary: Retrieve a list of all users in the company (pod)
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - name: sessionToken
-          description: Session authentication token.
+          description: Session Authentication token.
           in: header
           required: true
-          type: string
+          type: String
+        - name: skip
+          description: Number of users to skip. Default is 0. Must be a integer equals or bigger than 0.
+          in: query
+          type: integer
+          required: false
+        - name: limit
+          description: Maximum number of users to return. Default is 100. Must be a positive
+            integer and must not exceed 1000.
+          in: query
+          type: integer
+          required: false
       tags:
         - User
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/UserIdList'
+            $ref: '#/definitions/V2UserDetailList'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -3370,6 +3381,134 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v2/admin/system/protocols':
+    get:
+      summary: Get a list of URI protocols supported by the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: skip
+          description: Number of items to skip. Default is 0.
+          in: query
+          type: integer
+          required: false
+        - name: limit
+          description: Maximum number of items to return. Default is 100 and not to exceed 1000.
+          in: query
+          type: integer
+          required: false
+      tags:
+        - System
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/StringList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/system/protocols':
+    post:
+      summary: Add an entry to URI protocols supported by the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: protocol
+          required: true
+          description: the protocol to add
+          in: body
+          schema:
+            $ref: '#/definitions/Protocol'
+      tags:
+        - System
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Protocol'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/system/protocols/{scheme}':
+    delete:
+      summary: Remove an entry from URI protocols supported by the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: scheme
+          required: true
+          description: the scheme to remove from the protocols list
+          in: path
+          schema:
+            type: string
+      tags:
+        - System
+      responses:
+        '204':
+          description: "204 response"
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/system/roles/list':
     get:
       summary: Get a list of all roles available in the company (pod)
@@ -3752,6 +3891,209 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/files/allowedTypes':
+    get:
+      summary: Get supported attachment types for the pod
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Pod
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/StringList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/file_ext/v1/allowed_extensions':
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      summary: Allows iteration of all file extensions supported for upload
+      description: |
+        Provides a RESTful API to iterate all file extensions configured by the tenant admin
+        that are allowed for the upload.  Pagination of this list is managed through a
+        combination of the optional request parameters and service-side managed maximums.
+
+        Pagination of the results is provided through the before or after input paramters
+        and presented through the opaque cursor values provided as output from a previous
+        response.  Only one of before or after or neither may be provided.
+
+        DO NOT store cursors. Cursors can quickly become invalid if items are added or deleted.
+        Use them only during a short-period of time that you are traversing the list.
+      operationId: listAllowedFileExtensions
+      parameters:
+      - name: limit
+        type: integer
+        required: false
+        in: query
+        description: |
+          This is the maximum number of objects that may be returned. A query may return
+          fewer than the value of limit due to filtering or service-side maximums. Do not
+          depend on the number of results being fewer than the limit value to indicate your
+          query reached the end of the list of data, use the absence of next instead as
+          described below. For example, if you set limit to 10 and 9 results are returned,
+          there may be more data available, but one item was removed due to privacy filtering.
+          Some maximums for limit may be enforced for performance reasons. In all cases, the
+          API returns the correct pagination links.
+      - name: before
+        type: string
+        required: false
+        in: query
+        description: |
+          Returns results from an opaque "before" cursor value as presented via a response cursor
+      - name: after
+        type: string
+        required: false
+        in: query
+        description: |
+          Returns results from an opaque "after" cursor value as presented via a response cursor
+      responses:
+        '200':
+          description: |
+            Requested sequence of file extensions object records with the page size
+            limited by the optional limit paramter or the service-specific maximum
+            limit offered.
+          schema:
+            $ref: "#/definitions/FileExtensionsResponse"
+        '400':
+          description: |
+            Invalid arguments were passed by the client
+          schema:
+            $ref: "#/definitions/Error"
+        '401':
+          description: |
+            Authentication was not provided
+          schema:
+            $ref: "#/definitions/Error"
+        '403':
+          description: |
+            Authorization is not provided to this request
+          schema:
+            $ref: "#/definitions/Error"
+        '500':
+          description: |
+            Unexpected service error - a retry may work
+          schema:
+            $ref: "#/definitions/Error"
+        '503':
+          description: |
+            Temporarily unable to handle request - could be due to service overload or maintenance
+        '504':
+          description: |
+            Timeout waiting on response at gateway
+  '/file_ext/v1/allowed_extensions/{extension}':
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      summary: Allows replacement or creation of a specific file extension supported for upload
+      description: |
+        Provides a method to create or replace a specific file extension configured for upload
+        support via an admin. The API treats the file extension in the path case-insensitively
+        by converting it to lowecase.
+      operationId: putAllowedFileExtension
+      parameters:
+      - name: sessionToken
+        description: Session authentication token.
+        in: header
+        required: true
+        type: string
+      - name: extension
+        in: path
+        required: true
+        type: string
+      - in: body
+        name: V3FileExtension
+        required: true
+        schema:
+          $ref: "#/definitions/FileExtension"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/FileExtension"
+        400:
+          description: |
+            Invalid arguments were passed by the client: the file extension object specified
+            the source as 'system' yet the file extension is not known to the system (API cannot
+            create system file extensions, only customer-defined file extensions), the extension
+            in the path doesn't match the extension in the body, the length of the file extension
+            exceeded the maximum length (64 characters)
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: |
+            Authorization is not provided to this request
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: |
+            Unexpected service error - a retry may work
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      summary: Allows deletion of a specific file extension supported for upload
+      description: |
+        Provides a method to delete a specific file extension configured for upload
+        support via an admin. The file extension identifying the resource is treated
+        case-insensitively by the API.
+      operationId: deleteAllowedFileExtension
+      parameters:
+      - name: sessionToken
+        description: Session authentication token.
+        in: header
+        required: true
+        type: string
+      - name: extension
+        in: path
+        required: true
+        type: string
+      responses:
+        204:
+          description: "204 response"
+        400:
+          description: |
+            Invalid arguments were passed by the client
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: |
+            Authorization is not provided to this request
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: |
+            Unexpected service error - a retry may work
+          schema:
+            $ref: "#/definitions/Error"
 #
 # Deprecated paths
 #
@@ -4791,6 +5133,43 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/user/list':
+    get:
+      deprecated: true
+      summary: Retreive a list of all users in the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserIdList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -4974,6 +5353,8 @@ definitions:
       division:
         type: string
         description: 'Note: only available if the application has the extended user or contact permission'
+      roles:
+        $ref: '#/definitions/StringList'
   V2UserList:
     description: List of User record version 2
     type: object
@@ -5101,6 +5482,9 @@ definitions:
       multiLateralRoom:
         type: boolean
         description: If true, this is a multi latetal room where we can find users belonging to more than 2 companies.
+      subType:
+        type: string
+        description: Possible value EMAIL (indicate this room will be used for Email Integration)
 
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
@@ -5138,6 +5522,15 @@ definitions:
           - RELEVANCE
     required:
     - query
+  V2RoomSearchCriteria:
+    description: Room Query Object. Used to specify the parameters for room search.
+    allOf:
+      - $ref: '#/definitions/RoomSearchCriteria'
+      - type: object
+        properties:
+          subType:
+            description: "Restrict the search to the specific room subtype. Valid values are: EMAIL"
+            type: string
   V3RoomSearchResults:
     description: A list of search results and counts per search parameter.
     properties:
@@ -5153,7 +5546,7 @@ definitions:
         type: integer
       query:
         # The search query that produced this result.
-        $ref: '#/definitions/RoomSearchCriteria'
+        $ref: '#/definitions/V2RoomSearchCriteria'
       rooms:
         description: A list of rooms matched by the query.
         type: array
@@ -5269,14 +5662,6 @@ definitions:
   UserFilter:
     type: object
     properties:
-      email:
-        type: string
-      name:
-        type: string
-      department:
-        type: string
-      title:
-        type: string
       role:
         type: string
         format: long
@@ -5287,14 +5672,6 @@ definitions:
         enum:
           - ENABLED
           - DISABLED
-      usertype:
-        type: string
-        enum:
-          - NORMAL
-          - SYSTEM
-          - TW
-      location:
-        type: string
   PasswordReset:
     type: object
     properties:
@@ -5665,6 +6042,10 @@ definitions:
         type: array
         items:
           type: string
+  V2UserDetailList:
+      type: array
+      items:
+        $ref: '#/definitions/V2UserDetail'
   UserSystemInfo:
     description: User Status Information.
     type: object
@@ -6247,6 +6628,88 @@ definitions:
         type: integer
         format: int64
         description: last date a message was sent in this stream
+  FileExtension:
+    type: object
+    required:
+      - extension
+    properties:
+      extension:
+        type: string
+        description: |
+          The file extension that this specific record is for.  This is a unique ID
+          that allows this record to be referenced in the URI.
+        example: ".txt"
+      scope_internal:
+        type: boolean
+        description: |
+          File extension allowed for internal scope
+      scope_external:
+        type: boolean
+        description: |
+          File extension allowed for external scope
+      source:
+        type: string
+        description: |
+          File extension with metadata understood by the system or file extension created by a customer
+        enum:
+          - "SYSTEM"
+          - "CUSTOMER"
+  Pagination:
+    type: object
+    required:
+      - cursors
+    properties:
+      cursors:
+        type: object
+        required:
+          - before
+          - after
+        properties:
+          before:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the start of the page of data
+              that has been returned.
+            example: "MTAxNTExOTQ1MjAwNzI5NDE="
+          after:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the end of the page of data
+              that has been returned.
+            example: "NDMyNzQyODI3OTQw"
+      previous:
+        type: string
+        description: |
+          API endpoint that will return the previous page of data. If not included, this is
+          the first page of data.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&before=MTAxNTExOTQ1MjAwNzI5NDE="
+      next:
+        type: string
+        description: |
+          API endpoint that will return the next page of data. If not included, this is the
+          last page of data. Due to how pagination works with visibility and privacy, it is
+          possible that a page may be empty but contain a 'next' paging link. Stop paging when
+          the 'next' link no longer appears.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&after=NDMyNzQyODI3OTQw"
+  FileExtensionsResponse:
+    type: object
+    required:
+      - data
+      - paging
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/FileExtension"
+  Protocol:
+    type: object
+    required:
+      - scheme
+    properties:
+      scheme:
+        type: string
+        description: "URI protocol scheme (example: http, https, ftp)"
+
 
   SessionInfo:
     description: Information about the current user's session
