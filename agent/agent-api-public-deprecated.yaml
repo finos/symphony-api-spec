@@ -18,7 +18,7 @@ info:
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
     - MessageML is a markup language for messages. See reference here:
-    https://developers.symphony.com/documentation/message_format_reference
+    https://rest-api.symphony.com/docs/messagemlv2
 
 paths:
   '/v4/datafeed/create':
@@ -3399,6 +3399,7 @@ definitions:
     - timestamp
     - streamId
   V1HealthCheckResponse:
+    deprecated: true
     type: object
     properties:
       podConnectivity:
