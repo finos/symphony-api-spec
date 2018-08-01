@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.50.0'
+  version: '1.51.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -1127,7 +1127,7 @@ paths:
           schema:
             type: array
             items:
-              type: number
+              type: integer
               format: int64
       tags:
         - Signals
@@ -1182,7 +1182,7 @@ paths:
           schema:
             type: array
             items:
-              type: number
+              type: integer
               format: int64
       tags:
         - Signals
@@ -1234,13 +1234,13 @@ paths:
           description: No. of results to skip.
           in: query
           required: false
-          type: number
+          type: integer
           default: 0
         - name: limit
           description: Max No. of subscribers to return. If no value is provided, 100 is the default.
           in: query
           required: false
-          type: number
+          type: integer
           default: 100
       tags:
         - Signals
@@ -2785,6 +2785,17 @@ definitions:
         description: |
           Details if event failed to parse for any reason.  The contents of this field may not be useful,
           depending on the nature of the error. Only present when error occurs.
+      userAgent:
+        type: string
+        description: |
+          User agent string for client that sent the message.  Allows callers to identify which client sent the
+          origin message (e.g. API Agent, SFE Client, mobile, etc)
+      originalFormat:
+        type: string
+        description: |
+          Indicates the format in which the message was originally sent.  This could have been either:
+          - com.symphony.markdown - Markdown OR Message ML V1
+          - com.symphony.messageml.v2 - Message ML V2
   V4User:
     type: object
     properties:
@@ -3008,6 +3019,9 @@ definitions:
       id:
         type: string
         description: Event ID
+      messageId:
+        type: string
+        description: Message ID
       timestamp:
         type: integer
         format: int64
