@@ -2480,7 +2480,7 @@ paths:
           description: Session Authentication token.
           in: header
           required: true
-          type: String
+          type: string
         - name: skip
           description: Number of users to skip. Default is 0. Must be a integer equals or bigger than 0.
           in: query
@@ -3381,7 +3381,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/admin/system/protocols':
+  '/v2/system/protocols':
     get:
       summary: Get a list of URI protocols supported by the company (pod)
       consumes:
@@ -3486,8 +3486,7 @@ paths:
           required: true
           description: the scheme to remove from the protocols list
           in: path
-          schema:
-            type: string
+          type: string
       tags:
         - System
       responses:
@@ -6076,6 +6075,71 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/UserDetail'
+  UserDetail:
+    description: Detailed User record.
+    type: object
+    properties:
+      userAttributes:
+        $ref: '#/definitions/UserAttributes'
+      userSystemInfo:
+        $ref: '#/definitions/UserSystemInfo'
+      features:
+        $ref: '#/definitions/IntegerList'
+      apps:
+        $ref: '#/definitions/IntegerList'
+      groups:
+        $ref: '#/definitions/IntegerList'
+      roles:
+        $ref: '#/definitions/StringList'
+      disclaimers:
+        $ref: '#/definitions/IntegerList'
+      avatar:
+        $ref: '#/definitions/Avatar'
+  UserAttributes:
+    description: User record.
+    type: object
+    properties:
+      emailAddress:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      userName:
+        type: string
+      displayName:
+        type: string
+      companyName:
+        type: string
+      department:
+        type: string
+      division:
+        type: string
+      title:
+        type: string
+      workPhoneNumber:
+        type: string
+      mobilePhoneNumber:
+        type: string
+      smsNumber:
+        type: string
+      accountType:
+        type: string
+        enum:
+          - NORMAL
+          - SYSTEM
+      location:
+        type: string
+      jobFunction:
+        type: string
+      assetClasses:
+        type: array
+        items:
+          type: string
+      industries:
+        type: array
+        items:
+          type: string
   Password:
     description: Password. Stored as derived password in both the Pod and the Key Manager using PBKDF2 function. Number of iterations should be 10000 and desired length 256 bits.
     type: object
@@ -6567,7 +6631,6 @@ definitions:
         description: stream id
       isExternal:
         type: boolean
-        deprecated: true
         description: true indicate this stream has the scope of external and false indictate this stream has the scope of internal. Deprecated, use origin
       isActive:
         type: boolean
@@ -6904,71 +6967,6 @@ definitions:
       password:
         $ref: '#/definitions/Password'
       roles:
-        type: array
-        items:
-          type: string
-  UserDetail:
-    description: Detailed User record.
-    type: object
-    properties:
-      userAttributes:
-        $ref: '#/definitions/UserAttributes'
-      userSystemInfo:
-        $ref: '#/definitions/UserSystemInfo'
-      features:
-        $ref: '#/definitions/IntegerList'
-      apps:
-        $ref: '#/definitions/IntegerList'
-      groups:
-        $ref: '#/definitions/IntegerList'
-      roles:
-        $ref: '#/definitions/StringList'
-      disclaimers:
-        $ref: '#/definitions/IntegerList'
-      avatar:
-        $ref: '#/definitions/Avatar'
-  UserAttributes:
-    description: User record.
-    type: object
-    properties:
-      emailAddress:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      userName:
-        type: string
-      displayName:
-        type: string
-      companyName:
-        type: string
-      department:
-        type: string
-      division:
-        type: string
-      title:
-        type: string
-      workPhoneNumber:
-        type: string
-      mobilePhoneNumber:
-        type: string
-      smsNumber:
-        type: string
-      accountType:
-        type: string
-        enum:
-          - NORMAL
-          - SYSTEM
-      location:
-        type: string
-      jobFunction:
-        type: string
-      assetClasses:
-        type: array
-        items:
-          type: string
-      industries:
         type: array
         items:
           type: string
