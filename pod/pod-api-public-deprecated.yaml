@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.0'
+  version: '1.52.1'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -6380,14 +6380,19 @@ definitions:
         format: int64
         description: unix timestamp of the last message sent in the stream
       streamType:
-        type: string
         description: The type of the stream (IM = IM, multi-IM = MIM, chat room = ROOM, user wall = POST).
+        $ref: '#/definitions/V2StreamType'
       streamAttributes:
         # Additional stream details applicable to IMs, MIMs and user walls.
         $ref: '#/definitions/V2ConversationSpecificStreamAttributes'
       roomAttributes:
         # Additional stream details applicable to chatrooms.
         $ref: '#/definitions/V2RoomSpecificStreamAttributes'
+  V2StreamType:
+    type: object
+    properties:
+      type:
+        type: string
   V2ConversationSpecificStreamAttributes:
     type: object
     properties:
@@ -6408,8 +6413,8 @@ definitions:
         description: type of streams to search for
         type: array
         items:
-          type: string
           description: Valid values are IM, MIM or ROOM
+          $ref: '#/definitions/V2AdminStreamType'
       scope:
         description: |
           Scope of the room. Valid values are INTERNAL or EXTERNAL.
@@ -6441,6 +6446,11 @@ definitions:
         description: End date in unix timestamp in millseconds.  If not specified, it assume to be current time.
         type: integer
         format: int64
+  V2AdminStreamType:
+    type: object
+    properties:
+      type:
+        type: string
   AdminJustifiedUserAction:
     type: object
     properties:
