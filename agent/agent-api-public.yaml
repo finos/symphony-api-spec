@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.51.0'
+  version: '1.52.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -18,7 +18,7 @@ info:
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
     - MessageML is a markup language for messages. See reference here:
-    https://developers.symphony.com/documentation/message_format_reference
+    https://rest-api.symphony.com/docs/messagemlv2
 
 paths:
   '/v4/datafeed/create':
@@ -411,6 +411,12 @@ paths:
             It can exclusively apply to Symphony content or to one Connector.
           in: query
           type: string
+        - name: sortDir
+          description: |
+            Messages sort direction : ASC or DESC (default to DESC)
+          in: query
+          type: string
+          required: false
         - name: sessionToken
           description: Session authentication token.
           in: header
@@ -477,6 +483,12 @@ paths:
             It can exclusively apply to Symphony content or to one Connector.
           in: query
           type: string
+        - name: sortDir
+          description: |
+            Messages sort direction : ASC or DESC (default to DESC)
+          in: query
+          type: string
+          required: false
         - name: sessionToken
           description: Session authentication token.
           in: header
