@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.1'
+  version: '1.53.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -904,6 +904,10 @@ paths:
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
             $ref: '#/definitions/Error'
+        '451':
+          description: 'Unavailable for Legal Reasons: Compliance Issues found in room creation request.'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
@@ -1430,6 +1434,11 @@ paths:
           in: query
           required: false
           type: string
+        - name: username
+          description: List of username separated by comma
+          in: query
+          required: false
+          type: string
         - name: local
           description: |
             If true then a local DB search will be performed and only local pod users will be
@@ -1777,6 +1786,73 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/V2StreamAttributes'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/streams/{sid}/attachments':
+    get:
+      summary: Get attachments in a particular stream.
+      produces:
+        - application/json
+      parameters:
+        - name: sid
+          description: Stream Id
+          in: path
+          required: true
+          type: string
+        - name: since
+          description: |
+            Timestamp of first required attachment.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: to
+          description: |
+            Timestamp of last required attachment.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: limit
+          description: Maximum number of attachments to return. Default is 50. Must be a positive
+            integer and must not exceed 100.
+          in: query
+          type: integer
+          required: false
+        - name: sortDir
+          description: |
+            Attachment date sort direction : ASC or DESC (default to ASC)
+          in: query
+          type: string
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StreamAttachmentResponse'
         '400':
           description: 'Client error.'
           schema:
@@ -4093,6 +4169,556 @@ paths:
             Unexpected service error - a retry may work
           schema:
             $ref: "#/definitions/Error"
+  '/v2/admin/usergroup/{type}':
+    get:
+      summary: Get all groups of group type.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: name
+          in: query
+          type: string
+        - name: active
+          in: query
+          type: boolean
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: sort
+          in: query
+          type: string
+        - name: limit
+          description: Max number of records to return.
+          in: query
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupResponseList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroup/{type}/create':
+    post:
+      summary: Create a user group.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserGroupCreate"
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroup/{type}/{id}':
+    get:
+      summary: Get user group information
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroups/{groupId}':
+    put:
+      summary: Update user group informations
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserGroupUpdate"
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not found. See response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroup/{type}/{id}/membership':
+    get:
+      summary: Get the list of users in this Group Type
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          description: URL-Safe encoded Group Type
+          in: path
+          required: true
+          type: string
+          enum:
+            - "INFO_BARRIER"
+            - "ROLE_SCOPE"
+        - name: id
+          description: URL-Safe encoded Group ID
+          in: path
+          required: true
+          type: string
+        - name: userId
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: current
+          in: query
+          required: false
+          type: boolean
+        - name: after
+          in: query
+          required: false
+          type: string
+        - name: before
+          in: query
+          required: false
+          type: string
+        - name: sort
+          in: query
+          required: false
+          type: string
+        - name: limit
+          in: query
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupMembershipResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroups/{groupId}/memberships/{userId}':
+    put:
+      summary: Add member to a Group if it does not exist, otherwise update it.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: groupId
+          description: URL-Safe encoded Group ID
+          in: path
+          required: true
+          type: string
+        - name: userId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserGroupMembershipRequest'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupMembershipData'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not found. See response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroup/{type}/{id}/membership/import':
+    post:
+      summary: Add multiple members to a group.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          description: URL-Safe encoded Group Type
+          in: path
+          required: true
+          type: string
+          enum:
+            - "INFO_BARRIER"
+            - "ROLE_SCOPE"
+        - name: id
+          description: URL-Safe encoded Group ID
+          in: path
+          required: true
+          type: string
+        - name: usernames
+          description: List of User name of participants
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/StringList'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not found. See response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v2/admin/usergroup/{type}/{id}/assignees':
+    post:
+      summary: Assign a group to the user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserId"
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupAssignee'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: List group assignees
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: query
+          type: integer
+          format: int64
+        - name: current
+          in: query
+          type: boolean
+        - name: role
+          in: query
+          type: string
+        - name: after
+          in: query
+          type: string
+        - name: before
+          in: query
+          type: string
+        - name: sort
+          in: query
+          type: string
+        - name: limit
+          description: Max number of records to return.
+          in: query
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserGroupAssigneeResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/usergroup/{type}/{id}/assignees/{userId}/update':
+    post:
+      summary: Update usergroup assignee
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: type
+          in: path
+          type: string
+          enum:
+            - "IB_GROUP"
+            - "ROLE_SCOPE"
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserGroupAssigneeUpdate"
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
 #
 # Deprecated paths
 #
@@ -5937,6 +6563,51 @@ definitions:
         $ref: '#/definitions/UserAttributes'
       userSystemInfo:
         $ref: '#/definitions/UserSystemInfo'
+  UserAttributes:
+    description: User record.
+    type: object
+    properties:
+      emailAddress:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      userName:
+        type: string
+      displayName:
+        type: string
+      companyName:
+        type: string
+      department:
+        type: string
+      division:
+        type: string
+      title:
+        type: string
+      workPhoneNumber:
+        type: string
+      mobilePhoneNumber:
+        type: string
+      smsNumber:
+        type: string
+      accountType:
+        type: string
+        enum:
+          - NORMAL
+          - SYSTEM
+      location:
+        type: string
+      jobFunction:
+        type: string
+      assetClasses:
+        type: array
+        items:
+          type: string
+      industries:
+        type: array
+        items:
+          type: string
   V2UserDetail:
     description: V2 Detailed User record.
     type: object
@@ -5982,6 +6653,8 @@ definitions:
       workPhoneNumber:
         type: string
       mobilePhoneNumber:
+        type: string
+      twoFactorAuthPhone:
         type: string
       smsNumber:
         type: string
@@ -6095,51 +6768,6 @@ definitions:
         $ref: '#/definitions/IntegerList'
       avatar:
         $ref: '#/definitions/Avatar'
-  UserAttributes:
-    description: User record.
-    type: object
-    properties:
-      emailAddress:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      userName:
-        type: string
-      displayName:
-        type: string
-      companyName:
-        type: string
-      department:
-        type: string
-      division:
-        type: string
-      title:
-        type: string
-      workPhoneNumber:
-        type: string
-      mobilePhoneNumber:
-        type: string
-      smsNumber:
-        type: string
-      accountType:
-        type: string
-        enum:
-          - NORMAL
-          - SYSTEM
-      location:
-        type: string
-      jobFunction:
-        type: string
-      assetClasses:
-        type: array
-        items:
-          type: string
-      industries:
-        type: array
-        items:
-          type: string
   Password:
     description: Password. Stored as derived password in both the Pod and the Key Manager using PBKDF2 function. Number of iterations should be 10000 and desired length 256 bits.
     type: object
@@ -6489,6 +7117,10 @@ definitions:
       Holds the status of a particular message, indicating which user the message has been sent, delivered or read.
     type: object
     properties:
+      author:
+        description: User who has sent the message.
+        type: object
+        $ref: '#/definitions/MessageStatusUser'
       read:
         description: All users who have read that message, in any Symphony client.
         type: array
@@ -6565,6 +7197,8 @@ definitions:
       cert:
         description: The app public certificate in pem format.
         type: string
+      authenticationKeys:
+        $ref: '#/definitions/AppAuthenticationKeys'
   V2PresenceList:
     type: array
     items:
@@ -6782,7 +7416,301 @@ definitions:
       scheme:
         type: string
         description: "URI protocol scheme (example: http, https, ftp)"
-
+  AppAuthenticationKeys:
+    description: App RSA keys information.
+    type: object
+    properties:
+      current:
+        $ref: "#/definitions/AppAuthenticationKey"
+      previous:
+        $ref: "#/definitions/AppAuthenticationKey"
+  AppAuthenticationKey:
+    description: App RSA key information.
+    type: object
+    properties:
+      key:
+        description: Application RSA public key.
+        type: string
+      expirationDate:
+        description: RSA key expiration date. This value is set just for rotated keys.
+        type: integer
+        format: int64
+      action:
+        description: |
+          Action to be performed on the RSA key.
+          The following actions can be performed onto the app's active RSA key:
+            - SAVE
+            - REVOKE
+          The following actions can be performed onto the app's rotated RSA key:
+            - REVOKE
+            - EXTEND
+        type: string
+  StreamAttachmentResponse:
+    type: array
+    items:
+      $ref: "#/definitions/StreamAttachmentItem"
+  StreamAttachmentItem:
+    description: File attachments for a message in a stream
+    type: object
+    properties:
+      messageId:
+        type: string
+      ingestionDate:
+        type: integer
+        format: int64
+      userId:
+        type: integer
+        format: int64
+      fileId:
+        type: string
+        description: The attachment File ID.
+      name:
+        type: string
+        description: The file name.
+      size:
+        type: integer
+        format: int64
+        description: Size in bytes.
+      content-type:
+        type: string
+      previews:
+        type: array
+        items:
+          $ref: "#/definitions/AttachmentPreview"
+  AttachmentPreview:
+    description: Preview file for image attachments
+    type: object
+    properties:
+      fileId:
+        type: string
+        description: The preview file ID
+      width:
+        type: integer
+        description: The preview image width
+  UserGroupCreate:
+    description: Body for group creation
+    type: object
+    properties:
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+    required:
+      - name
+  UserGroupResponse:
+    description: Group object response
+    type: object
+    properties:
+      id:
+        description: Group ID
+        type: string
+      name:
+        description: Group name
+        type: string
+      area:
+        description: An optional string attribute used for categorizing groups
+        type: string
+      type:
+        description: Group type
+        type: string
+      active:
+        description: Group status
+        type: boolean
+      createdDate:
+        description: Date of group creation
+        type: integer
+        format: int64
+      modifiedDate:
+        description: Date of group last update
+        type: integer
+        format: int64
+      memberCount:
+        description: Number of group members
+        type: integer
+        format: int64
+      assigneeCount:
+        description: Number of group assignees
+        type: integer
+        format: int64
+  UserGroupResponseList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupResponse'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
+  UserGroupUpdate:
+    description: Body for group update
+    type: object
+    properties:
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+      active:
+        description: Group status
+        type: boolean
+  UserGroupMembershipResponseData:
+    description: User object response
+    type: object
+    properties:
+      userId:
+        type: integer
+        format: int64
+      userName:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      current:
+        type: boolean
+      lastAdded:
+        type: integer
+        format: int64
+      lastRemoved:
+        type: integer
+        format: int64
+  UserGroupMembershipRequest:
+    description: Body for user group membership creation
+    type: object
+    properties:
+      active:
+        type: boolean
+  UserGroupMembershipData:
+    description: Body for user group membership response
+    type: object
+    properties:
+      id:
+        type: string
+      groupId:
+        type: string
+      userId:
+        type: integer
+        format: int64
+      group:
+        type: object
+        $ref: "#/definitions/UserGroupData"
+      user:
+        type: object
+        $ref: "#/definitions/MembershipData"
+      active:
+        type: boolean
+      lastAddedDate:
+        type: integer
+        format: int64
+      lastRemovedDate:
+        type: integer
+        format: int64
+  MembershipData:
+    description: User object response
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userName:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      emailAddress:
+        type: string
+  UserGroupData:
+    description: Group object response
+    type: object
+    properties:
+      id:
+        description: Group Id
+        type: string
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+      active:
+        description: Group Status
+        type: boolean
+      type:
+        description: Group type
+        type: string
+  UserGroupMembershipResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupMembershipResponseData'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
+  UserGroupAssignee:
+    description: User group assignee object
+    type: object
+    properties:
+      assigneeId:
+        description: Assignee id
+        type: integer
+        format: int64
+      groupId:
+        type: string
+      username:
+        description: User name
+        type: string
+      firstName:
+        description: User first name
+        type: string
+      lastName:
+        description: User last name
+        type: string
+      email:
+        description: User email
+        type: string
+      current:
+        type: boolean
+      roles:
+        description: List of user roles
+        type: object
+        $ref: '#/definitions/RoleList'
+      lastAdded:
+        description: Last added
+        type: integer
+        format: int64
+      lastRemoved:
+        description: Last removed
+        type: integer
+        format: int64
+  UserGroupAssigneeResponse:
+    description: response
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupAssignee'
+      pagination:
+        type: object
+        $ref: '#/definitions/Pagination'
+  UserGroupAssigneeUpdate:
+    description: Body for user group assignee update
+    type: object
+    properties:
+      current:
+        description: Assignee status
+        type: boolean
+    required:
+      - current
 
   SessionInfo:
     description: Information about the current user's session

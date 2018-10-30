@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.0'
+  version: '1.53.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -168,6 +168,53 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/V5Firehose'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v5/firehose/list':
+    get:
+      summary: Lists all active firehoses for the calling user.
+      description: |
+          Lists all active firehoses for the calling user.
+
+          If there are no active firehoses for the calling user, this endpoint returns a No Content response.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Firehose
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V5FirehoseList'
+        '204':
+          description: No Firehoses to list.
         '400':
           description: 'Client error.'
           schema:
@@ -358,6 +405,52 @@ paths:
           description: Message sent.
           schema:
             $ref: '#/definitions/V4ImportResponseList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/message/{id}':
+    get:
+      summary: Get a message by ID
+      produces:
+        - application/json
+      parameters:
+          - name: sessionToken
+            description: Session authentication token.
+            in: header
+            required: true
+            type: string
+          - name: keyManagerToken
+            description: Key Manager authentication token.
+            in: header
+            required: false
+            type: string
+          - name: id
+            description: Message ID as a URL-safe string
+            in: path
+            required: true
+            type: string
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V4Message'
+        '204':
+          description: No Messages.
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -687,7 +780,6 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
-        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
@@ -750,6 +842,10 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in message or file'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -1000,6 +1096,10 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in signal'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -1277,7 +1377,36 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/V2Error'
-
+  '/v1/info':
+    get:
+      summary: Get information about the Agent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Agent info.
+          schema:
+            $ref: '#/definitions/AgentInfo'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
 definitions:
   Error:
     type: object
@@ -1842,6 +1971,11 @@ definitions:
           Indicates the format in which the message was originally sent.  This could have been either:
           - com.symphony.markdown - Markdown OR Message ML V1
           - com.symphony.messageml.v2 - Message ML V2
+      disclaimer:
+        type: string
+        description: |
+          Message that may be sent along with a regular message if configured for the POD,
+          usually the first message sent in a room that day.
   V4User:
     type: object
     properties:
@@ -2134,6 +2268,19 @@ definitions:
       ackId:
         type: string
         description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
+  V5FirehoseRecord:
+    type: object
+    properties:
+      firehoseId:
+        type: string
+      creationDate:
+        type: integer
+        format: int64
+        description: the date, in miliseconds, the firehose was created.
+  V5FirehoseList:
+    type: array
+    items:
+      $ref: '#/definitions/V5FirehoseRecord'
   BaseSignal:
     type: object
     properties:
@@ -2237,7 +2384,30 @@ definitions:
         type: integer
         format: int64
         description: Timestamp when the signal was subscribed, in milliseconds since Jan 1 1970
-
+  AgentInfo:
+    type: object
+    properties:
+      ipAddress:
+        type: string
+        description: The IP address of the Agent server.
+      hostname:
+        type: string
+        description: The hostname of the Agent server.
+      serverFqdn:
+        type: string
+        description: The fully-qualified domain name of the Agent server. Must be set by the user at startup.
+      version:
+        type: string
+        description: The version of the Agent.
+      url:
+        type: string
+        description: The URL under which the Agent is available.
+      onPrem:
+        type: boolean
+        description: Whether this is an on-prem or cloud installation.
+      commitId:
+        type: string
+        description: The Git commit ID of the running revision.
 
 
 
