@@ -205,6 +205,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -263,4 +264,3 @@ definitions:
           type: integer
           format: int64
           description: unix timestamp when the token expired
-

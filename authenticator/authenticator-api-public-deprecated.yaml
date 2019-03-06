@@ -245,9 +245,11 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
 #
 # Deprecated paths
 #
+
 
 definitions:
   Error:
@@ -313,7 +315,7 @@ definitions:
         description: Certificate in PEM format
         type: string
 
+
 #
 # Deprecated definitions
 #
-

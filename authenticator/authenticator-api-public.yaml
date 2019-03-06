@@ -245,6 +245,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -308,4 +309,3 @@ definitions:
       certificate:
         description: Certificate in PEM format
         type: string
-
