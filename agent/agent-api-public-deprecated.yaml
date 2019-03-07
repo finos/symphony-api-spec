@@ -5911,7 +5911,6 @@ definitions:
     - timestamp
     - streamId
   V1HealthCheckResponse:
-    deprecated: true
     type: object
     properties:
       podConnectivity:
