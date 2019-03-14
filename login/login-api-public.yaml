@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.0'
+  version: '1.54.2-SNAPSHOT'
   title: Login API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -20,7 +20,7 @@ paths:
     post:
       summary: Authenticate with public key
       description: |
-        Based on an authentication request token signed by the caller's RSA priate key,
+        Based on an authentication request token signed by the caller's RSA private key,
         authenticate the API caller and return a session token.
 
         A HTTP 401 Unauthorized error is returned on errors during authentication (e.g. invalid user,
@@ -35,6 +35,157 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/AuthenticateRequest'
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden to access this endpoint .'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/pubkey/app/authenticate/extensionApp':
+    post:
+      summary: Authenticate extension app with public key
+      description: |
+        Based on an authentication request token signed by the caller's RSA private key,
+        authenticate the API caller and return a session token.
+
+        A HTTP 401 Unauthorized error is returned on errors during authentication (e.g. invalid user,
+        malformed authentication token, user's public key not imported in the pod, invalid token signature etc.).
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: authenticateRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AuthenticateExtensionAppRequest'
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/ExtensionAppTokens'
+        '400':
+          description: 'Request object is invalid'
+          schema:
+            $ref: '#/definitions/Error'            
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/pubkey/app/authenticate':
+    post:
+      summary: Authenticate an App with public key
+      description: |
+        Based on an authentication request token signed by the application's RSA private key,
+        authenticate the API caller and return a session token.
+
+        A HTTP 401 Unauthorized error is returned on errors during authentication (e.g. invalid app,
+        malformed authentication token, app's public key not imported in the pod, invalid token signature etc.).
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: authenticateRequest
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AuthenticateRequest'
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden to access this endpoint .'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/pubkey/app/username/{username}/authenticate':
+    post:
+      summary: Authenticate an application in a delegated context to act on behalf of a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: App Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: username
+          description: the username
+          in: path
+          required: true
+          type: string
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden to access this endpoint .'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/pubkey/app/user/{userId}/authenticate':
+    post:
+      summary: Authenticate an application in a delegated context to act on behalf of a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: App Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: userId
+          description: the user ID
+          in: path
+          required: true
+          type: integer
+          format: int64
       tags:
         - Authentication
       responses:
@@ -75,7 +226,7 @@ definitions:
         type: string
         description: |
           The token which should be passed. This should be considered opaque data by
-          the client. It is not intended to conatain any data interpretable by the
+          the client. It is not intended to contain any data interpretable by the
           client. The format is secret and subject to change without notice.
   AuthenticateRequest:
       type: object
@@ -83,5 +234,33 @@ definitions:
       properties:
         token:
           type: string
-          description: a JWT containing the caller's username and an expiration date, signed by the caller's private key.
+          description: a JWT containing the caller's username or application appGroupId and an expiration date, signed by the caller's private key.
+  AuthenticateExtensionAppRequest:
+      type: object
+      description: Request body for extension app authentication
+      properties:
+        appToken:
+          type: string
+          description: application generated token
+        authToken:
+          type: string
+          description: a JWT containing the caller's username and an expiration date, signed by the caller's private key.   
+  ExtensionAppTokens:
+      type: object
+      properties:
+        appId:
+          description: Application ID
+          type: string
+        appToken:
+          description: |
+            This token generated by the application when calling authentication endpoint
+          type: string
+        symphonyToken:
+          type: string
+          description: |
+            This token generated by Symphony and should be used by the application to verify that it's talking to Symphony.
+        expireAt:
+          type: integer
+          format: int64
+          description: unix timestamp when the token expired
 

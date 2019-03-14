@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.1'
+  version: '1.54.2-SNAPSHOT'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -584,6 +584,10 @@ paths:
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
             $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Connection cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
@@ -904,6 +908,10 @@ paths:
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
             $ref: '#/definitions/Error'
+        '451':
+          description: 'Unavailable for Legal Reasons: Compliance Issues found in room creation request.'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
@@ -1086,6 +1094,10 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '451':
+          description: 'Unavailable for Legal Reasons: Compliance Issues found in room update request.'
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1430,6 +1442,11 @@ paths:
           in: query
           required: false
           type: string
+        - name: username
+          description: List of username separated by comma
+          in: query
+          required: false
+          type: string
         - name: local
           description: |
             If true then a local DB search will be performed and only local pod users will be
@@ -1639,6 +1656,111 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v2/users/presence':
+    get:
+      summary: Get presence information about all company (pod) users.
+      description: |
+        The returned data is taken from the in-memory cache for performance
+        reasons which means inactive users may be omitted from the response.
+
+        All non-inactive users WILL be returned and some inactive users MAY
+        be included. Any omitted user IS inactive.
+
+        Returned records are sorted by user ID, ascending.
+
+        This method is expensive. It pulls ALL records from the cache, sorts them and then only uses a subset.
+        For large numbers of users, this can be very inefficient both due to sorting
+        and due to the cache being distributed across many nodes.
+
+        Addiionally, there is the potential to miss users if they become active
+        after the page in which their user ID falls has already been read by the client.
+        To avoid this situation, a presence feed should be created (and optionally read from)
+        first to capture presence changes of users who get reactivated during a paged call to this endpoint.
+      produces:
+      - application/json
+      parameters:
+      - name: sessionToken
+        description: Session authentication token.
+        in: header
+        required: true
+        type: string
+      - name: lastUserId
+        description: Last user ID retrieved. Used for paging; if provided, results will skip users with IDs less than this parameter.
+        in: query
+        required: false
+        type: integer
+        format: int64
+      - name: limit
+        description: Max number of records to return. If no value is provided, 1000 is the default. The maximum supported value is 5000.
+        in: query
+        type: integer
+        required: false
+      tags:
+      - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2PresenceList'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/user/presence':
+    post:
+      summary: Set presence information for a particular user.
+      produces:
+      - application/json
+      parameters:
+      - name: sessionToken
+        description: Session authentication token.
+        in: header
+        required: true
+        type: string
+      - name: presence
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/V2UserPresence'
+      tags:
+      - Presence
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2Presence'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: user id cannot be located.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/user/search':
     post:
       summary: Search for users by name or email address
@@ -1777,6 +1899,73 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/V2StreamAttributes'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/streams/{sid}/attachments':
+    get:
+      summary: Get attachments in a particular stream.
+      produces:
+        - application/json
+      parameters:
+        - name: sid
+          description: Stream Id
+          in: path
+          required: true
+          type: string
+        - name: since
+          description: |
+            Timestamp of first required attachment.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: to
+          description: |
+            Timestamp of last required attachment.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: limit
+          description: Maximum number of attachments to return. Default is 50. Must be a positive
+            integer and must not exceed 100.
+          in: query
+          type: integer
+          required: false
+        - name: sortDir
+          description: |
+            Attachment date sort direction : ASC or DESC (default to ASC)
+          in: query
+          type: string
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StreamAttachmentResponse'
         '400':
           description: 'Client error.'
           schema:
@@ -2058,6 +2247,10 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Group cannot be found.'
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -2657,6 +2850,10 @@ paths:
             $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: User cannot be found'
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -3758,6 +3955,50 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  /v1/admin/messages:
+    post:
+      summary: Fetch message details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token
+          in: header
+          required: true
+          type: string
+        - name: messageIds
+          description: the ids of the messages to be fetched
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/MessageIds'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MessageDetails'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not found: Message ID could not be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v2/admin/user/create':
     post:
       summary: Create a new V2 User
@@ -4093,6 +4334,121 @@ paths:
             Unexpected service error - a retry may work
           schema:
             $ref: "#/definitions/Error"
+  '/v1/admin/messages/{messageId}/receipts':
+    get:
+      summary: Fetch receipts details from a specific message.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: messageId
+          description: The message ID
+          in: path
+          required: true
+          type: string
+        - name: before
+          description: Returns results from an opaque “before” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+        - name: after
+          description: Returns results from an opaque “after” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MessageReceiptDetailResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Message receipt details cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v2/admin/streams/{streamId}/messageIds':
+    get:
+      summary: Fetch message ids using timestamp.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: streamId
+          description: The stream ID
+          in: path
+          required: true
+          type: string
+        - name: since
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: to
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: limit
+          in: query
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MessageIdsFromStream'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Stream cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '422':
+          description: 'Unprocessable Entity: Timestamp range is bigger than twenty-four hours.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -4336,6 +4692,16 @@ definitions:
       filters:
         # query filters
         $ref: '#/definitions/UserSearchFilter'
+  UserNameList:
+    type: array
+    items:
+      type: object
+      $ref: '#/definitions/UserName'
+  UserName:
+    type: object
+    properties:
+      username:
+        type: string
   UserIdList:
     type: array
     items:
@@ -4861,6 +5227,51 @@ definitions:
         $ref: '#/definitions/UserAttributes'
       userSystemInfo:
         $ref: '#/definitions/UserSystemInfo'
+  UserAttributes:
+    description: User record.
+    type: object
+    properties:
+      emailAddress:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      userName:
+        type: string
+      displayName:
+        type: string
+      companyName:
+        type: string
+      department:
+        type: string
+      division:
+        type: string
+      title:
+        type: string
+      workPhoneNumber:
+        type: string
+      mobilePhoneNumber:
+        type: string
+      smsNumber:
+        type: string
+      accountType:
+        type: string
+        enum:
+          - NORMAL
+          - SYSTEM
+      location:
+        type: string
+      jobFunction:
+        type: string
+      assetClasses:
+        type: array
+        items:
+          type: string
+      industries:
+        type: array
+        items:
+          type: string
   V2UserDetail:
     description: V2 Detailed User record.
     type: object
@@ -4907,6 +5318,8 @@ definitions:
         type: string
       mobilePhoneNumber:
         type: string
+      twoFactorAuthPhone:
+        type: string
       smsNumber:
         type: string
       accountType:
@@ -4915,6 +5328,8 @@ definitions:
           - NORMAL
           - SYSTEM
       location:
+        type: string
+      recommendedLanguage:
         type: string
       jobFunction:
         type: string
@@ -5019,51 +5434,6 @@ definitions:
         $ref: '#/definitions/IntegerList'
       avatar:
         $ref: '#/definitions/Avatar'
-  UserAttributes:
-    description: User record.
-    type: object
-    properties:
-      emailAddress:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      userName:
-        type: string
-      displayName:
-        type: string
-      companyName:
-        type: string
-      department:
-        type: string
-      division:
-        type: string
-      title:
-        type: string
-      workPhoneNumber:
-        type: string
-      mobilePhoneNumber:
-        type: string
-      smsNumber:
-        type: string
-      accountType:
-        type: string
-        enum:
-          - NORMAL
-          - SYSTEM
-      location:
-        type: string
-      jobFunction:
-        type: string
-      assetClasses:
-        type: array
-        items:
-          type: string
-      industries:
-        type: array
-        items:
-          type: string
   Password:
     description: Password. Stored as derived password in both the Pod and the Key Manager using PBKDF2 function. Number of iterations should be 10000 and desired length 256 bits.
     type: object
@@ -5413,6 +5783,10 @@ definitions:
       Holds the status of a particular message, indicating which user the message has been sent, delivered or read.
     type: object
     properties:
+      author:
+        description: User who has sent the message.
+        type: object
+        $ref: '#/definitions/MessageStatusUser'
       read:
         description: All users who have read that message, in any Symphony client.
         type: array
@@ -5489,6 +5863,8 @@ definitions:
       cert:
         description: The app public certificate in pem format.
         type: string
+      authenticationKeys:
+        $ref: '#/definitions/AppAuthenticationKeys'
   V2PresenceList:
     type: array
     items:
@@ -5706,5 +6082,539 @@ definitions:
       scheme:
         type: string
         description: "URI protocol scheme (example: http, https, ftp)"
-
-
+  AppAuthenticationKeys:
+    description: App RSA keys information.
+    type: object
+    properties:
+      current:
+        $ref: "#/definitions/AppAuthenticationKey"
+      previous:
+        $ref: "#/definitions/AppAuthenticationKey"
+  AppAuthenticationKey:
+    description: App RSA key information.
+    type: object
+    properties:
+      key:
+        description: Application RSA public key.
+        type: string
+      expirationDate:
+        description: RSA key expiration date. This value is set just for rotated keys.
+        type: integer
+        format: int64
+      action:
+        description: |
+          Action to be performed on the RSA key.
+          The following actions can be performed onto the app's active RSA key:
+            - SAVE
+            - REVOKE
+          The following actions can be performed onto the app's rotated RSA key:
+            - REVOKE
+            - EXTEND
+        type: string
+  StreamAttachmentResponse:
+    type: array
+    items:
+      $ref: "#/definitions/StreamAttachmentItem"
+  StreamAttachmentItem:
+    description: File attachments for a message in a stream
+    type: object
+    properties:
+      messageId:
+        type: string
+      ingestionDate:
+        type: integer
+        format: int64
+      userId:
+        type: integer
+        format: int64
+      fileId:
+        type: string
+        description: The attachment File ID.
+      name:
+        type: string
+        description: The file name.
+      size:
+        type: integer
+        format: int64
+        description: Size in bytes.
+      content-type:
+        type: string
+      previews:
+        type: array
+        items:
+          $ref: "#/definitions/AttachmentPreview"
+  AttachmentPreview:
+    description: Preview file for image attachments
+    type: object
+    properties:
+      fileId:
+        type: string
+        description: The preview file ID
+      width:
+        type: integer
+        description: The preview image width
+  UserGroupCreate:
+    description: Body for group creation
+    type: object
+    properties:
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+      type:
+        description: Group type
+        type: string
+    required:
+      - name
+      - type
+  UserGroupResponse:
+    description: Group object response
+    type: object
+    properties:
+      id:
+        description: Group ID
+        type: string
+      name:
+        description: Group name
+        type: string
+      area:
+        description: An optional string attribute used for categorizing groups
+        type: string
+      type:
+        description: Group type
+        type: string
+      active:
+        description: Group status
+        type: boolean
+      createdDate:
+        description: Date of group creation
+        type: integer
+        format: int64
+      modifiedDate:
+        description: Date of group last update
+        type: integer
+        format: int64
+      memberCount:
+        description: Number of group members
+        type: integer
+        format: int64
+      assigneeCount:
+        description: Number of group assignees
+        type: integer
+        format: int64
+  UserGroupResponseList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupResponse'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
+  UserGroupUpdate:
+    description: Body for group update
+    type: object
+    properties:
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+      active:
+        description: Group status
+        type: boolean
+  UserGroupMembershipResponseData:
+    description: User object response
+    type: object
+    properties:
+      id:
+        type: string
+      groupId:
+        type: string
+      group:
+        type: object
+        $ref: '#/definitions/GroupRoleScope'
+      userId:
+        type: integer
+        format: int64
+      user:
+        type: object
+        $ref: '#/definitions/UserCompp'
+      active:
+        type: boolean
+      lastAddedDate:
+        type: integer
+        format: int64
+      lastRemovedDate:
+        type: integer
+        format: int64
+  GroupRoleScope:
+    description: User Group info to include in other models
+    type: object
+    properties:
+      id:
+        type: string
+        description: Group ID
+      name:
+        type: string
+        description: Group name
+      area:
+        type: string
+        description: An optional string attribute used for categorizing groups
+      type:
+        type: string
+        description: Group type
+      active:
+        type: boolean
+        description: Group status
+  UserCompp:
+    description: Basic user information to include in other models
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: User ID
+      username:
+        type: string
+        description: Username
+      firstName:
+        type: string
+        description: User first name
+      lastName:
+        type: string
+        description: User last name
+      emailAddress:
+        type: string
+        description: User email addressIntegrationUserManagerTest
+  UserGroupMembershipRequest:
+    description: Body for user group membership creation
+    type: object
+    properties:
+      active:
+        type: boolean
+  UserGroupMembershipData:
+    description: Body for user group membership response
+    type: object
+    properties:
+      id:
+        type: string
+      groupId:
+        type: string
+      userId:
+        type: integer
+        format: int64
+      group:
+        type: object
+        $ref: "#/definitions/UserGroupData"
+      user:
+        type: object
+        $ref: "#/definitions/MembershipData"
+      active:
+        type: boolean
+      lastAddedDate:
+        type: integer
+        format: int64
+      lastRemovedDate:
+        type: integer
+        format: int64
+  MembershipData:
+    description: User object response
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userName:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      emailAddress:
+        type: string
+  UserGroupData:
+    description: Group object response
+    type: object
+    properties:
+      id:
+        description: Group Id
+        type: string
+      name:
+        description: Group name
+        type: string
+      area:
+        description: Group area
+        type: string
+      type:
+        description: Group type
+        type: string
+      active:
+        description: Group Status
+        type: boolean
+  UserGroupMembershipResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupMembershipResponseData'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
+  UserGroupAssignee:
+    description: User group assignee object
+    type: object
+    properties:
+      id:
+        description: Assignee id
+        type: string
+      groupId:
+        type: string
+      group:
+        description: Group
+        type: object
+        $ref: '#/definitions/GroupRoleScope'
+      userId:
+        type: integer
+        format: int64
+      user:
+        type: object
+        $ref: '#/definitions/UserCompp'
+      userRoles:
+        type: array
+        items:
+          type: string
+      active:
+        type: boolean
+      lastAddedDate:
+        description: Last added
+        type: integer
+        format: int64
+      lastRemovedDate:
+        description: Last removed
+        type: integer
+        format: int64
+  UserData:
+    description: User object response
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      emailAddress:
+        type: string
+  UserGroupAssigneeResponse:
+    description: response
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/UserGroupAssignee'
+      pagination:
+        type: object
+        $ref: '#/definitions/Pagination'
+  UserGroupAssigneeUpdate:
+    description: Body for user group assignee update
+    type: object
+    properties:
+      current:
+        description: Assignee status
+        type: boolean
+    required:
+      - current
+  UserGroupMembershipUpdate:
+    description: User Group membership update object
+    type: object
+    properties:
+      active:
+        description: Group membership status
+        type: boolean
+  UserGroupAssignmentResponse:
+    description: User Group assignment response object
+    type: object
+    properties:
+      id:
+        type: string
+        description: Assignment ID
+      groupId:
+        type: string
+        description: Group ID
+      group:
+        type: object
+        $ref: '#/definitions/GroupRoleScope'
+      userId:
+        type: integer
+        format: int64
+        description: User ID
+      user:
+        type: object
+        $ref: '#/definitions/UserCompp'
+      userRoles:
+        type: array
+        items:
+          type: string
+      active:
+        type: boolean
+        description: Group membership status
+      lastAddedDate:
+        type: integer
+        format: int64
+        description: Date of group membership last added
+      lastRemovedDate:
+        type: integer
+        format: int64
+        description: Date of group membership last removed
+  DownloadReceiptCount:
+    type: object
+    properties:
+      fileName:
+        type: string
+      timestamp:
+        type: integer
+        format: int64
+  MessageReceiptDetail:
+    description: Message receipt details response object
+    type: object
+    properties:
+      user:
+        type: object
+        $ref: '#/definitions/UserCompp'
+      deliveryReceiptTimestamp:
+        description: Timestamp of message delivery receipts
+        type: integer
+        format: int64
+      readReceiptTimestamp:
+        description: Timestamp of message read receipts
+        type: integer
+        format: int64
+      emailNotificationTimestamp:
+        description: Timestamp of message email notifications
+        type: integer
+        format: int64
+      downloadReceiptCounts:
+        type: array
+        items:
+          $ref: '#/definitions/DownloadReceiptCount'
+  MessageReceiptDetailResponse:
+    description: List of Message receipt details
+    type: object
+    properties:
+      creator:
+        type: object
+        $ref: '#/definitions/MessageCreator'
+      stream:
+        type: object
+        $ref: '#/definitions/MessageStream'
+      creationDate:
+        type: integer
+        format: int64
+      deliveryReceiptCount:
+        type: integer
+      readReceiptCount:
+        type: integer
+      emailNotificationCount:
+        type: integer
+      downloadReceiptCounts:
+        type: array
+        items:
+          $ref: '#/definitions/MessageDownloadReceiptCount'
+      MessageReceiptDetail:
+        type: array
+        items:
+          $ref: '#/definitions/MessageReceiptDetail'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
+  MessageIdsFromStream:
+    description: List of MessageIds of a Stream
+    type: object
+    properties:
+      Data:
+        type: array
+        items:
+          type: string
+      TotalNumberFound:
+        type: integer
+        format: int64
+      numberReturned:
+        type: integer
+        format: int64
+      nextStartNumber:
+        type: integer
+        format: int64
+  MessageCreator:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  MessageStream:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      streamType:
+        type: string
+  MessageDownloadReceiptCount:
+    type: object
+    properties:
+      fileName:
+        type: string
+      count:
+        type: integer
+        format: int64
+  MessageDetail:
+    description: Message detail
+    type: object
+    properties:
+      messageId:
+        description: message id
+        type: string
+      creator:
+        type: object
+        $ref: '#/definitions/MessageCreator'
+      stream:
+        type: object
+        $ref: '#/definitions/MessageStream'
+      creationDate:
+        type: integer
+        format: int64
+      deliveryReceiptCount:
+        type: integer
+        format: int64
+      readReceiptCount:
+        type: integer
+        format: int64
+      emailNotificationCount:
+        type: integer
+        format: int64
+      downloadReceiptCounts:
+        type: array
+        items:
+          $ref: '#/definitions/MessageDownloadReceiptCount'
+  MessageDetails:
+      description: Message details
+      type: array
+      items:
+        $ref: '#/definitions/MessageDetail'
+  MessageIds:
+    type: object
+    properties:
+      messageIds:
+        $ref: '#/definitions/StringList'

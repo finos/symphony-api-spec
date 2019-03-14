@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.52.0'
+  version: '1.54.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -168,6 +168,53 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/V5Firehose'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v5/firehose/list':
+    get:
+      summary: Lists all active firehoses for the calling user.
+      description: |
+          Lists all active firehoses for the calling user.
+
+          If there are no active firehoses for the calling user, this endpoint returns a No Content response.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Firehose
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V5FirehoseList'
+        '204':
+          description: No Firehoses to list.
         '400':
           description: 'Client error.'
           schema:
@@ -358,6 +405,52 @@ paths:
           description: Message sent.
           schema:
             $ref: '#/definitions/V4ImportResponseList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/message/{id}':
+    get:
+      summary: Get a message by ID
+      produces:
+        - application/json
+      parameters:
+          - name: sessionToken
+            description: Session authentication token.
+            in: header
+            required: true
+            type: string
+          - name: keyManagerToken
+            description: Key Manager authentication token.
+            in: header
+            required: false
+            type: string
+          - name: id
+            description: Message ID as a URL-safe string
+            in: path
+            required: true
+            type: string
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V4Message'
+        '204':
+          description: No Messages.
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -687,7 +780,6 @@ paths:
         or both the sessionToken and keyManagerToken together.
       consumes:
         - multipart/form-data
-        - application/x-www-form-urlencoded
       produces:
         - application/json
       parameters:
@@ -750,6 +842,10 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in message or file'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -1000,6 +1096,10 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in signal'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -1277,7 +1377,1644 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/V2Error'
+  '/v1/info':
+    get:
+      summary: Get information about the Agent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Signals
+      responses:
+        '200':
+          description: Agent info.
+          schema:
+            $ref: '#/definitions/AgentInfo'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v1/dlp/policies':
+    get:
+      summary: Get all policies
+      description: Get all policies
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: Optional parameter to specify which page to return (default is 0)
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: |
+            Optional parameter to specify the number of result to return per page, default is 50. Maximum is 50.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPoliciesCollectionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Creates a policy
+      description: |
+        Creates a new policy with dictionary references.
 
+        At the time of policy creation, the caller should only provide - contentTypes, name, scopes and type. The rest of the information is populated automatically.
+
+        Note - You need to enable the policy after creation to start enforcing the policy.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V1DLPPolicyRequest'
+          description: Details about the policy that should be created.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/policies/{policyId}':
+    get:
+      summary: Get a policy
+      description: Get a policy
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+        - name: policyVersion
+          in: query
+          required: false
+          type: string
+          description: |
+            Optional parameter, if set to be valid policy version number,  will return policy with specified policyVersion. Otherwise, return the latest policy.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Updates a policy. Cannot be used for creation.
+      description: |
+        Update the policy (name, type, contentTypes, scopes) and also the dictionaries for a policy.
+        Warning: If you send empty list of dictionaries during the update operation, then all the
+        dictionaries for this policy are deleted and policy is automatically disabled.
+        Note: The policy should already exist.
+      consumes:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V1DLPPolicyRequest'
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete a policy
+      description: |
+        Delete a policy.
+        Note: Only disabled policy can be deleted
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/policies/{policyId}/enable':
+    post:
+      summary: Enables a policy.
+      description: Enables a policy.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/policies/{policyId}/disable':
+    post:
+      summary: Disables a policy.
+      description: Disables a policy.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/dictionaries':
+    get:
+      summary: Get all dictionary metadatas
+      description: |
+        Get all dictionary metadatas with the latest version. Each dictionary object will only contain meta data of the content.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: Optional parameter to specify which page to return (default is 0)
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: |
+            Optional parameter to specify the number of result to return per page, default is 50. Maximum is 50.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataCollectionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a dictionary
+      description: |
+        Creates a dictionary with basic metadata and no content. Only "name" and "type" field is used to create a new dictionary entry.
+      consumes:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataCreateRequest'
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/dictionaries/{dictId}':
+    get:
+      summary: Get dictionary metadata
+      description: Get basic information for a dictionary.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: dictId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier
+        - name: dictVersion
+          in: query
+          required: false
+          type: string
+          description: |
+            If set to be valid dictionary version number, will return dictionary metadata with specified version. Otherwise, return the latest dictionary metadata.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Updates a dictionary
+      description: |
+        Updates the dictionary's basic metadata without content.
+        This API cannot be used for creating a new dictionary.
+        In case of update only "name" can be changed.
+        Note: All related policies will also have versions updated.
+      consumes:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: dictId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataUpdateRequest'
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete a dictionary
+      description: |
+        Deletes a dictionary.
+        Note: All related policies will be affected.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: dictId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            # Deleted dictionary's metadata.
+            $ref: '#/definitions/V1DLPDictionaryMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/dictionaries/{dictId}/data/download':
+    get:
+      summary: Downloads Base 64 encoded dictionary content.
+      description: Downloads Base 64 encoded dictionary content.
+      consumes:
+        - application/json
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: dictId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier
+        - name: dictVersion
+          in: query
+          required: false
+          type: string
+          description: |
+            If set to be valid dictionary version number, will return dictionary with specified version. Otherwise, return the latest dictionary.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: 'Attachment body as Base64 encoded string.'
+          schema:
+            type: string
+            format: byte
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/dictionaries/{dictId}/data/upload':
+    post:
+      summary: Override dictionary content with provided content.
+      description: Override dictionary content with provided content.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: dictId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier
+        - name: data
+          in: formData
+          required: true
+          type: file
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V1DLPDictionaryMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/dlp/violations/message':
+    get:
+      summary: Get violations as a result of policy enforcement on messages.
+      description: |
+        TBD
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1DLPViolationMessageResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v1/dlp/violations/stream':
+    get:
+      summary: Get violations as a result of policy enforcement on streams.
+      description: |
+        TBD
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1DLPViolationStreamResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v1/dlp/violations/signal':
+    get:
+      summary: Get violations as a result of policy enforcement on signals.
+      description: |
+        TBD
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1DLPViolationSignalResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v3/dlp/policies':
+    get:
+      summary: Get all policies
+      description: Get all policies
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: Optional parameter to specify which page to return (default is 0)
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          format: int32
+          description: |
+            Optional parameter to specify the number of result to return per page, default is 50. Maximum is 50.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPoliciesCollectionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Creates a policy
+      description: |
+        Creates a new policy with dictionary references.
+        At the time of policy creation, the caller should only provide - contentTypes, name, scopes and type.
+        The rest of the information is populated automatically.
+        Note - You need to enable the policy after creation to start enforcing the policy.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V3DLPPolicyRequest'
+          description: Details about the policy that should be created.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/policies/{policyId}':
+    get:
+      summary: Get a policy
+      description: Get a policy
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+        - name: policyVersion
+          in: query
+          required: false
+          type: string
+          description: |
+            Optional parameter, if set to be valid policy version number,  will return policy with specified policyVersion. Otherwise, return the latest policy.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/policies/{policyId}/update':
+    post:
+      summary: Updates a policy. Cannot be used for creation.
+      description: |
+        Update the policy (name, type, contentTypes, scopes) and also the dictionaries for a policy.
+        Warning: If you send empty list of dictionaries during the update operation, then all the
+        dictionaries for this policy are deleted and policy is automatically disabled.
+        Note: The policy should already exist.
+      consumes:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V3DLPPolicyRequest'
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/policies/{policyId}/delete':
+    post:
+      summary: Delete a policy
+      description: |
+        Delete a policy.
+        Note: Only disabled policy can be deleted
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+          description: Unique dictionary identifier.
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/policies/{policyId}/enable':
+    post:
+      summary: Enables a policy.
+      description: Enables a policy.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/policies/{policyId}/disable':
+    post:
+      summary: Disables a policy.
+      description: Disables a policy.
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: policyId
+          in: path
+          required: true
+          type: string
+      tags:
+        - DLP Policies and Dictionary Management
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3DLPPolicyResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v3/dlp/violations/message':
+    get:
+      summary: Get violations as a result of policy enforcement on messages.
+      description: Retrieves DLP v3 message related violations for a given time range
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V3DLPViolationMessageResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v3/dlp/violations/stream':
+    get:
+      summary: Get violations as a result of policy enforcement on streams.
+      description: Retrieves DLP v3 signal related violations for a given time range
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V3DLPViolationStreamResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v3/dlp/violations/signal':
+    get:
+      summary: Get violations as a result of policy enforcement on signals.
+      description: Retrieves DLP v3 signal related violations for a given time range
+      produces:
+        - application/json
+      parameters:
+        - name: startTime
+          description: |
+            Timestamp of the first required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTime
+          description: |
+            Timestamp of the last required violation.
+            This is a long integer value representing milliseconds since Jan 1 1970
+            If unspecified, it will default to current time of the request.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: next
+          description: |
+            Offset of the next chunk of violations. Value is null for the first request.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default. The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V3DLPViolationSignalResponse'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v3/dlp/violation/attachment':
+    get:
+      summary: Get attachments that were sent as part of messages that were flagged by the DLP System.
+      description: Retrieves attachments from related message violations as a base64 encoded String.
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: fileId
+          description: |
+            ID of attachment that will be downloaded.
+          in: query
+          required: true
+          type: string
+        - name: violationId
+          description: |
+            ID of violation that corresponds to the flagged message that contains the attachment
+          in: query
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Violations
+      responses:
+        '200':
+          description: Attachment body as Base64 encoded string.
+          schema:
+            type: string
+            format: byte
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Resource not found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  '/v1/audittrail/privilegeduser':
+    get:
+      summary: Get a list of  actions performed by a privileged account acting as privileged user given a period of time.
+      description: Get a list of actions performed by a privileged account acting as privileged user given a period of time.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: startTimestamp
+          description: |
+            Start timestamp in unix timestamp in millseconds.
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTimestamp
+          description: |
+            End timestamp in unix timestamp in millseconds.
+            If not specified, it assumes to be current time.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: before
+          description: |
+            Return results from an opaque “before” cursor value as presented via a response cursor.
+          in: query
+          type: string
+          required: false
+        - name: after
+          description: |
+            Return results from an opaque “after” cursor value as presented via a response cursor.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default.
+            Some maximums for limit may be enforced for performance reasons.
+            The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: initiatorId
+          description: |
+            If present, only the initiator with this initiator <user id> will be returned.
+          in: query
+          type: integer
+          format: int64
+        - name: role
+          description: |
+            If present, only the audit trail initiated by s user with privileged role acting as
+            privileged user will be returned.
+            Privileged eliglible roles:
+            User Provisioning (USER_PROVISIONING),
+            Content Management (CONTENT_MANAGEMENT),
+            Expression Filter Policy Management (EF_POLICY_MANAGEMENT),
+            SCO (SUPER_COMPLIANCE_OFFICER),
+            CO (COMPLIANCE_OFFICER),
+            Super admin (SUPER_ADMINISTRATOR),
+            Admin (ADMINISTRATOR),
+            L1 (L1_SUPPORT),
+            L2 (L2_SUPPORT),
+            Scope Manager (SCOPE_MANAGEMENT)
+          in: query
+          type: string
+          required: false
+      tags:
+        - AuditTrail
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1AuditTrailInitiatorList'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 #
 # Deprecated paths
 #
@@ -2808,6 +4545,11 @@ definitions:
           Indicates the format in which the message was originally sent.  This could have been either:
           - com.symphony.markdown - Markdown OR Message ML V1
           - com.symphony.messageml.v2 - Message ML V2
+      disclaimer:
+        type: string
+        description: |
+          Message that may be sent along with a regular message if configured for the POD,
+          usually the first message sent in a room that day.
   V4User:
     type: object
     properties:
@@ -3100,6 +4842,19 @@ definitions:
       ackId:
         type: string
         description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
+  V5FirehoseRecord:
+    type: object
+    properties:
+      firehoseId:
+        type: string
+      creationDate:
+        type: integer
+        format: int64
+        description: the date, in miliseconds, the firehose was created.
+  V5FirehoseList:
+    type: array
+    items:
+      $ref: '#/definitions/V5FirehoseRecord'
   BaseSignal:
     type: object
     properties:
@@ -3203,9 +4958,936 @@ definitions:
         type: integer
         format: int64
         description: Timestamp when the signal was subscribed, in milliseconds since Jan 1 1970
+  AgentInfo:
+    type: object
+    properties:
+      ipAddress:
+        type: string
+        description: The IP address of the Agent server.
+      hostname:
+        type: string
+        description: The hostname of the Agent server.
+      serverFqdn:
+        type: string
+        description: The fully-qualified domain name of the Agent server. Must be set by the user at startup.
+      version:
+        type: string
+        description: The version of the Agent.
+      url:
+        type: string
+        description: The URL under which the Agent is available.
+      onPrem:
+        type: boolean
+        description: Whether this is an on-prem or cloud installation.
+      commitId:
+        type: string
+        description: The Git commit ID of the running revision.
+  V1DLPPoliciesCollectionResponse:
+    type: object
+    properties:
+      policies:
+        type: array
+        description: List of policies
+        items:
+          $ref: '#/definitions/V1DLPPolicy'
+      page:
+        type: integer
+        format: int32
+        description: Page number of current page
+      pageCount:
+        type: integer
+        format: int32
+        description: Total number of pages available
+    description: List of policies
+  V1DLPPolicy:
+    type: object
+    required:
+    - "contentTypes"
+    - "name"
+    - "scopes"
+    - "type"
+    properties:
+      active:
+        type: boolean
+        description: Indicate whether the policy is active or not
+      contentTypes:
+        type: array
+        description: |
+          The list of content types that policy should apply to. Cannot be empty. Policy content types could be either of "Messages", "RoomMeta", "SignalMeta".
+          Default is set to ["Messages"] if not specified.
+        items:
+          type: string
+      creationDate:
+        type: integer
+        format: int64
+        description: |
+          Creation time of the policy in milliseconds elapsed as of epoch time.
+      creatorId:
+        type: string
+        description: Numeric userId of the creator
+      dictionaryRefs:
+        type: array
+        description: List of dictionaries.
+        items:
+          $ref: '#/definitions/V1DLPDictionaryRef'
+      lastDisabledDate:
+        type: integer
+        format: int64
+        description: |
+          Recent disable time of the policy in milliseconds elapsed as of epoch time.
+      lastUpdatedDate:
+        type: integer
+        format: int64
+        description: Recent update time of the policy in milliseconds elapsed as of epoch time.
+      name:
+        type: string
+        description: Unique name of a policy, max 30 characters. Cannot be empty. All the leading and trailing blank spaces are trimmed.
+      policyId:
+        type: string
+        description: Policy Id
+      scopes:
+        type: array
+        description: |
+          List of communication scopes. Possible values are "Internal" (for Internal conversations) or "External" (for External conversations).
+          You can apply both scopes if you set it to ["Internal", "External"].
+        items:
+          type: string
+      type:
+        type: string
+        description: Type of policy. Possible values "Block" or "Warn".
+      version:
+        type: string
+        description: |
+          The version of a dictionary, in format "major.minor". Initial value will set by backend as "1.0" when created.
+          Whenever the dictionary version needs to be changed, the minor version by 1 unless minor == 999, then the major version is increased by 1 until it reaches 999.
+    description: The policy object for expression filter, one policy can have multiple dictionaries
+  V1DLPPolicyRequest:
+    type: object
+    required:
+    - "contentTypes"
+    - "name"
+    - "scopes"
+    - "type"
+    properties:
+      contentTypes:
+        type: array
+        description: |
+          The list of content types that policy should apply to. Cannot be empty. Policy content types could be either of "Messages", "RoomMeta", "SignalMeta".
+          Default is set to ["Messages"] if not specified.
+        items:
+          type: string
+      dictionaryIds:
+        type: array
+        description: List of dictionaries Ids for the policy.
+        items:
+          type: string
+      name:
+        type: string
+        description: Unique name of a policy, max 30 characters. Cannot be empty. All the leading and trailing blank spaces are trimmed.
+      scopes:
+        type: array
+        description: |
+          List of communication scopes. Possible values are "Internal" (for Internal conversations) or "External" (for External conversations).
+          You can apply both scopes if you set it to ["Internal", "External"].
+        items:
+          type: string
+      type:
+        type: string
+        description: Type of policy. Possible values "Block" or "Warn".
+    description: The policy object to use for creating/updating a policy.
+  V1DLPPolicyResponse:
+    type: object
+    properties:
+      data:
+        $ref: '#/definitions/V1DLPPolicy'
+    description: Policy Response
+  V1DLPDictionary:
+    type: object
+    required:
+    - dictionaryMetadata
+    properties:
+      content:
+        $ref: '#/definitions/V1DLPDictionaryContent'
+      dictionaryMetadata:
+        $ref: '#/definitions/V1DLPDictionaryMetadata'
+    description: Dictionary object
+  V1DLPDictionaryContent:
+    type: object
+    properties:
+      data:
+        type: string
+        description: |
+          A comma separated string which contains a lot of keywords/regexes.
+      numKeywords:
+        type: integer
+        format: int32
+        description: Number of Keywords in dictionary
+      md5:
+        type: string
+        description: MD5 value of the content
+    description: Content of a dictionary
+  V1DLPDictionaryMetadataCollectionResponse:
+    type: object
+    properties:
+      items:
+        type: array
+        description: List of dictionary metadata
+        items:
+          $ref: '#/definitions/V1DLPDictionaryMetadata'
+      page:
+        type: integer
+        format: int32
+        description: Page number of current page
+      pageCount:
+        type: integer
+        format: int32
+        description: Total number of pages available
+    description: List of dictionary metadata.
+  V1DLPDictionaryMetadataResponse:
+    type: object
+    required:
+    - data
+    properties:
+      data:
+        $ref: '#/definitions/V1DLPDictionaryMetadata'
+    description: Dictionary response containing dictionary metadata.
+  V1DLPDictionaryMetadataCreateRequest:
+    type: object
+    required:
+    - name
+    - type
+    properties:
+      name:
+        type: string
+        description: |
+          The name of dictionary
+      type:
+        type: string
+        description: |
+          The type of dictionary, which specify the content is a list of words or a list of regexes.
+          By default set to "Word" if not specified. Possible values - Word, Regex
+    description: Dictionary's metadata (excluding content) to use for dictionary create operations.
+  V1DLPDictionaryMetadataUpdateRequest:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        description: |
+          The name of dictionary
+    description: Dictionary's metadata (excluding content) to use for dictionary update operations.
+  V1DLPDictionaryMetadata:
+    type: object
+    required:
+    - dictRef
+    - type
+    properties:
+      creationDate:
+        type: integer
+        format: int64
+        description: Creation time of the dictionary in milliseconds elapsed as of epoch time.
+      creatorId:
+        type: string
+        description: Numeric userId of the creator
+      dictRef:
+        $ref: '#/definitions/V1DLPDictionaryRef'
+      lastUpdatedDate:
+        type: integer
+        format: int64
+        description: The recent update time of the dictionary in milliseconds
+      type:
+        type: string
+        description: |
+          The type of dictionary, which specify the content is a list of words or a list of regexes.
+          By default set to "Word" if not specified. Possible values - Word, Regex
+    description: Dictionary's metadata (excluding content)
+  V1DLPDictionaryRef:
+    type: object
+    required:
+    - name
+    properties:
+      dictId:
+        type: string
+        description: Unique dictionary id
+      name:
+        type: string
+        description: Unique name of a dictionary, max 30 characters, with trimmed leading and trailing blank spaces.
+      version:
+        type: string
+        description: |
+          The version of a dictionary, in format "major.minor".
+          Initial value will set by backend as "1.0" when created.
+          Whenever the dictionary version needs to be changed, the minor version by 1 unless minor == 999, then the major version is increased by 1 until it reaches 999.
+    description: Basic information needed to identify a dictionary
+  V1DLPViolationMessageResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        description: A representation of list of violations due to messages sent by a user of Symphony
+        items:
+          $ref: '#/definitions/V1DLPViolationMessage'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V1DLPViolationStreamResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        items:
+          # A representation of list of violations due to rooms creation/update sent by a user of Symphony
+          $ref: '#/definitions/V1DLPViolationStream'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V1DLPViolationSignalResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        description: A representation of list of violations due to signal creation/update sent by a user of Symphony
+        items:
+          $ref: '#/definitions/V1DLPViolationSignal'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V1DLPViolationMessage:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to a message sent by a user of Symphony
+        $ref: '#/definitions/V1DLPViolation'
+      message:
+        # Message details when DLP was enforced
+        $ref: '#/definitions/V4Message'
+      diagnostic:
+        type: string
+        description: |
+            A diagnostic message containing an error message in the event there are parsing errors.
+            May also be present in the case of a successful call if there is useful narrative to return.
+  V1DLPViolationStream:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to rooms creation/update sent by a user of Symphony
+        $ref: '#/definitions/V1DLPViolation'
+      stream:
+        # Room details when DLP was enforced
+        $ref: '#/definitions/V1DLPStream'
+  V1DLPViolationSignal:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to signal creation/update sent by a user of Symphony
+        $ref: '#/definitions/V1DLPViolation'
+      signal:
+        # Signal details when DLP was enforced
+        $ref: '#/definitions/V1DLPSignal'
+  V1DLPViolation:
+    type: object
+    description: A representation of a violation due to a message sent by a user of Symphony
+    properties:
+      enforcementEventID:
+        type: string
+        description: Enforcement event ID. Unique ID that identifies this enforcement.
+      entityID:
+        type: string
+        description: Entity ID is the content Id of the violation, for example, for messages, its the Id of the message
+      createTime:
+        type: integer
+        format: int64
+        description: Timestamp of the violation in milliseconds since Jan 1 1970
+      lastModified:
+        type: integer
+        format: int64
+        description: Timestamp of the last modification of violation in milliseconds since Jan 1 1970
+      requesterId:
+        type: integer
+        format: int64
+        description: Id of the requester responsible for the message/stream/signal
+      matchedPolicies:
+        # Policies that matched when DLP was enforced and the list of matched terms decrypted.
+        $ref: '#/definitions/V1DLPMatchedPolicyList'
+      action:
+        type: string
+        description: action taken such as BLOCK or WARN.  See outcome for a more detailed description of the outcome this action.
+      outcome:
+        # Detailed outcome of the DLP enforcement such as REJECTED_VIOLATION, ACCEPTED_WARNING, ACCEPTED_LEGACY_CLIENT etc.
+        $ref: '#/definitions/V1DLPOutcome'
+      version:
+        type: string
+        description: Version of application which processed the message and produced this violation.
+      ignoreDLPwarning:
+          type: boolean
+          description: Did the user chose to ignore DLP warning that was presented?
+  V1DLPMatchedPolicyList:
+    type: array
+    items:
+      $ref: '#/definitions/V1DLPMatchedPolicy'
+    description: List of policies that matched the violation.
+  V1DLPMatchedPolicy:
+    type: object
+    description: A representation of policy that matched the violation with a list of matched keywords in the policy
+    properties:
+      id:
+        type: string
+        description: Id of the policy
+      version:
+        type: string
+        description: Version of the policy
+      policyName:
+        type: string
+        description: Name of the policy
+      type:
+        type: string
+        description: Whether BLOCK or WARN
+      terms:
+        type: string
+        description: List of decrypted matched keywords in the policy
+      diagnostic:
+        type: string
+        description: |
+            A diagnostic message containing an error message in the event that the
+            decryption of terms failed. May also be present in the case of a successful
+            call if there is useful narrative to return.
+  V1DLPOutcome:
+    type: object
+    description: A representation of outcome of DLP message/stream/signal sent by a user of Symphony
+    properties:
+      type:
+        type: string
+        description: Outcome of DLP enforcement
+  V1DLPContentType:
+    type: object
+    description: A representation of content type of message sent by a user of Symphony (message/stream/signal)
+    properties:
+      type:
+        type: string
+        description: content type
+  V1DLPStream:
+    type: object
+    description: Room details in the context of violation.
+    properties:
+        name:
+          type: string
+          description:  Name of the Stream/Room.
+        creatorPrettyName:
+          type: string
+          description:  Name of the creator of the Room.
+        publicRoom:
+          type: boolean
+          description:  Is this a public room?
+        crossPod:
+          type: boolean
+          description:  Is this a cross pod scenario?
+        allowExternal:
+          type: boolean
+          description:  Is external messaging allowed
+        creatorId:
+          type: string
+          description:  Id of the creator of the Room.
+        roomDescription:
+          type: string
+          description:  Description of the Room.
+        streamId:
+          type: string
+          description:  ThreadId of the Room.
+        state:
+          type: string
+          description:  State of the Room (example CREATED etc)
+        type:
+          type: string
+          description:  Type of the Room (example ROOM (or IM or Wall))
+        lastDisabled:
+          type: integer
+          format: int64
+          description: Timestamp of last time the room is Disabled
+        memberAddUserEnabled:
+          type: boolean
+          description:  Is memberAddUserEnabled
+        active:
+          type: boolean
+          description:  Is Room Active
+        discoverable:
+          type: boolean
+          description:  Is Room discoverable
+        readOnly:
+          type: boolean
+          description:  Is Room read-only
+        copyDisabled:
+          type: boolean
+          description:  Is Room copyDisabled
+        externalOwned:
+          type: boolean
+          description:  Is Room externalOwned
+        sendMessageDisabled:
+          type: boolean
+          description:  Is sendMessage Disabled for this Room
+        moderated:
+          type: boolean
+          description:  Is room moderated
+        shareHistoryEnabled:
+          type: boolean
+          description:  Is room shareHistoryEnabled
+        diagnostic:
+          type: string
+          description: |
+              A diagnostic message containing an error message in the event that the
+              stream retrieval failed. May also be present in the case of a successful
+              call if there is useful narrative to return.
+  V1DLPSignal:
+    type: object
+    description: Signal details
+    properties:
+        name:
+          type: string
+          description:  Name of the Signal
+        rules:
+          type: string
+          description:  Signal rules decrypted.
+        diagnostic:
+          type: string
+          description: |
+              A diagnostic message containing an error message in the event that the
+              signal decryption failed. May also be present in the case of a successful
+              call if there is useful narrative to return.
 
-
-
+#
+# V3 Policies definitions
+#
+  V3DLPPolicyRequest:
+    type: object
+    required:
+      - "name"
+      - "scopes"
+      - "appliesTo"
+    properties:
+      name:
+        type: string
+        description: |
+          Unique name of a policy, max 30 characters. Cannot be empty. All the leading and trailing blank spaces are trimmed.
+      scopes:
+        type: array
+        description: |
+          List of communication scopes. Possible values are "Internal" (for Internal conversations) or "External" (for External conversations).
+          You can apply both scopes if you set it to ["Internal", "External"].
+        items:
+          type: string
+      appliesTo:
+        type: array
+        items:
+          $ref: '#/definitions/V3DLPPolicyAppliesTo'
+    description: Request to be used to get policies.
+  V3DLPPolicy:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for policy.
+      policyId:
+        type: string
+        description: Policy Id.
+      version:
+        type: string
+        description: |
+          The version of the policy, in format "major.minor". Initial value will set by backend as "3.0" when created.
+          Whenever the policy version needs to be changed, the minor version by 1 unless minor == 999,
+          then the major version is increased by 1 until it reaches 999.
+      name:
+        type: string
+        description: |
+          Unique name of policy, max 30 characters. Cannot be empty. All the leading and trailing blank spaces are trimmed.
+      creatorId:
+        type: integer
+        format: int64
+        description: Numeric userId of the creator.
+      scopes:
+        type: array
+        description: |
+          List of communication scopes. Possible values are "Internal" (for Internal conversations) or "External" (for External conversations).
+          You can apply both scopes if you set it to ["Internal", "External"].
+        items:
+          type: string
+      appliesTo:
+        type: array
+        items:
+          $ref: '#/definitions/V3DLPPolicyAppliesTo'
+      active:
+        type: boolean
+        description: Indicate whether the policy is active or not.
+      deleted:
+        type: boolean
+        description: Indicate whether the policy is deleted or not.
+      creationDate:
+        type: integer
+        format: int64
+        description: |
+          Creation time of the policy in milliseconds elapsed as of epoch time.
+      lastUpdatedDate:
+        type: integer
+        format: int64
+        description: |
+          Recent update time of the policy in milliseconds elapsed as of epoch.
+          time.
+      lastDisabledDate:
+        type: integer
+        format: int64
+        description: |
+          Recent disable time of the policy in milliseconds elapsed as of epoch.
+          time.
+      systemPolicy:
+        type: boolean
+    description : |
+      A policy is the main entity of V3 policy/rule system. It is responsible to define rules and add scope constraints to the engine.
+  V3DLPRule:
+    type: object
+    required:
+     - "type"
+     - "name"
+    properties:
+      type:
+        type: string
+        description: Type of a rule used by policy. Can be ["UNKNOWN", "TEXT_MATCH", "FILE_EXTENSION", "FILE_SIZE", "FILE_PASSWORD", "FILE_CLASSIFIER"].
+      name:
+        type: string
+        description: Name for rule.
+      textMatchConfig:
+        $ref: '#/definitions/V3DLPTextMatchConfig'
+      fileSizeConfig:
+        $ref: '#/definitions/V3DLPFileSizeConfig'
+      fileExtensionConfig:
+        $ref: '#/definitions/V3DLPFileExtensionConfig'
+      filePasswordConfig:
+        $ref: '#/definitions/V3DLPFilePasswordConfig'
+      fileClassifierConfig:
+        $ref: '#/definitions/V3DLPFileClassifierConfig'
+    description: |
+     A Rule defines the actual matching specification for policies. It holds a type and a configuration
+     for the rule, these properties should be used to build the corresponding matching implementation.
+     Only one of the configuration property should be set [textMatchConfig, fileSizeConfig, fileExtensionConfig, filePasswordConfig, fileClassifierConfig].
+  V3DLPFilePasswordConfig:
+    type: object
+    required:
+      - "applicableFileTypes"
+      - "matchCriteria"
+    properties:
+        applicableFileTypes:
+          type: array
+          items:
+            type: string
+          description: File types that can be applied. Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
+        matchCriteria:
+          type: string
+          description: |
+           Based on the criteria, whether a file is password protected or not means a match.
+           Can be ["PASSWORD_PROTECTED", "NOT_PASSWORD_PROTECTED"]. The default is "NOT_PASSWORD_PROTECTED".
+    description: Password protected detection config for files that are password protected or not.
+  V3DLPFileExtensionConfig:
+    type: object
+    required:
+      - "allowLists"
+    properties:
+      allowLists:
+        type: array
+        items:
+          type: string
+        description: File extensions that are allowed.
+      blockLists:
+        type: array
+        items:
+          type: string
+        description: File extensions that are blocked.
+    description: Extension detection config for allowed and blocked types of file extensions.
+  V3DLPFileSizeConfig:
+    type: object
+    properties:
+      sizeLimit:
+        type: integer
+        format: int32
+    description: File size config defines maximum allowed size of file. Default max size limit is 20 MB.
+  V3DLPTextMatchConfig:
+    type: object
+    properties:
+      dictionaries:
+        type: array
+        items:
+         $ref: '#/definitions/V3DLPDictionaryMeta'
+      countUniqueOccurrences:
+        type: integer
+        format: int32
+      applicableFileTypes:
+        type: array
+        items:
+         type: string
+        description: |
+          File types must be applied only for rule type "FileContent", otherwise must be empty.
+          Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
+    description: |
+      This is a configuration that can be used to match text or regex.
+      Configuration that can be used by a rule. This is a configuration that can be used to match text or regex.
+      This configuration also corresponds to V2 TextMatch/RegexMatch of dictionaries.
+  V3DLPDictionaryMeta:
+    type: object
+    required:
+      - "dictId"
+      - "version"
+      - "name"
+    properties:
+      dictId:
+        type: string
+      version:
+        type: string
+      name:
+        type: string
+    description: Identity of a dictionary.
+  V3DLPFileClassifierConfig:
+    type: object
+    required:
+      - "classifiers"
+      - "applicableFileTypes"
+    properties:
+      classifiers:
+        type: object
+        additionalProperties:
+         type: string
+        description: |
+         Classifier is defined as a Key and its Value: e.g.: "classification": "Internal".
+         Name and value can contain UTF-8 characters. Neither the name nor value cannot be left empty.
+         Maximum 30 characters for the name and value, case insensitive.
+         If files contains k-v pairs in the classifers map, it means a match. Maximum 30 classifiers per policy.
+      applicableFileTypes:
+        type: array
+        items:
+         type: string
+        description: |
+          File types that can be applied. Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
+  V3DLPPolicyAppliesTo:
+    type: object
+    required:
+      - "dataType"
+      - "action"
+      - "rules"
+    properties:
+      dataType:
+        type: string
+        description: |
+          The list of data types that policy should apply to. Can't be empty.
+          Can be ["Messages","RoomMeta", "SignalMeta", "FileContent", "FileMeta"].
+      action:
+        type: string
+        description: |
+          Action to be taken on violation detection.
+          Can be ["Block", "Warn", "LogOnly"]. The default is "LogOnly".
+      rules:
+        type: array
+        items:
+          $ref: '#/definitions/V3DLPRule'
+  V3DLPPolicyResponse:
+    type: object
+    properties:
+      data:
+        $ref: '#/definitions/V3DLPPolicy'
+    description: Policy Response.
+  V3DLPPoliciesCollectionResponse:
+    type: object
+    properties:
+      policies:
+        type: array
+        description: List of policies.
+        items:
+          $ref: '#/definitions/V3DLPPolicy'
+      page:
+        type: integer
+        format: int32
+        description: The starting page for pagination.
+      size:
+        type: integer
+        format: int32
+        description: Size of policies displayed per page.
+      pageCount:
+        type: integer
+        format: int32
+        description: Total number of pages available.
+    description: List of policies.
+  V3DLPViolationMessageResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        description: A representation of list of violations due to messages sent by a user of Symphony
+        items:
+          $ref: '#/definitions/V3DLPViolationMessage'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V3DLPViolationStreamResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        items:
+          # A representation of list of violations due to rooms creation/update sent by a user of Symphony
+          $ref: '#/definitions/V3DLPViolationStream'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V3DLPViolationSignalResponse:
+    type: object
+    properties:
+      violations:
+        type: array
+        description: A representation of list of violations due to signal creation/update sent by a user of Symphony
+        items:
+          $ref: '#/definitions/V3DLPViolationSignal'
+      nextOffset:
+        type: string
+        description: Offset for the next chunk of violations to be submitted in the next request.  Value is null if there are no further violations.
+  V3DLPViolationMessage:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to a message sent by a user of Symphony
+        $ref: '#/definitions/V3DLPViolation'
+      message:
+        # Message details when DLP was enforced
+        $ref: '#/definitions/V4Message'
+      diagnostic:
+        type: string
+        description: |
+          A diagnostic message containing an error message in the event there are parsing errors.
+          May also be present in the case of a successful call if there is useful narrative to return.
+  V3DLPViolationStream:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to rooms creation/update sent by a user of Symphony
+        $ref: '#/definitions/V3DLPViolation'
+      stream:
+        # Room details when DLP was enforced
+        $ref: '#/definitions/V1DLPStream'
+  V3DLPViolationSignal:
+    type: object
+    properties:
+      violation:
+        # A representation of a violation due to signal creation/update sent by a user of Symphony
+        $ref: '#/definitions/V3DLPViolation'
+      signal:
+        # Signal details when DLP was enforced
+        $ref: '#/definitions/V1DLPSignal'
+  V3DLPViolation:
+    type: object
+    description: A representation of a violation due to an event created by a user of Symphony
+    properties:
+      enforcementEventID:
+        type: string
+        description: Enforcement event ID. Unique ID that identifies this enforcement.
+      entityID:
+        type: string
+        description: Entity ID is the content Id of the violation, for example, for messages, its the Id of the message
+      createTime:
+        type: integer
+        format: int64
+        description: Timestamp of the violation in milliseconds since Jan 1 1970
+      lastModified:
+        type: integer
+        format: int64
+        description: Timestamp of the last modification of violation in milliseconds since Jan 1 1970
+      requesterId:
+        type: integer
+        format: int64
+        description: Id of the requester responsible for the message/stream/signal
+      details:
+        type: array
+        description: JSON representation of the details of the violation.
+        items:
+          type: object
+      action:
+        type: string
+        description: action taken such as BLOCK or WARN.  See outcome for a more detailed description of the outcome this action.
+      outcome:
+        # Detailed outcome of the DLP enforcement such as REJECTED_VIOLATION, ACCEPTED_WARNING, ACCEPTED_LEGACY_CLIENT etc.
+        $ref: '#/definitions/V1DLPOutcome'
+      version:
+        type: string
+        description: Version of application which processed the message and produced this violation.
+      ignoreDLPwarning:
+          type: boolean
+          description: Did the user chose to ignore DLP warning that was presented?
+  Pagination:
+    type: object
+    required:
+      - cursors
+    properties:
+      cursors:
+        type: object
+        required:
+          - before
+          - after
+        properties:
+          before:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the start of the page of data
+              that has been returned.
+            example: "MTAxNTExOTQ1MjAwNzI5NDE="
+          after:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the end of the page of data
+              that has been returned.
+            example: "NDMyNzQyODI3OTQw"
+      previous:
+        type: string
+        description: |
+          API endpoint that will return the previous page of data. If not included, this is
+          the first page of data.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&before=MTAxNTExOTQ1MjAwNzI5NDE="
+      next:
+        type: string
+        description: |
+          API endpoint that will return the next page of data. If not included, this is the
+          last page of data. Due to how pagination works with visibility and privacy, it is
+          possible that a page may be empty but contain a 'next' paging link. Stop paging when
+          the 'next' link no longer appears.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&after=NDMyNzQyODI3OTQw"
+  V1AuditTrailInitiatorResponse:
+    description: |
+      Audit Trail Initiator object response.
+      The attributes may vary according to the action.
+      There are different types of action and each action could have specific attributes.
+    type: object
+    properties:
+      action:
+        description: The audit trail action that has peformed
+        type: string
+      actionName:
+        description: The audit trail action name that has peformed
+        type: string
+      timestamp:
+        description: The timestamp when the action has occurred
+        type: string
+      initiatorId:
+        description: The user's id that has performed the action
+        type: string
+      initiatorUsername:
+        description: The username that has performed the action
+        type: string
+      initiatorEmailAddress:
+        description: The user's e-mail address that has performed the action
+        type: string
+    additionalProperties: true
+  V1AuditTrailInitiatorList:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/V1AuditTrailInitiatorResponse'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
 
 
 #
@@ -3399,7 +6081,6 @@ definitions:
     - timestamp
     - streamId
   V1HealthCheckResponse:
-    deprecated: true
     type: object
     properties:
       podConnectivity:
