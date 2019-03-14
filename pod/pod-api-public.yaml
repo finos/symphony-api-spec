@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.53.0'
+  version: '1.53.13'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -4719,7 +4719,6 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-
 definitions:
   Error:
     type: object
@@ -6636,3 +6635,4 @@ definitions:
         type: boolean
     required:
       - current
+

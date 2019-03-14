@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.53.0'
+  version: '1.53.13'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -245,11 +245,9 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
 #
 # Deprecated paths
 #
-
 
 definitions:
   Error:
@@ -315,7 +313,7 @@ definitions:
         description: Certificate in PEM format
         type: string
 
-
 #
 # Deprecated definitions
 #
+

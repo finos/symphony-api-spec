@@ -2913,7 +2913,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
 #
 # Deprecated paths
 #
@@ -3879,7 +3878,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
 
 definitions:
   Error:
@@ -5719,7 +5717,6 @@ definitions:
 
 
 
-
 #
 # Deprecated definitions
 #
@@ -5950,3 +5947,4 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Message'
+

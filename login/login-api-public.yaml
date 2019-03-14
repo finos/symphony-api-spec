@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.53.0'
+  version: '1.53.13'
   title: Login API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -205,7 +205,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
 definitions:
   Error:
     type: object
@@ -264,3 +263,4 @@ definitions:
           type: integer
           format: int64
           description: unix timestamp when the token expired
+
