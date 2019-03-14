@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.53.0'
+  version: '1.54.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -2913,6 +2913,108 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
+  '/v1/audittrail/privilegeduser':
+    get:
+      summary: Get a list of  actions performed by a privileged account acting as privileged user given a period of time.
+      description: Get a list of actions performed by a privileged account acting as privileged user given a period of time.
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: startTimestamp
+          description: |
+            Start timestamp in unix timestamp in millseconds.
+          in: query
+          required: true
+          type: integer
+          format: int64
+        - name: endTimestamp
+          description: |
+            End timestamp in unix timestamp in millseconds.
+            If not specified, it assumes to be current time.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: before
+          description: |
+            Return results from an opaque “before” cursor value as presented via a response cursor.
+          in: query
+          type: string
+          required: false
+        - name: after
+          description: |
+            Return results from an opaque “after” cursor value as presented via a response cursor.
+          in: query
+          type: string
+          required: false
+        - name: limit
+          description: |
+            Max No. of violations to return. If no value is provided, 50 is the default.
+            Some maximums for limit may be enforced for performance reasons.
+            The maximum supported value is 500.
+          in: query
+          type: integer
+          required: false
+        - name: initiatorId
+          description: |
+            If present, only the initiator with this initiator <user id> will be returned.
+          in: query
+          type: integer
+          format: int64
+        - name: role
+          description: |
+            If present, only the audit trail initiated by s user with privileged role acting as
+            privileged user will be returned.
+            Privileged eliglible roles:
+            User Provisioning (USER_PROVISIONING),
+            Content Management (CONTENT_MANAGEMENT),
+            Expression Filter Policy Management (EF_POLICY_MANAGEMENT),
+            SCO (SUPER_COMPLIANCE_OFFICER),
+            CO (COMPLIANCE_OFFICER),
+            Super admin (SUPER_ADMINISTRATOR),
+            Admin (ADMINISTRATOR),
+            L1 (L1_SUPPORT),
+            L2 (L2_SUPPORT),
+            Scope Manager (SCOPE_MANAGEMENT)
+          in: query
+          type: string
+          required: false
+      tags:
+        - AuditTrail
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1AuditTrailInitiatorList'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 #
 # Deprecated paths
 #
@@ -5713,8 +5815,79 @@ definitions:
       ignoreDLPwarning:
           type: boolean
           description: Did the user chose to ignore DLP warning that was presented?
-
-
+  Pagination:
+    type: object
+    required:
+      - cursors
+    properties:
+      cursors:
+        type: object
+        required:
+          - before
+          - after
+        properties:
+          before:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the start of the page of data
+              that has been returned.
+            example: "MTAxNTExOTQ1MjAwNzI5NDE="
+          after:
+            type: string
+            description: |
+              This is the opaque url-safe string that points to the end of the page of data
+              that has been returned.
+            example: "NDMyNzQyODI3OTQw"
+      previous:
+        type: string
+        description: |
+          API endpoint that will return the previous page of data. If not included, this is
+          the first page of data.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&before=MTAxNTExOTQ1MjAwNzI5NDE="
+      next:
+        type: string
+        description: |
+          API endpoint that will return the next page of data. If not included, this is the
+          last page of data. Due to how pagination works with visibility and privacy, it is
+          possible that a page may be empty but contain a 'next' paging link. Stop paging when
+          the 'next' link no longer appears.
+        example: "https://tenantapi.d.isym.io/v1/tenantinfo?limit=25&after=NDMyNzQyODI3OTQw"
+  V1AuditTrailInitiatorResponse:
+    description: |
+      Audit Trail Initiator object response.
+      The attributes may vary according to the action.
+      There are different types of action and each action could have specific attributes.
+    type: object
+    properties:
+      action:
+        description: The audit trail action that has peformed
+        type: string
+      actionName:
+        description: The audit trail action name that has peformed
+        type: string
+      timestamp:
+        description: The timestamp when the action has occurred
+        type: string
+      initiatorId:
+        description: The user's id that has performed the action
+        type: string
+      initiatorUsername:
+        description: The username that has performed the action
+        type: string
+      initiatorEmailAddress:
+        description: The user's e-mail address that has performed the action
+        type: string
+    additionalProperties: true
+  V1AuditTrailInitiatorList:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/V1AuditTrailInitiatorResponse'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
 
 
 #
