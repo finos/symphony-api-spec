@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.54.2-SNAPSHOT'
+  version: '1.54.2'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
