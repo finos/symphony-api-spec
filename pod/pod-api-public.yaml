@@ -6034,9 +6034,6 @@ definitions:
     properties:
       cursors:
         type: object
-        required:
-          - before
-          - after
         properties:
           before:
             type: string
