@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.54.2'
+  version: '1.55.1'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -3995,6 +3995,10 @@ paths:
           description: 'Not found: Message ID could not be found.'
           schema:
             $ref: '#/definitions/Error'
+        '422':
+          description: 'Unprocessable entity: Invalid message type.'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
@@ -4388,6 +4392,9 @@ paths:
   '/v2/admin/streams/{streamId}/messageIds':
     get:
       summary: Fetch message ids using timestamp.
+      description: |
+        Gets all message Ids that matches a given stream defined by
+        a streamId in a specified time frame
       produces:
         - application/json
       parameters:
@@ -4397,25 +4404,35 @@ paths:
           required: true
           type: string
         - name: streamId
-          description: The stream ID
+          description: The stream from which messages are going to be fetched.
           in: path
           required: true
           type: string
         - name: since
+          description: |
+            A timestamp in milisseconds that defines the initial time
+            the search will consider when getting the messageIds.
           in: query
           required: false
           type: integer
           format: int64
         - name: to
+          description: |
+            A timestamp in milisseconds that defines the final time
+            the search will consider when getting the messageIds.
           in: query
           required: false
           type: integer
           format: int64
         - name: limit
+          description: |
+            The limit of how many messageIds will be retrieved at a time.
           in: query
           required: false
           type: integer
         - name: offset
+          description: |
+            The pagination offset related to the messageIds search.
           in: query
           required: false
           type: integer
@@ -4634,6 +4651,8 @@ definitions:
         description: 'Note: only available if the application has the extended user or contact permission'
       roles:
         $ref: '#/definitions/StringList'
+      interactionUrl:
+        type: string
   V2UserList:
     description: List of User record version 2
     type: object
@@ -5345,6 +5364,8 @@ definitions:
         $ref: '#/definitions/V2UserKeyRequest'
       previousKey:
         $ref: '#/definitions/V2UserKeyRequest'
+      interactionUrl:
+        type: string
   V2UserKeyRequest:
     description: User RSA key information.
     type: object
@@ -6034,6 +6055,9 @@ definitions:
     properties:
       cursors:
         type: object
+        required:
+          - before
+          - after
         properties:
           before:
             type: string
@@ -6486,7 +6510,6 @@ definitions:
     type: object
     properties:
       user:
-        type: object
         $ref: '#/definitions/UserCompp'
       deliveryReceiptTimestamp:
         description: Timestamp of message delivery receipts
@@ -6509,10 +6532,10 @@ definitions:
     type: object
     properties:
       creator:
-        type: object
-        $ref: '#/definitions/MessageCreator'
+        $ref: '#/definitions/MessageUser'
+      onBehalfOfUser:
+        $ref: '#/definitions/MessageUser'
       stream:
-        type: object
         $ref: '#/definitions/MessageStream'
       creationDate:
         type: integer
@@ -6532,7 +6555,6 @@ definitions:
         items:
           $ref: '#/definitions/MessageReceiptDetail'
       pagination:
-        type: object
         $ref: "#/definitions/Pagination"
   MessageIdsFromStream:
     description: List of MessageIds of a Stream
@@ -6551,7 +6573,7 @@ definitions:
       nextStartNumber:
         type: integer
         format: int64
-  MessageCreator:
+  MessageUser:
     type: object
     properties:
       id:
@@ -6584,10 +6606,10 @@ definitions:
         description: message id
         type: string
       creator:
-        type: object
-        $ref: '#/definitions/MessageCreator'
+        $ref: '#/definitions/MessageUser'
+      onBehalfOfUser:
+        $ref: '#/definitions/MessageUser'
       stream:
-        type: object
         $ref: '#/definitions/MessageStream'
       creationDate:
         type: integer
@@ -6615,3 +6637,34 @@ definitions:
     properties:
       messageIds:
         $ref: '#/definitions/StringList'
+  AssigneeCandidate:
+      description: Assignee Candidate
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        username:
+          type: string
+        firstName:
+          type: string
+        surname:
+          type: string
+        emailAddress:
+          type: string
+        canBeAssigned:
+          type: boolean
+        roles:
+          $ref: '#/definitions/StringList'
+  AssigneeCandidates:
+      description: List of assignee candidate
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/definitions/AssigneeCandidate'
+        pagination:
+          type: object
+          $ref: "#/definitions/Pagination"
+

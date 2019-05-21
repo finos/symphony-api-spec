@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.54.0'
+  version: '1.55.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -347,6 +347,13 @@ paths:
            Makes a request to the HealthCheck on the Key Manager service.
            Encryts and decrypts a message inside either agent or user SbeSession with wall thread id.
        parameters:
+       - name: showFirehoseErrors
+         description: |
+            Flag to set if Firehose Service connectivity errors will show on Agent's healthcheck or not.
+            Default is "false", so no errors will show up if connectivity check isn't successful.
+         in: query
+         required: false
+         type: boolean
        - name: sessionToken
          description: Session authentication token.
          in: header
@@ -1152,6 +1159,10 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in signal'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -4323,6 +4334,12 @@ definitions:
        keyManagerConnectivityError:
          type: string
          description: Error details in case of no Key Manager connectivity
+       firehoseConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to Firehose Service
+       firehoseConnectivityError:
+         type: string
+         description: Error details in case of no Firehose connectivity
        encryptDecryptSuccess:
          type: boolean
          description: Indicates whether the Agent can successfully decrypt and encrypt messages
@@ -4851,6 +4868,10 @@ definitions:
         type: integer
         format: int64
         description: the date, in miliseconds, the firehose was created.
+      userId:
+        type: integer
+        format: int64
+        description: ID from user that created the firehose subscription.
   V5FirehoseList:
     type: array
     items:
