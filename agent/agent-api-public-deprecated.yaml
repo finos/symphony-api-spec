@@ -442,7 +442,7 @@ paths:
           - name: keyManagerToken
             description: Key Manager authentication token.
             in: header
-            required: false
+            required: true
             type: string
           - name: id
             description: Message ID as a URL-safe string
