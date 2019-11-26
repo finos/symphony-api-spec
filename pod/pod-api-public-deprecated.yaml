@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.55.1'
+  version: '1.55.4'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -3084,6 +3084,48 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+    delete:
+      summary: Unassign a disclaimer from a user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - User
+      responses:
+        '200':
+         description: Success
+         schema:
+           $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/user/{uid}/disclaimer/update':
     post:
       summary: Assign a disclaimer to a user
@@ -4465,7 +4507,22 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
+  '/v1/languages':
+    get:
+      summary: Lists available languages for the pod.
+      produces:
+        - application/json
+      tags:
+        - Pod
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Languages'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 #
 # Deprecated paths
 #
@@ -5729,8 +5786,6 @@ definitions:
         description: 'Note: only available if the application has the extended user or contact permission'
       roles:
         $ref: '#/definitions/StringList'
-      interactionUrl:
-        type: string
   V2UserList:
     description: List of User record version 2
     type: object
@@ -6442,8 +6497,6 @@ definitions:
         $ref: '#/definitions/V2UserKeyRequest'
       previousKey:
         $ref: '#/definitions/V2UserKeyRequest'
-      interactionUrl:
-        type: string
   V2UserKeyRequest:
     description: User RSA key information.
     type: object
@@ -6507,6 +6560,9 @@ definitions:
         type: integer
         format: int64
       lastPasswordReset:
+        type: integer
+        format: int64
+      deactivatedDate:
         type: integer
         format: int64
   UserDetailList:
@@ -7262,6 +7318,9 @@ definitions:
       area:
         description: Group area
         type: string
+      description:
+        description: Group description
+        type: string
       type:
         description: Group type
         type: string
@@ -7280,6 +7339,9 @@ definitions:
         type: string
       area:
         description: An optional string attribute used for categorizing groups
+        type: string
+      description:
+        description: Group description
         type: string
       type:
         description: Group type
@@ -7322,6 +7384,9 @@ definitions:
         type: string
       area:
         description: Group area
+        type: string
+      description:
+        description: Group description
         type: string
       active:
         description: Group status
@@ -7745,6 +7810,12 @@ definitions:
         pagination:
           type: object
           $ref: "#/definitions/Pagination"
+  Languages:
+    description: List of languages
+    type: object
+    properties:
+      languages:
+        $ref: "#/definitions/StringList"
 
   SessionInfo:
     description: Information about the current user's session
