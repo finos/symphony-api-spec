@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.55.3'
+  version: '1.55.4'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
