@@ -351,6 +351,8 @@ paths:
       summary: Search messages
       description: |
           Search messages according to the specified criteria.
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -5875,6 +5877,7 @@ definitions:
     - timestamp
     - streamId
   V1HealthCheckResponse:
+    deprecated: true
     type: object
     properties:
       podConnectivity:
