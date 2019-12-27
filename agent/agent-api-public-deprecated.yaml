@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.55.4'
+  version: '1.55.5'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -4367,6 +4367,9 @@ definitions:
         description: |
           Message that may be sent along with a regular message if configured for the POD,
           usually the first message sent in a room that day.
+      sid:
+        type: string
+        description: Unique session identifier from where the message was created.
   V4User:
     type: object
     properties:
