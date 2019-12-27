@@ -4523,6 +4523,70 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/dataquery/api/v3/messages/thread':
+    get:
+      summary: Queries messages of a thread.
+      produces:
+        - application/json
+      parameters:
+        - name: from
+          description: ''
+          in: query
+          required: true
+          type: integer
+        - name: id
+          description: 'Thread id'
+          in: query
+          required: true
+          type: string
+        - name: limit
+          description: 'The maximum number of results to return'
+          in: query
+          required: true
+          type: integer
+        - name: to
+          description: ''
+          in: query
+          type: integer
+        - name: ischronological
+          description: ''
+          in: query
+          type: boolean
+        - name: includestatus
+          description: ''
+          in: query
+          type: boolean
+        - name: unreadMegCount
+          description: ''
+          in: query
+          type: boolean
+        - name: includeSilenced
+          description: ''
+          in: query
+          type: boolean
+        - name: excludeFields
+          description: ''
+          in: query
+          type: string
+        - name: includeDeletedMessages
+          description: ''
+          in: query
+          type: boolean
+        - name: includePendingJoinRoom
+          description: ''
+          in: query
+          type: boolean
+        - name: isMonitoring
+          description: ''
+          in: query
+          type: boolean
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ThreadMessagesDataqueryResult'
 definitions:
   Error:
     type: object
@@ -6738,4 +6802,235 @@ definitions:
     properties:
       languages:
         $ref: "#/definitions/StringList"
-
+  ThreadMessagesDataqueryResult:
+    description: ''
+    type: object
+    properties:
+      userId:
+        type: integer
+      threadId:
+        type: string
+      envelopes:
+        type: array
+        items:
+          $ref: '#/definitions/Envelope'
+      from:
+        type: integer
+      to:
+        type: integer
+      limit:
+        type: integer
+  Envelope:
+    description: ''
+    type: object
+    properties:
+      message:
+        type: object
+        $ref: '#/definitions/Message'
+      suppressed:
+        type: boolean
+      isShared:
+        type: boolean
+      shareCount:
+        type: integer
+      isRead:
+        type: boolean
+      isLiked:
+        type: boolean
+      likeCount:
+        type: integer
+      isBookmarked:
+        type: boolean
+      isOwnedByLocalPod:
+        type: boolean
+  Message:
+    description:
+    type: object
+    properties:
+      version:
+        type: string
+      traceId:
+        type: string
+      sid:
+        type: string
+      messageId:
+        type: string
+      objectHash:
+        type: string
+      threadId:
+        type: string
+      ingestionDate:
+        type: integer
+      schemaVersion:
+        type: integer
+      semVersion:
+        type: string
+      isCopyDisabled:
+        type: boolean
+      text:
+        type: string
+      sendingApp:
+        type: string
+      chatType:
+        type: string
+      isPrivate:
+        type: boolean
+      entities:
+        type: object
+      suppressed:
+        type: boolean
+      receiptSuppressed:
+        type: boolean
+      encryptedMedia:
+        type: string
+      from:
+        type: object
+        $ref: '#/definitions/Subject'
+      platform:
+        type: string
+      isBlast:
+        type: boolean
+      isImported:
+        type: boolean
+      externalOrigination:
+        type: boolean
+      malwareScanRequired:
+        type: boolean
+      encrypted:
+        type: boolean
+      copyDisabled:
+        type: boolean
+      clientVersionInfo:
+        type: string
+      fromPod:
+        type: integer
+      encryptedEntities:
+        type: string
+      format:
+        type: string
+      presentationML:
+        type: string
+      entityJSON:
+        type: string
+      uniqueMessageId:
+        type: integer
+      ignoreDLPWarning:
+        type: boolean
+      reloadPolicies:
+        type: boolean
+      enforceExpressionFiltering:
+        type: boolean
+      enforceExpressionFilteringMinEFV3:
+        type: boolean
+      isFormReply:
+        type: boolean
+      isChime:
+        type: boolean
+      msgFeatures:
+        type: string
+  Subject:
+    description: ''
+    type: object
+    properties:
+      "prettyName":
+        type: string
+      "prettyNameNormalized":
+        type: string
+      "firstName":
+        type: string
+      "firstNameNormalized":
+        type: string
+      "surname":
+        type: string
+      "surnameNormalized":
+        type: string
+      "screenName":
+        type: string
+      "samlId":
+        type: string
+      "username":
+        type: string
+      "usernameNormalized":
+        type: string
+      "emailAddress":
+        type: string
+      "emailAddressNormalized":
+        type: string
+      "active":
+        type: boolean
+      "roles":
+        type: array
+        items:
+          $ref: '#/definitions/Role'
+      "entitlement":
+        type: array
+        items:
+          $ref: '#/definitions/Entitlement'
+      "myCurrentThreadId":
+        type: string
+      "imageUrl":
+        type: string
+      "imageUrlSmall":
+        type: string
+      "images":
+        type: object
+        $ref: '#/definitions/Images'
+      "filterRole":
+        type: string
+      "registrationStatus":
+        type: string
+      "lastLoginDate":
+        type: integer
+      "focusedUser":
+        type: boolean
+      "company":
+        type: string
+      "industry":
+        type: array
+      "assetClass":
+        type: array
+      "source":
+        type: string
+      "authenticationKeys":
+        type: object
+      "preferences":
+        type: object
+        $ref: '#/definitions/Preferences'
+      "verifiedForBadge":
+        type: boolean
+      "baseHash":
+        type: string
+      "absoluteHash":
+        type: string
+      "userType":
+        type: string
+      "id":
+        type: integer
+  Entitlement:
+    description: ''
+    type: object
+    properties:
+      "name":
+        type: string
+      "value":
+        type: boolean
+  Images:
+    description: ''
+    type: object
+    properties:
+      "50":
+        type: string
+      "150":
+        type: string
+      "500":
+        type: string
+      "600":
+        type: string
+      "orig":
+        type: string
+  Preferences:
+    description: ''
+    type: object
+    properties:
+      recommendedLanguage:
+        type: string
