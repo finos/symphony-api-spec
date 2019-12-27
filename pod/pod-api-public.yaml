@@ -1876,13 +1876,13 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/streams/{sid}/info':
+  '/v2/streams/{streamId}/info':
     get:
       summary: Get information about a partcular stream.
       produces:
         - application/json
       parameters:
-        - name: sid
+        - name: streamId
           description: Stream Id
           in: path
           required: true
@@ -1915,13 +1915,13 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/streams/{sid}/attachments':
+  '/v1/streams/{streamId}/attachments':
     get:
       summary: Get attachments in a particular stream.
       produces:
         - application/json
       parameters:
-        - name: sid
+        - name: streamId
           description: Stream Id
           in: path
           required: true
