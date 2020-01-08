@@ -3399,6 +3399,11 @@ definitions:
         description: |
           Message that may be sent along with a regular message if configured for the POD,
           usually the first message sent in a room that day.
+      sid:
+        type: string
+        description: |
+          Unique session identifier from where the message was created.
+        example: 'fa691cd3-484a-4109-aeb2-57c05b78c95b'
   V4User:
     type: object
     properties:
