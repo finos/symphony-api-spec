@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.56.0'
+  version: '1.57.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -5938,6 +5938,8 @@ definitions:
         type: string
       authenticationKeys:
         $ref: '#/definitions/AppAuthenticationKeys'
+      notification:
+        $ref: '#/definitions/AppNotification'
   V2PresenceList:
     type: array
     items:
@@ -6184,6 +6186,16 @@ definitions:
             - REVOKE
             - EXTEND
         type: string
+  AppNotification:
+    type: object
+    description: Application callback information
+    properties:
+      url:
+        type: string
+        description: "callback URL"
+      apiKey:
+        type: string
+        description: "apiKey sent into every callback request, using the X-API-KEY header"
   StreamAttachmentResponse:
     type: array
     items:
