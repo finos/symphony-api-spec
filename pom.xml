@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.symphony.api</groupId>
-    <artifactId>symphony-public-apis</artifactId>
-    <version>2.56.0</version>
+    <groupId>com.symphony</groupId>
+    <artifactId>symphony-api-spec</artifactId>
+    <version>2.57.0</version>
     <packaging>jar</packaging>
 
     <name>Swagger definitions for Symphony LLC public REST API</name>
