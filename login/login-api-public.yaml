@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.55.4'
+  version: '1.56.0'
   title: Login API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -83,7 +83,7 @@ paths:
         '400':
           description: 'Request object is invalid'
           schema:
-            $ref: '#/definitions/Error'            
+            $ref: '#/definitions/Error'
         '401':
           description: 'Client is unauthorized to access this resource'
           schema:

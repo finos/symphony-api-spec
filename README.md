@@ -19,8 +19,18 @@ You can paste the contents of these files into [Swagger Editor](http://editor.sw
 5. Push to the branch (`git push origin feature/fooBar`)
 6. Create a new Pull Request
 
+### Validating your changes (requires Maven)
+
+You can verify that your contribution is valid by simply running : 
+```shell script
+mvn clean package
+```
+This will execute the [`openapi-generator-maven-plugin`](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin) 
+in order to generate a Java client from the API specifications. If `BUILD SUCCESS`, it means that your additions are valid !
+If `BUILD FAILURE`, check the command output where the validation error has been described.
+
 ## License
 
 The code in this repository is distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
-Copyright (c) 2019 Symphony LLC
+Copyright (c) 2020 Symphony LLC

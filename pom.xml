@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.symphony.api</groupId>
+    <artifactId>symphony-public-apis</artifactId>
+    <version>2.56.0</version>
+    <packaging>jar</packaging>
+
+    <name>Swagger definitions for Symphony LLC public REST API</name>
+    <description>This Maven pom.xml file is only used to ensure that Swagger specs are actually valid</description>
+    <url>https://github.com/symphonyoss/symphony-api-spec</url>
+
+    <properties>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <!-- Alphabetical order -->
+        <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
+        <jackson.version>2.10.1</jackson.version>
+        <jersey.version>2.29.1</jersey.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <migbase64.version>2.2</migbase64.version>
+        <swagger-annotations.version>1.6.0</swagger-annotations.version>
+
+        <!-- Code Gen -->
+        <openapi-generator-maven-plugin.version>4.3.0</openapi-generator-maven-plugin.version>
+        <codegen.generatorName>java</codegen.generatorName>
+        <codegen.invoker.library>webclient</codegen.invoker.library>
+        <codegen.base.package>com.symphony.api.gen</codegen.base.package>
+
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>2.2.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <configuration>
+                    <!-- more options here : https://openapi-generator.tech/docs/generators/java -->
+                    <generatorName>${codegen.generatorName}</generatorName>
+                    <library>${codegen.invoker.library}</library>
+                    <generateApiTests>false</generateApiTests>
+                    <generateModelTests>false</generateModelTests>
+                    <generateSupportingFiles>true</generateSupportingFiles>
+                    <apiPackage>${codegen.base.package}</apiPackage>
+                    <modelPackage>${codegen.base.package}.model</modelPackage>
+                    <invokerPackage>${codegen.base.package}.invoker</invokerPackage>
+                    <configOptions>
+                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                        <sourceFolder>src/main/java</sourceFolder>
+                        <dateLibrary>java8</dateLibrary>
+                        <useRuntimeException>false</useRuntimeException>
+                    </configOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>agent-api-public</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/agent/agent-api-public.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>agent-api-public-deprecated</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/agent/agent-api-public-deprecated.yaml</inputSpec>
+                            <skipValidateSpec>true</skipValidateSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pod-api-public</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/pod/pod-api-public.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pod-api-public-deprecated</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/pod/pod-api-public-deprecated.yaml</inputSpec>
+                            <skipValidateSpec>true</skipValidateSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>authenticator-api-public</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/authenticator/authenticator-api-public.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>authenticator-api-public-deprecated</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/authenticator/authenticator-api-public-deprecated.yaml</inputSpec>
+                            <skipValidateSpec>true</skipValidateSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>login-api-public</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/login/login-api-public.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

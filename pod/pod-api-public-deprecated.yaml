@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.55.4'
+  version: '1.56.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -686,21 +686,21 @@ paths:
     post:
       summary: Create a new single or multi party instant message conversation between the caller and specified users.
       description: |
-          At least one user ID must be provided or
-          an error response will be sent.
+        At least one user ID must be provided or
+        an error response will be sent.
 
-          The caller is implicitly included in the members of the
-          created chat.
+        The caller is implicitly included in the members of the
+        created chat.
 
-          Duplicate users will be included in the membership of the chat but
-          the duplication will be silently ignored.
+        Duplicate users will be included in the membership of the chat but
+        the duplication will be silently ignored.
 
-          If there is an existing IM conversation with the same set of participants then
-          the id of that existing stream will be returned.
+        If there is an existing IM conversation with the same set of participants then
+        the id of that existing stream will be returned.
 
-          This method was incorrectly specified to take a query parameter in
-          version 1.0 of this specification but now expects a JSON array of
-          user IDs in the body of the request.
+        This method was incorrectly specified to take a query parameter in
+        version 1.0 of this specification but now expects a JSON array of
+        user IDs in the body of the request.
       consumes:
         - application/json
       produces:
@@ -744,11 +744,11 @@ paths:
     post:
       summary: Create Presence status feed.
       description: |
-            Create a new stream capturing presence status changes ("presence feed").
-            When read from, the feed will return the current presence status of company (pod) users
-            if it has changed since the last read.
+        Create a new stream capturing presence status changes ("presence feed").
+        When read from, the feed will return the current presence status of company (pod) users
+        if it has changed since the last read.
 
-            Returns the ID of the presence feed to be used in subsequent read operations.
+        Returns the ID of the presence feed to be used in subsequent read operations.
       consumes:
         - application/json
       produces:
@@ -786,8 +786,8 @@ paths:
     get:
       summary: Read a presence status feed.
       description: |
-            Returns the current presence status of company (pod) users
-            if it has changed since the last read. Returns up to 500 records at a time.
+        Returns the current presence status of company (pod) users
+        if it has changed since the last read. Returns up to 500 records at a time.
       produces:
         - application/json
       parameters:
@@ -828,7 +828,7 @@ paths:
     post:
       summary: Delete a presence status feed.
       description: |
-            Returns the ID of the deleted feed.
+        Returns the ID of the deleted feed.
       consumes:
         - application/json
       produces:
@@ -1505,7 +1505,7 @@ paths:
           schema:
             $ref: '#/definitions/UserIdList'
       tags:
-      - Presence
+        - Presence
       responses:
         '200':
           description: OK
@@ -1612,14 +1612,14 @@ paths:
           format: int64
         - name: local
           description: |
-              If true, a local query will be performed and the presence will be
-              set to OFFLINE for users who are not local to the calling user's
-              pod. If false or absent, then the presence of all local users and
-              the presence of all external users to whom the calling user is
-              connected will be queried.
+            If true, a local query will be performed and the presence will be
+            set to OFFLINE for users who are not local to the calling user's
+            pod. If false or absent, then the presence of all local users and
+            the presence of all external users to whom the calling user is
+            connected will be queried.
 
-              For external users, a "presence interest" should be registered through
-              /v1/user/presence/register before querying for presence.
+            For external users, a "presence interest" should be registered through
+            /v1/user/presence/register before querying for presence.
           in: query
           type: boolean
           required: false
@@ -1677,26 +1677,26 @@ paths:
         To avoid this situation, a presence feed should be created (and optionally read from)
         first to capture presence changes of users who get reactivated during a paged call to this endpoint.
       produces:
-      - application/json
+        - application/json
       parameters:
-      - name: sessionToken
-        description: Session authentication token.
-        in: header
-        required: true
-        type: string
-      - name: lastUserId
-        description: Last user ID retrieved. Used for paging; if provided, results will skip users with IDs less than this parameter.
-        in: query
-        required: false
-        type: integer
-        format: int64
-      - name: limit
-        description: Max number of records to return. If no value is provided, 1000 is the default. The maximum supported value is 5000.
-        in: query
-        type: integer
-        required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: lastUserId
+          description: Last user ID retrieved. Used for paging; if provided, results will skip users with IDs less than this parameter.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: limit
+          description: Max number of records to return. If no value is provided, 1000 is the default. The maximum supported value is 5000.
+          in: query
+          type: integer
+          required: false
       tags:
-      - Presence
+        - Presence
       responses:
         '200':
           description: OK
@@ -1722,20 +1722,20 @@ paths:
     post:
       summary: Set presence information for a particular user.
       produces:
-      - application/json
+        - application/json
       parameters:
-      - name: sessionToken
-        description: Session authentication token.
-        in: header
-        required: true
-        type: string
-      - name: presence
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/V2UserPresence'
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: presence
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V2UserPresence'
       tags:
-      - Presence
+        - Presence
       responses:
         '200':
           description: OK
@@ -1779,9 +1779,9 @@ paths:
           type: integer
         - name: local
           description: |
-             If true then a local DB search will be performed and only local pod users will be
-             returned. If absent or false then a directory search will be performed and users
-             from other pods who are visible to the calling user will also be returned.
+            If true then a local DB search will be performed and only local pod users will be
+            returned. If absent or false then a directory search will be performed and users
+            from other pods who are visible to the calling user will also be returned.
           in: query
           required: false
           type: boolean
@@ -1859,7 +1859,7 @@ paths:
           schema:
             $ref: '#/definitions/StreamList'
         '204':
-            description: 'Stream not found.'
+          description: 'Stream not found.'
         '400':
           description: 'Client error.'
           schema:
@@ -2353,17 +2353,17 @@ paths:
     post:
       summary: Create a new single or multi party instant message conversation
       description: |
-          At least two user IDs must be provided or
-          an error response will be sent.
+        At least two user IDs must be provided or
+        an error response will be sent.
 
-          The caller is not included in the members of the
-          created chat.
+        The caller is not included in the members of the
+        created chat.
 
-          Duplicate users will be included in the membership of the chat but
-          the duplication will be silently ignored.
+        Duplicate users will be included in the membership of the chat but
+        the duplication will be silently ignored.
 
-          If there is an existing IM conversation with the same set of participants then
-          the id of that existing stream will be returned.
+        If there is an existing IM conversation with the same set of participants then
+        the id of that existing stream will be returned.
       consumes:
         - application/json
       produces:
@@ -2389,47 +2389,6 @@ paths:
             $ref: '#/definitions/Stream'
         '400':
           description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v1/admin/messagesuppression/{id}/suppress':
-    post:
-      summary: Suppress a message
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          description: URL-Safe encoded Message ID
-          in: path
-          required: true
-          type: string
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-      tags:
-        - MessageSuppression
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/MessageSuppressionResponse'
-        '400':
-          description: 'Client error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
         '401':
@@ -2481,50 +2440,50 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   '/v1/admin/room/{id}/setActive':
-      post:
-        summary: Deactivate or reactivate a chatroom via AC Portal.
-        consumes:
-          - application/json
-        produces:
-          - application/json
-        parameters:
-          - name: id
-            description: Room streamId
-            in: path
-            required: true
-            type: string
-          - name: active
-            in: query
-            required: true
-            type: boolean
-          - name: sessionToken
-            description: Session authentication token.
-            in: header
-            required: true
-            type: string
-        tags:
-          - Streams
-        responses:
-          '200':
-            description: OK
-            schema:
-              $ref: '#/definitions/RoomDetail'
-          '400':
-            description: 'Client error.'
-            schema:
-              $ref: '#/definitions/Error'
-          '401':
-            description: 'Unauthorized: Session tokens invalid.'
-            schema:
-              $ref: '#/definitions/Error'
-          '403':
-            description: 'Forbidden: Caller lacks necessary entitlement.'
-            schema:
-              $ref: '#/definitions/Error'
-          '500':
-            description: 'Server error, see response body for further details.'
-            schema:
-              $ref: '#/definitions/Error'
+    post:
+      summary: Deactivate or reactivate a chatroom via AC Portal.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: Room streamId
+          in: path
+          required: true
+          type: string
+        - name: active
+          in: query
+          required: true
+          type: boolean
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RoomDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/room/{id}/membership/list':
     get:
       summary: Lists current and previous members of an existing room.
@@ -3107,9 +3066,9 @@ paths:
         - User
       responses:
         '200':
-         description: Success
-         schema:
-           $ref: '#/definitions/SuccessResponse'
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -3463,12 +3422,12 @@ paths:
           type: string
         - name: skip
           description: |
-           Number of items to skip. Default is 0.
+            Number of items to skip. Default is 0.
           in: query
           type: integer
         - name: limit
           description: |
-           Maximum number of items to return. Default is 50.  This value cannot exceed 100.
+            Maximum number of items to return. Default is 50.  This value cannot exceed 100.
           in: query
           type: integer
         - name: filter
@@ -4231,31 +4190,31 @@ paths:
         Use them only during a short-period of time that you are traversing the list.
       operationId: listAllowedFileExtensions
       parameters:
-      - name: limit
-        type: integer
-        required: false
-        in: query
-        description: |
-          This is the maximum number of objects that may be returned. A query may return
-          fewer than the value of limit due to filtering or service-side maximums. Do not
-          depend on the number of results being fewer than the limit value to indicate your
-          query reached the end of the list of data, use the absence of next instead as
-          described below. For example, if you set limit to 10 and 9 results are returned,
-          there may be more data available, but one item was removed due to privacy filtering.
-          Some maximums for limit may be enforced for performance reasons. In all cases, the
-          API returns the correct pagination links.
-      - name: before
-        type: string
-        required: false
-        in: query
-        description: |
-          Returns results from an opaque "before" cursor value as presented via a response cursor
-      - name: after
-        type: string
-        required: false
-        in: query
-        description: |
-          Returns results from an opaque "after" cursor value as presented via a response cursor
+        - name: limit
+          type: integer
+          required: false
+          in: query
+          description: |
+            This is the maximum number of objects that may be returned. A query may return
+            fewer than the value of limit due to filtering or service-side maximums. Do not
+            depend on the number of results being fewer than the limit value to indicate your
+            query reached the end of the list of data, use the absence of next instead as
+            described below. For example, if you set limit to 10 and 9 results are returned,
+            there may be more data available, but one item was removed due to privacy filtering.
+            Some maximums for limit may be enforced for performance reasons. In all cases, the
+            API returns the correct pagination links.
+        - name: before
+          type: string
+          required: false
+          in: query
+          description: |
+            Returns results from an opaque "before" cursor value as presented via a response cursor
+        - name: after
+          type: string
+          required: false
+          in: query
+          description: |
+            Returns results from an opaque "after" cursor value as presented via a response cursor
       responses:
         '200':
           description: |
@@ -4303,20 +4262,20 @@ paths:
         by converting it to lowecase.
       operationId: putAllowedFileExtension
       parameters:
-      - name: sessionToken
-        description: Session authentication token.
-        in: header
-        required: true
-        type: string
-      - name: extension
-        in: path
-        required: true
-        type: string
-      - in: body
-        name: V3FileExtension
-        required: true
-        schema:
-          $ref: "#/definitions/FileExtension"
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: extension
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: V3FileExtension
+          required: true
+          schema:
+            $ref: "#/definitions/FileExtension"
       responses:
         200:
           description: "200 response"
@@ -4353,15 +4312,15 @@ paths:
         case-insensitively by the API.
       operationId: deleteAllowedFileExtension
       parameters:
-      - name: sessionToken
-        description: Session authentication token.
-        in: header
-        required: true
-        type: string
-      - name: extension
-        in: path
-        required: true
-        type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: extension
+          in: path
+          required: true
+          type: string
       responses:
         204:
           description: "204 response"
@@ -4523,9 +4482,52 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-#
-# Deprecated paths
-#
+  '/v1/admin/messages/{messageId}/metadata/relationships':
+    get:
+      summary: 'Get the message metadata relationship'
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: User-Agent
+          description: Request user agent.
+          in: header
+          required: true
+          type: string
+        - name: messageId
+          in: path
+          description: Valid id of a SOCIALMESSAGE
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 'Successful Operation'
+          schema:
+            $ref: '#/definitions/MessageMetadataResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+
+  #
+  # Deprecated paths
+  #
   '/v1/sessioninfo':
     get:
       deprecated: true
@@ -4863,14 +4865,14 @@ paths:
           format: int64
         - name: local
           description: |
-              If true, a local query will be performed and the presence will be
-              set to OFFLINE for users who are not local to the calling user's
-              pod. If false or absent, then the presence of all local users and
-              the presence of all external users to whom the calling user is
-              connected will be queried.
+            If true, a local query will be performed and the presence will be
+            set to OFFLINE for users who are not local to the calling user's
+            pod. If false or absent, then the presence of all local users and
+            the presence of all external users to whom the calling user is
+            connected will be queried.
 
-              For external users, a "presence interest" should be registered through
-              /v1/user/presence/register before querying for presence.
+            For external users, a "presence interest" should be registered through
+            /v1/user/presence/register before querying for presence.
           in: query
           type: boolean
           required: false
@@ -4912,102 +4914,102 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   '/v1/room/create':
-      post:
-        deprecated: true
-        summary: Create a new chatroom.
-        description: |
-          Create a new chatroom.
+    post:
+      deprecated: true
+      summary: Create a new chatroom.
+      description: |
+        Create a new chatroom.
 
-          If no attributes are specified, the room is created as a private chatroom.
-        consumes:
-          - application/json
-        produces:
-          - application/json
-        parameters:
-          - name: payload
-            in: body
-            required: true
-            schema:
-              $ref: '#/definitions/RoomCreate'
-          - name: sessionToken
-            description: Session authentication token.
-            in: header
-            required: true
-            type: string
-        tags:
-          - Streams
-        responses:
-          '200':
-            description: OK
-            schema:
-              $ref: '#/definitions/RoomDetail'
-          '400':
-            description: 'Client error.'
-            schema:
-              $ref: '#/definitions/Error'
-          '401':
-            description: 'Unauthorized: Session tokens invalid.'
-            schema:
-              $ref: '#/definitions/Error'
-          '403':
-            description: 'Forbidden: Caller lacks necessary entitlement.'
-            schema:
-              $ref: '#/definitions/Error'
-          '500':
-            description: 'Server error, see response body for further details.'
-            schema:
-              $ref: '#/definitions/Error'
+        If no attributes are specified, the room is created as a private chatroom.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RoomCreate'
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RoomDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v2/room/create':
-      post:
-        deprecated: true
-        summary: Create a new chatroom.
-        description: |
-          Create a new chatroom.
+    post:
+      deprecated: true
+      summary: Create a new chatroom.
+      description: |
+        Create a new chatroom.
 
-          If no  attributes are specified, the room is created as a private chatroom.
-        consumes:
-          - application/json
-        produces:
-          - application/json
-        parameters:
-          - name: payload
-            in: body
-            required: true
-            schema:
-              $ref: '#/definitions/V2RoomAttributes'
-          - name: sessionToken
-            description: Session authentication token.
-            in: header
-            required: true
-            type: string
-        tags:
-          - Streams
-        responses:
-          '200':
-            description: OK
-            schema:
-              $ref: '#/definitions/V2RoomDetail'
-            headers:
-              X-Warning:
-                description: This method is deprecated
-                type: string
+        If no  attributes are specified, the room is created as a private chatroom.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V2RoomAttributes'
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V2RoomDetail'
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
 
-          '400':
-            description: 'Client error.'
-            schema:
-              $ref: '#/definitions/Error'
-          '401':
-            description: 'Unauthorized: Session tokens invalid.'
-            schema:
-              $ref: '#/definitions/Error'
-          '403':
-            description: 'Forbidden: Caller lacks necessary entitlement.'
-            schema:
-              $ref: '#/definitions/Error'
-          '500':
-            description: 'Server error, see response body for further details.'
-            schema:
-              $ref: '#/definitions/Error'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v2/room/search':
     post:
       deprecated: true
@@ -5353,12 +5355,12 @@ paths:
           type: string
         - name: skip
           description: |
-           Number of items to skip. Default is 0.
+            Number of items to skip. Default is 0.
           in: query
           type: integer
         - name: limit
           description: |
-           Maximum number of items to return. Default is 50.  This value cannot exceed 100.
+            Maximum number of items to return. Default is 50.  This value cannot exceed 100.
           in: query
           type: integer
         - name: filter
@@ -5601,6 +5603,48 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/messagesuppression/{id}/suppress':
+    post:
+      deprecated: true
+      summary: Suppress a message
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: URL-Safe encoded Message ID
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - MessageSuppression
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MessageSuppressionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -5611,13 +5655,13 @@ definitions:
       message:
         type: string
   CompanyCert:
-      type: object
-      properties:
-        pem:
-          type: string
-          description: An X509 certificate in PEM format
-        attributes:
-          $ref: '#/definitions/CompanyCertAttributes'
+    type: object
+    properties:
+      pem:
+        type: string
+        description: An X509 certificate in PEM format
+      attributes:
+        $ref: '#/definitions/CompanyCertAttributes'
   CompanyCertDetail:
     type: object
     properties:
@@ -5766,6 +5810,9 @@ definitions:
         type: string
       location:
         type : string
+      accountType:
+        type: string
+        enum: [NORMAL, SYSTEM]
       avatars:
         # avatar urls for both original size and small size
         $ref: '#/definitions/AvatarList'
@@ -5857,8 +5904,8 @@ definitions:
   UserIdList:
     type: array
     items:
-        type: integer
-        format: int64
+      type: integer
+      format: int64
   UserId:
     type: object
     properties:
@@ -5922,7 +5969,10 @@ definitions:
         description: If true, new members can view the room chat history of the room.
       multiLateralRoom:
         type: boolean
-        description: If true, this is a multi latetal room where we can find users belonging to more than 2 companies.
+        description: If true, this is a multi lateral room where we can find users belonging to more than 2 companies.
+      scheduledMeeting:
+        type: boolean
+        description: If true, this room is for a scheduled meeting.
       subType:
         type: string
         description: Possible value EMAIL (indicate this room will be used for Email Integration)
@@ -5962,7 +6012,7 @@ definitions:
           - BASIC
           - RELEVANCE
     required:
-    - query
+      - query
   V2RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
     allOf:
@@ -6008,8 +6058,8 @@ definitions:
         description: The value of this Tag's label.
         type: string
     required:
-    - key
-    - value
+      - key
+      - value
   FacetedMatchCount:
     description: An object respresenting the result count of faceted search.
     properties:
@@ -6022,16 +6072,16 @@ definitions:
   RoomSystemInfo:
     type: object
     properties:
-     id:
+      id:
         type: string
-     creationDate:
+      creationDate:
         type: integer
         format: int64
         description: The datetime when the stream was originally created. Milliseconds since Jan 1 1970.
-     createdByUserId:
+      createdByUserId:
         type: integer
         format: int64
-     active:
+      active:
         type: boolean
         description: If false, no messages can be sent in this stream, and membership is locked.
   ImmutableRoomAttributes:
@@ -6091,7 +6141,7 @@ definitions:
   AvatarList:
     type: array
     items:
-     $ref: '#/definitions/Avatar'
+      $ref: '#/definitions/Avatar'
   UserStatus:
     type: object
     properties:
@@ -6123,7 +6173,7 @@ definitions:
   FeatureList:
     type: array
     items:
-     $ref: '#/definitions/Feature'
+      $ref: '#/definitions/Feature'
   Feature:
     description: Entitlement feature record.
     type: object
@@ -6323,12 +6373,12 @@ definitions:
   IntegerList:
     type: array
     items:
-        type: integer
-        format: int64
+      type: integer
+      format: int64
   StringList:
     type: array
     items:
-        type: string
+      type: string
   DisclaimerList:
     type: array
     items:
@@ -6533,9 +6583,9 @@ definitions:
         items:
           type: string
   V2UserDetailList:
-      type: array
-      items:
-        $ref: '#/definitions/V2UserDetail'
+    type: array
+    items:
+      $ref: '#/definitions/V2UserDetail'
   UserSystemInfo:
     description: User Status Information.
     type: object
@@ -6683,18 +6733,6 @@ definitions:
         description: maximum number of items to return
       members:
         $ref: '#/definitions/V2MemberInfoList'
-  MessageSuppressionResponse:
-    description: The suppression state of a message
-    type: object
-    properties:
-      messageId:
-        type: string
-      suppressed:
-        type: boolean
-      suppressionDate:
-        type: integer
-        format: int64
-        description: The date when this message was suppressed.
   BulkActionResult:
     description: |
       The results of list based bulk action. The list contains the result messages
@@ -7771,51 +7809,81 @@ definitions:
         items:
           $ref: '#/definitions/MessageDownloadReceiptCount'
   MessageDetails:
-      description: Message details
-      type: array
-      items:
-        $ref: '#/definitions/MessageDetail'
+    description: Message details
+    type: array
+    items:
+      $ref: '#/definitions/MessageDetail'
   MessageIds:
     type: object
     properties:
       messageIds:
         $ref: '#/definitions/StringList'
   AssigneeCandidate:
-      description: Assignee Candidate
-      type: object
-      properties:
-        userId:
-          type: integer
-          format: int64
-        username:
-          type: string
-        firstName:
-          type: string
-        surname:
-          type: string
-        emailAddress:
-          type: string
-        canBeAssigned:
-          type: boolean
-        roles:
-          $ref: '#/definitions/StringList'
+    description: Assignee Candidate
+    type: object
+    properties:
+      userId:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      surname:
+        type: string
+      emailAddress:
+        type: string
+      canBeAssigned:
+        type: boolean
+      roles:
+        $ref: '#/definitions/StringList'
   AssigneeCandidates:
-      description: List of assignee candidate
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/definitions/AssigneeCandidate'
-        pagination:
-          type: object
-          $ref: "#/definitions/Pagination"
+    description: List of assignee candidate
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/AssigneeCandidate'
+      pagination:
+        type: object
+        $ref: "#/definitions/Pagination"
   Languages:
     description: List of languages
     type: object
     properties:
       languages:
         $ref: "#/definitions/StringList"
+  MessageMetadataResponse:
+    description: Message metadata
+    type: object
+    properties:
+      messageId:
+        type: string
+      parent:
+        type: object
+        properties:
+          messageId:
+            type: string
+            description: Id of the parent message queried
+          relationshipType:
+            type: string
+            enum:
+              - REPLY_FORM
+              - REPLY
+              - FORWARD
+      replies:
+        type: array
+        items:
+          type: string
+      forwards:
+        type: array
+        items:
+          type: string
+      formReplies:
+        type: array
+        items:
+          type: string
 
   SessionInfo:
     description: Information about the current user's session
@@ -8066,3 +8134,15 @@ definitions:
           - IM
           - MIM
           - ROOM
+  MessageSuppressionResponse:
+    description: The suppression state of a message
+    type: object
+    properties:
+      messageId:
+        type: string
+      suppressed:
+        type: boolean
+      suppressionDate:
+        type: integer
+        format: int64
+        description: The date when this message was suppressed.
