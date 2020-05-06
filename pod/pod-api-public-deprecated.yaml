@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.57.0'
+  version: '1.58.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -1573,6 +1573,16 @@ paths:
           in: header
           required: true
           type: string
+        - name: soft
+          description:  |
+            If true, the user's current status is taken into consideration. If the user is currently OFFLINE,
+            the user's presence will still be OFFLINE, but the new presence will take effect when the
+            user comes online. If the user is currently online, the user's activity state will be
+            applied to the presence if applicable. (e.g. if you are setting their presence to AVAILABLE,
+            but the user is currently idle, their status will be represented as AWAY)
+          in: query
+          required: false
+          type: boolean
         - name: presence
           in: body
           required: true
@@ -1729,6 +1739,16 @@ paths:
           in: header
           required: true
           type: string
+        - name: soft
+          description:  |
+            If true, the user's current status is taken into consideration. If the user is currently OFFLINE,
+            the user's presence will still be OFFLINE, but the new presence will take effect when the
+            user comes online. If the user is currently online, the user's activity state will be
+            applied to the presence if applicable. (e.g. if you are setting their presence to AVAILABLE,
+            but the user is currently idle, their status will be represented as AWAY)
+          in: query
+          required: false
+          type: boolean
         - name: presence
           in: body
           required: true
