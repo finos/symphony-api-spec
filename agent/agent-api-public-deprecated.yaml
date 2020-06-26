@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.58.0'
+  version: '1.59.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -193,6 +193,14 @@ paths:
           description: |
             Defines the status code response whenever at least one of the checks fails. When set to "true",
             in case of any failure, the response status code will be 503; otherwise, it will be 200.
+            Default value is "false".
+          in: query
+          required: false
+          type: boolean
+        - name: failOnDatafeedConnectivity
+          description: |
+            Defines the HealthCheck status code response whenever the Datafeed2 connectivity fails. When set to "true",
+            in case of Datafeed connectivity failure, the response status code will be 503; otherwise, it will be 200.
             Default value is "false".
           in: query
           required: false
