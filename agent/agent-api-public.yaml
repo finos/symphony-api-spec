@@ -19,6 +19,12 @@ info:
     and the response code will be 50X.
     - MessageML is a markup language for messages. See reference here:
     https://rest-api.symphony.com/docs/messagemlv2
+    - **Real Time Events**: The following events are returned when reading
+    from a real time messages and events stream ("datafeed"). These
+    events will be returned for datafeeds created with the v5 endpoints.
+    To know more about the endpoints, refer to Create Messages/Events
+    Stream and Read Messages/Events Stream. Unless otherwise specified,
+    all events were added in 1.46.
 
 paths:
   '/v4/datafeed/create':
@@ -143,6 +149,7 @@ paths:
 
         The datafeed provides messages and events from all conversations that the user
         is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
 
         Returns the ID of the datafeed that has just been created.
         This ID should then be used as input to the Read Messages/Events Stream v4 endpoint.
@@ -187,6 +194,7 @@ paths:
 
         The datafeed provides messages and events from all conversations that the user
         is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
 
         Returns the list of the datafeeds for the user.
         Any datafeed ID of the list can then be used as input to the Read Messages/Events Stream v4 endpoint.
@@ -240,6 +248,7 @@ paths:
 
         The datafeed provides messages and events from all conversations that the user
         is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
 
         Delete the specified datafeed.
       operationId: deleteDatafeed
@@ -287,6 +296,7 @@ paths:
 
         The datafeed provides messages and events from all conversations that the user
         is in. The types of events surfaced in the datafeed can be found in the Real Time Event list.
+        (see definition on top of the file)
 
         Read the specified datafeed.
 
