@@ -63,7 +63,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/AuthenticateRequest'
+            $ref: '#/definitions/ExtensionAppAuthenticateRequest'
       responses:
         '200':
           description: OK.
@@ -268,7 +268,7 @@ definitions:
           The token which should be passed. This should be considered opaque data by
           the client. It is not intended to conatain any data interpretable by the
           client. The format is secret and subject to change without notice.
-  AuthenticateRequest:
+  ExtensionAppAuthenticateRequest:
     type: object
     description: Request body for extension app authentication
     properties:
