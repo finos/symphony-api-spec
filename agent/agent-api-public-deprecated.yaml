@@ -437,6 +437,48 @@ paths:
           description: The Agent is functioning properly.
           schema:
             $ref: '#/definitions/V2HealthCheckResponse'
+  '/v3/health':
+    get:
+      summary: Checks health status
+      description: |
+        _Available on Agent 2.57.0 and above._
+        Returns the connectivity status of your Agent server. If your Agent server is started and running, the status value will be `UP`
+      operationId: v3Health
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - System
+      responses:
+        '200':
+          description: Agent application is alive.
+          schema:
+            $ref: '#/definitions/V3Health'
+  '/v3/health/extended':
+    get:
+      summary: Checks health status of services and users
+      description: |
+        _Available on Agent 2.57.0 and above._
+        Returns the connectivity status of the Agent services (**pod**, **key manager** and **datafeed**) as well as users
+        connectivity (**agentservice** and **ceservice**).
+        The global status will be set to `DOWN` if at least one of the sub-status is also `DOWN`.
+      operationId: v3ExtendedHealth
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - System
+      responses:
+        '200':
+          description: Agent is healthy, all components are `UP`.
+          schema:
+            $ref: '#/definitions/V3Health'
+        '503':
+          description: Agent is unhealthy, some components are `DOWN`.
+          schema:
+            $ref: '#/definitions/V3Health'
   '/v4/message/import':
     post:
       summary: Import messages from other systems into Symphony.
@@ -4964,6 +5006,9 @@ definitions:
             type: integer
             format: int64
             description: Timestamp when the signal was created, in milliseconds since Jan 1 1970
+          companyWide:
+            type: boolean
+            description: Whether the signal is a push signal
   SignalList:
     type: array
     items:
@@ -5020,6 +5065,8 @@ definitions:
   ChannelSubscriber:
     type: object
     properties:
+      subscriptionId:
+        type: string
       pushed:
         type: boolean
         description: True if the subscriber is allowed to unsubscribe
@@ -5626,6 +5673,8 @@ definitions:
       - "type"
       - "name"
     properties:
+      id:
+        type: string
       type:
         type: string
         description: Type of a rule used by policy. Can be ["UNKNOWN", "TEXT_MATCH", "FILE_EXTENSION", "FILE_SIZE", "FILE_PASSWORD", "FILE_CLASSIFIER"].
@@ -5832,6 +5881,9 @@ definitions:
       message:
         # Message details when DLP was enforced
         $ref: '#/definitions/V4Message'
+      sharedMessage:
+        description: Shared message details if present in message.
+        $ref: '#/definitions/V4Message'
       diagnostic:
         type: string
         description: |
@@ -5999,6 +6051,47 @@ definitions:
       ackId:
         type: string
         description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
+  V3Health:
+    properties:
+      services:
+        additionalProperties:
+          $ref: '#/definitions/V3HealthComponent'
+        type: object
+      status:
+        $ref: '#/definitions/V3HealthStatus'
+      users:
+        additionalProperties:
+          $ref: '#/definitions/V3HealthComponent'
+        type: object
+      version:
+        description: Required Agent verison
+        type: string
+    type: object
+  V3HealthAuthType:
+    description: Type of authentication
+    enum:
+      - RSA
+      - CERT
+    type: string
+  V3HealthComponent:
+    properties:
+      authType:
+        $ref: '#/definitions/V3HealthAuthType'
+      message:
+        description: 'An error message, if the component status is DOWN'
+        type: string
+      status:
+        $ref: '#/definitions/V3HealthStatus'
+      version:
+        description: Optional component version
+        type: string
+    type: object
+  V3HealthStatus:
+    description: Application health status.
+    enum:
+      - UP
+      - DOWN
+    type: string
 
   #
   # Deprecated definitions
