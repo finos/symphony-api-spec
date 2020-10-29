@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.60.0'
+  version: '1.61.1'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -4593,6 +4593,53 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/user/{userId}/suspension/update':
+    put:
+      summary: Update the status of suspension of a particular user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token
+          in: header
+          required: true
+          type: string
+        - name: userId
+          description: User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserSuspension'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 
 definitions:
   Error:
@@ -6857,4 +6904,14 @@ definitions:
         type: array
         items:
           type: string
+  UserSuspension:
+    type: object
+    properties:
+      suspended:
+        type: boolean
+      suspendedUntil:
+        type: integer
+        format: int64
+      suspensionReason:
+        type: string
 

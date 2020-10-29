@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.60.0'
+  version: '1.61.1'
   title: Login API
   description: |
     For bots and other on-premise processes to authenticate. Once
