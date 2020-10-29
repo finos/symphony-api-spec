@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.59.1'
+  version: '1.60.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -1455,6 +1455,14 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: active
+          description: |
+            If not set all user status will be returned,
+            if true all active users will be returned,
+            if false all inactive users will be returned
+          in: query
+          required: false
+          type: boolean
         - name: sessionToken
           description: Session authentication token.
           in: header
@@ -2409,6 +2417,47 @@ paths:
             $ref: '#/definitions/Stream'
         '400':
           description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/admin/messagesuppression/{id}/suppress':
+    post:
+      summary: Suppress a message
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: URL-Safe encoded Message ID
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - MessageSuppression
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MessageSuppressionResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
         '401':
@@ -5633,6 +5682,18 @@ definitions:
         description: maximum number of items to return
       members:
         $ref: '#/definitions/V2MemberInfoList'
+  MessageSuppressionResponse:
+    description: The suppression state of a message
+    type: object
+    properties:
+      messageId:
+        type: string
+      suppressed:
+        type: boolean
+      suppressionDate:
+        type: integer
+        format: int64
+        description: The date when this message was suppressed.
   BulkActionResult:
     description: |
       The results of list based bulk action. The list contains the result messages
