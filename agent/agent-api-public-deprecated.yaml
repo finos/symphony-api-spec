@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.59.0'
+  version: '1.60.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -139,219 +139,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/V2Error'
-  '/v5/datafeeds':
-    post:
-      tags:
-        - Datafeed
-      summary: Create a new real time messages / events stream ("datafeed").
-      description: |
-        _Available on Agent 2.57.0 and above._
-
-        The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
-        (see definition on top of the file)
-
-        Returns the ID of the datafeed that has just been created.
-        This ID should then be used as input to the Read Messages/Events Stream v4 endpoint.
-      operationId: createDatafeed
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-      produces:
-        - application/json
-      responses:
-        201:
-          description: Datafeed sucessfully created.
-          schema:
-            $ref: '#/definitions/V5Datafeed'
-        400:
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/V2Error'
-        401:
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/V2Error'
-        500:
-          description: Internal server error.
-          schema:
-            $ref: '#/definitions/V2Error'
-
-    get:
-      tags:
-        - Datafeed
-      summary: Read list of real time messages / events stream ("datafeed").
-      description: |
-        _Available on Agent 2.57.0 and above._
-
-        The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
-        (see definition on top of the file)
-
-        Returns the list of the datafeeds for the user.
-        Any datafeed ID of the list can then be used as input to the Read Messages/Events Stream v4 endpoint.
-      operationId: listDatafeed
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-      responses:
-        200:
-          description: Datafeed sucessfully created.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/V5Datafeed'
-          examples:
-            '200 OK':
-              value:
-                - id: '8e7c8672-220...'
-                  createdAt: 1536346282592
-                - id: '8e7c8672-221...'
-                  createdAt: 1536346282500
-        400:
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/V2Error'
-        401:
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/V2Error'
-        500:
-          description: Internal server error.
-          schema:
-            $ref: '#/definitions/V2Error'
-  '/v5/datafeeds/{datafeedId}':
-    delete:
-      tags:
-        - Datafeed
-      summary: Delete the specified real time message / event stream ("datafeed").
-      description: |
-        _Available on Agent 2.57.0 and above._
-
-        The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
-        (see definition on top of the file)
-
-        Delete the specified datafeed.
-      operationId: deleteDatafeed
-      parameters:
-        - in: path
-          name: datafeedId
-          required: true
-          type: string
-          description: ID of the datafeed
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-      responses:
-        204:
-          description: Datafeed successfully deleted.
-          schema:
-            $ref: '#/definitions/V2Error'
-        400:
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/V2Error'
-        401:
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/V2Error'
-        500:
-          description: Internal server error.
-          schema:
-            $ref: '#/definitions/V2Error'
-  '/v5/datafeeds/{datafeedId}/read':
-    post:
-      tags:
-        - Datafeed
-      summary: Read the specified real time message / event stream ("datafeed").
-      description: |
-        _Available on Agent 2.57.0 and above._
-
-        The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Event list.
-        (see definition on top of the file)
-
-        Read the specified datafeed.
-
-        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back and it can be used for
-        the next call: in this way you acknowledge that you have received the events that came with that ackId; datafeed will remove the events
-        associated with that ackId from your queue
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      operationId: readDatafeed
-      parameters:
-        - in: path
-          name: datafeedId
-          required: true
-          type: string
-          description: ID of the datafeed
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-        - name: ackId
-          description: ackId received from last POST Base64 encoded.
-          in: body
-          required: false
-          schema:
-            $ref: '#/definitions/AckId'
-      responses:
-        200:
-          description: Datafeed successfully read.
-          schema:
-            $ref: '#/definitions/V5EventList'
-          examples:
-            '200 OK':
-        400:
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/V2Error'
-        401:
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/V2Error'
-        403:
-          description: Forbidden.
-          schema:
-            $ref: '#/definitions/V2Error'
-        500:
-          description: Internal server error.
-          schema:
-            $ref: '#/definitions/V2Error'
   '/v2/HealthCheck':
     get:
       summary: Checks the health of the Agent.
@@ -450,6 +237,7 @@ paths:
       summary: Checks health status
       description: |
         _Available on Agent 2.57.0 and above._
+
         Returns the connectivity status of your Agent server. If your Agent server is started and running, the status value will be `UP`
       operationId: v3Health
       consumes:
@@ -468,8 +256,10 @@ paths:
       summary: Checks health status of services and users
       description: |
         _Available on Agent 2.57.0 and above._
+
         Returns the connectivity status of the Agent services (**pod**, **key manager** and **datafeed**) as well as users
         connectivity (**agentservice** and **ceservice**).
+
         The global status will be set to `DOWN` if at least one of the sub-status is also `DOWN`.
       operationId: v3ExtendedHealth
       consumes:
@@ -601,8 +391,7 @@ paths:
         - application/json
       parameters:
         - name: query
-          description: |
-            The search query. See above for the query syntax.
+          description: The search query. See above for the query syntax.
           in: query
           type: string
           required: true
@@ -674,8 +463,7 @@ paths:
         - application/json
       parameters:
         - name: query
-          description: |
-            The search query. See above for the query syntax.
+          description: The search query. See above for the query syntax.
           in: body
           required: true
           schema:
@@ -1046,8 +834,7 @@ paths:
           required: true
           type: string
         - name: echoInput
-          description: |
-            Message in plain text
+          description: Message in plain text
           in: body
           required: true
           schema:
@@ -3140,6 +2927,221 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
+  '/v5/datafeeds':
+    post:
+      tags:
+        - Datafeed
+      summary: Create a new real time messages / events stream ("datafeed").
+      description: |
+        _Available on Agent 2.57.0 and above._
+
+        The datafeed provides messages and events from all conversations that the user
+        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
+
+        Returns the ID of the datafeed that has just been created.
+        This ID should then be used as input to the Read Messages/Events Stream v4 endpoint.
+      operationId: createDatafeed
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Datafeed sucessfully created.
+          schema:
+            $ref: '#/definitions/V5Datafeed'
+        400:
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/V2Error'
+        401:
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/V2Error'
+        500:
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/V2Error'
+
+    get:
+      tags:
+        - Datafeed
+      summary: Read list of real time messages / events stream ("datafeed").
+      description: |
+        _Available on Agent 2.57.0 and above._
+
+        The datafeed provides messages and events from all conversations that the user
+        is in. The types of events surfaced in the datafeed can be found in the [Real Time Events](./docs/real-time-events.md) list.
+
+        Returns the list of the datafeeds for the user.
+        Any datafeed ID of the list can then be used as input to the Read Messages/Events Stream v4 endpoint.
+      operationId: listDatafeed
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      responses:
+        200:
+          description: Datafeed sucessfully created.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/V5Datafeed'
+          examples:
+            '200 OK':
+              value:
+                - id: '8e7c8672-220...'
+                  createdAt: 1536346282592
+                - id: '8e7c8672-221...'
+                  createdAt: 1536346282500
+        400:
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/V2Error'
+        401:
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/V2Error'
+        500:
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v5/datafeeds/{datafeedId}':
+    delete:
+      tags:
+        - Datafeed
+      summary: Delete the specified real time message / event stream ("datafeed").
+      description: |
+        _Available on Agent 2.57.0 and above._
+
+        The datafeed provides messages and events from all conversations that the user
+        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
+
+        Delete the specified datafeed.
+      operationId: deleteDatafeed
+      parameters:
+        - in: path
+          name: datafeedId
+          required: true
+          type: string
+          description: ID of the datafeed
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+      responses:
+        204:
+          description: Datafeed successfully deleted.
+          schema:
+            $ref: '#/definitions/V2Error'
+        400:
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/V2Error'
+        401:
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/V2Error'
+        500:
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/V2Error'
+
+  '/v5/datafeeds/{datafeedId}/read':
+    post:
+      tags:
+        - Datafeed
+      summary: Read the specified real time message / event stream ("datafeed").
+      description: |
+        _Available on Agent 2.57.0 and above._
+
+        The datafeed provides messages and events from all conversations that the user
+        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        (see definition on top of the file)
+
+        Read the specified datafeed.
+
+        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back and it can be used for
+        the next call: in this way you acknowledge that you have received the events that came with that ackId; datafeed will remove the events
+        associated with that ackId from your queue
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      operationId: readDatafeed
+      parameters:
+        - in: path
+          name: datafeedId
+          required: true
+          type: string
+          description: ID of the datafeed
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: ackId
+          description: ackId received from last POST Base64 encoded.
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/AckId'
+      responses:
+        200:
+          description: Datafeed successfully read.
+          schema:
+            $ref: '#/definitions/V5EventList'
+          examples:
+            '200 OK':
+        400:
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/V2Error'
+        401:
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/V2Error'
+        403:
+          description: Forbidden.
+          schema:
+            $ref: '#/definitions/V2Error'
+        500:
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/V2Error'
+
   #
   # Deprecated paths
   #
@@ -4068,8 +4070,7 @@ paths:
           required: true
           type: string
         - name: echoInput
-          description: |
-            Message in plain text
+          description: Message in plain text
           in: body
           required: true
           schema:
