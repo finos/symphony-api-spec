@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.61.1'
+  version: '1.62.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -3368,6 +3368,212 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/user/{uid}/follow':
+    post:
+      summary: Make a list of users start following a specific user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: User ID as a decimal integer of the user to be followed
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: uidList
+          description: List of (integer) User IDs of the followers
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FollowersList'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/user/{uid}/unfollow':
+    post:
+      summary: Make a list of users unfollowing a specific user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: User ID as a decimal integer of the user to be unfollowed
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: uidList
+          description: List of (integer) User IDs of the followers
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FollowersList'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/user/{uid}/followers':
+    get:
+      summary: Returns the list of followers for a specific user
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: User ID as a decimal integer of the user we want to get the followers list
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: limit
+          description: This is the maximum number of objects that may be returned.
+          in: query
+          required: false
+          type: integer
+        - name: before
+          description: Returns results from an opaque “before” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+        - name: after
+          description: Returns results from an opaque “after” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/FollowersListResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/user/{uid}/following':
+    get:
+      summary: Returns the list of users that a specific user is following
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: User ID as a decimal integer of the user we want to get the following list
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: limit
+          description: This is the maximum number of objects that may be returned.
+          in: query
+          required: false
+          type: integer
+        - name: before
+          description: Returns results from an opaque “before” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+        - name: after
+          description: Returns results from an opaque “after” cursor value as presented via a response cursor.
+          in: query
+          required: false
+          type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/FollowingListResponse'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -7993,6 +8199,37 @@ definitions:
         format: int64
       suspensionReason:
         type: string
+  FollowersList:
+    type: object
+    properties:
+      followers:
+        $ref: '#/definitions/UserIdList'
+  FollowersListResponse:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int64
+      followers:
+        type: array
+        items:
+          type: integer
+          format: int64
+      pagination:
+        $ref: '#/definitions/Pagination'
+  FollowingListResponse:
+    type: object
+    properties:
+      count:
+        type: integer
+        format: int64
+      following:
+        type: array
+        items:
+          type: integer
+          format: int64
+      pagination:
+        $ref: '#/definitions/Pagination'
 
   SessionInfo:
     description: Information about the current user's session

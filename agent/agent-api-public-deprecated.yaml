@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.61.1'
+  version: '1.62.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -324,6 +324,106 @@ paths:
             $ref: '#/definitions/V2Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+  '/v4/message/blast':
+    post:
+      summary: Post a message to multiple existing streams.
+      description: |
+        Post a new message to the given list of streams. The stream can be a chatroom,
+        an IM or a multiparty IM.
+
+        You may include an attachment on the message.
+
+        The message can be provided as MessageMLV2 or PresentationML. Both formats support Freemarker templates.
+
+        The optional parameter "data" can be used to provide a JSON payload containing entity data.
+        If the message contains explicit references to entity data (in "data-entity-id" element attributes),
+        this parameter is required.
+
+        If the message is in MessageML and fails schema validation a client error results
+
+        This endpoint is idempotent, it means that a 200 response will be returned even if the message has not been
+        delivered to some streams. Check the `errors` map from the response in order to see on which stream(s) the
+        message has not been delivered.
+
+        The maximum number of streams where the message can be sent is limitted to 100.
+
+        Regarding authentication, you must either use the sessionToken which was created for delegated app access
+        or both the sessionToken and keyManagerToken together.
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Authorization token used to make delegated calls.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          type: string
+          required: false
+        - name: sids
+          description: A comma-separated list of Stream IDs
+          in: formData
+          required: true
+          type: array
+          items:
+            type: string
+        - name: message
+          description: The message payload in MessageML.
+          in: formData
+          type: string
+          required: false
+        - name: data
+          description: Optional message data in EntityJSON.
+          in: formData
+          type: string
+          required: false
+        - name: version
+          description: |
+            Optional message version in the format "major.minor". If empty, defaults to the latest supported version.
+          in: formData
+          type: string
+          required: false
+        - name: attachment
+          description: Optional file attachment.
+          in: formData
+          type: file
+          required: false
+        - name: preview
+          description: Optional attachment preview.
+          in: formData
+          type: file
+          required: false
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: Blast message sent.
+          schema:
+            $ref: '#/definitions/V4MessageBlastResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in message or file'
           schema:
             $ref: '#/definitions/V2Error'
         '500':
@@ -4690,6 +4790,20 @@ definitions:
         description: |
           Unique session identifier from where the message was created.
         example: 'fa691cd3-484a-4109-aeb2-57c05b78c95b'
+  V4MessageBlastResponse:
+    type: object
+    description: Wrapper response for a single message sent to multiple streams
+    properties:
+      messages:
+        type: array
+        description: List of messages successfully sent
+        items:
+          $ref: '#/definitions/V4Message'
+      errors:
+        type: object
+        description: List of streams where the messages ingestion has failed
+        additionalProperties:
+          $ref: '#/definitions/Error'
   V4User:
     type: object
     properties:
