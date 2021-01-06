@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.62.0'
+  version: '20.10.0'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -63,7 +63,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/AuthenticateRequest'
+            $ref: '#/definitions/ExtensionAppAuthenticateRequest'
       responses:
         '200':
           description: OK.
@@ -191,7 +191,7 @@ paths:
       produces:
         - application/json
       tags:
-        - CertificateAuthentication
+        - Authentication
       responses:
         '200':
           description: OK.
@@ -245,6 +245,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
 #
 # Deprecated paths
 #
@@ -272,7 +273,7 @@ definitions:
           The token which should be passed. This should be considered opaque data by
           the client. It is not intended to conatain any data interpretable by the
           client. The format is secret and subject to change without notice.
-  AuthenticateRequest:
+  ExtensionAppAuthenticateRequest:
     type: object
     description: Request body for extension app authentication
     properties:

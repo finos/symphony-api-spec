@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '1.62.0'
+  version: '20.10.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -4665,82 +4665,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v2/admin/streams/{streamId}/messageIds':
-    get:
-      summary: Fetch message ids using timestamp.
-      description: |
-        Gets all message Ids that matches a given stream defined by
-        a streamId in a specified time frame
-      produces:
-        - application/json
-      parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: streamId
-          description: The stream from which messages are going to be fetched.
-          in: path
-          required: true
-          type: string
-        - name: since
-          description: |
-            A timestamp in milisseconds that defines the initial time
-            the search will consider when getting the messageIds.
-          in: query
-          required: false
-          type: integer
-          format: int64
-        - name: to
-          description: |
-            A timestamp in milisseconds that defines the final time
-            the search will consider when getting the messageIds.
-          in: query
-          required: false
-          type: integer
-          format: int64
-        - name: limit
-          description: |
-            The limit of how many messageIds will be retrieved at a time.
-          in: query
-          required: false
-          type: integer
-        - name: offset
-          description: |
-            The pagination offset related to the messageIds search.
-          in: query
-          required: false
-          type: integer
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/MessageIdsFromStream'
-        '400':
-          description: 'Client error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Not Found: Stream cannot be found.'
-          schema:
-            $ref: '#/definitions/Error'
-        '422':
-          description: 'Unprocessable Entity: Timestamp range is bigger than twenty-four hours.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/languages':
     get:
       summary: Lists available languages for the pod.
@@ -5925,7 +5849,82 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
+  '/v2/admin/streams/{streamId}/messageIds':
+    get:
+      summary: Fetch message ids using timestamp.
+      description: |
+        Gets all message Ids that matches a given stream defined by
+        a streamId in a specified time frame
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: streamId
+          description: The stream from which messages are going to be fetched.
+          in: path
+          required: true
+          type: string
+        - name: since
+          description: |
+            A timestamp in milisseconds that defines the initial time
+            the search will consider when getting the messageIds.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: to
+          description: |
+            A timestamp in milisseconds that defines the final time
+            the search will consider when getting the messageIds.
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: limit
+          description: |
+            The limit of how many messageIds will be retrieved at a time.
+          in: query
+          required: false
+          type: integer
+        - name: offset
+          description: |
+            The pagination offset related to the messageIds search.
+          in: query
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MessageIdsFromStream'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: 'Not Found: Stream cannot be found.'
+          schema:
+            $ref: '#/definitions/Error'
+        '422':
+          description: 'Unprocessable Entity: Timestamp range is bigger than twenty-four hours.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -6163,6 +6162,18 @@ definitions:
       location:
         type: string
         description: city of the user's job location
+      marketCoverage:
+        type: string
+        description: geographic area the user works with
+      responsibility:
+        type: string
+        description: user's responsibility
+      function:
+        type: string
+        description: user's function
+      instrument:
+        type: string
+        description: higher level instrument for the Asset Classes
   UserSearchQuery:
     type: object
     properties:
@@ -6821,6 +6832,22 @@ definitions:
         items:
           type: string
       industries:
+        type: array
+        items:
+          type: string
+      marketCoverage:
+        type: array
+        items:
+          type: string
+      responsibility:
+        type: array
+        items:
+          type: string
+      function:
+        type: array
+        items:
+          type: string
+      instrument:
         type: array
         items:
           type: string
@@ -8042,23 +8069,6 @@ definitions:
           $ref: '#/definitions/MessageReceiptDetail'
       pagination:
         $ref: "#/definitions/Pagination"
-  MessageIdsFromStream:
-    description: List of MessageIds of a Stream
-    type: object
-    properties:
-      Data:
-        type: array
-        items:
-          type: string
-      TotalNumberFound:
-        type: integer
-        format: int64
-      numberReturned:
-        type: integer
-        format: int64
-      nextStartNumber:
-        type: integer
-        format: int64
   MessageUser:
     type: object
     properties:
@@ -8480,4 +8490,22 @@ definitions:
           - IM
           - MIM
           - ROOM
+  MessageIdsFromStream:
+    description: List of MessageIds of a Stream
+    type: object
+    properties:
+      Data:
+        type: array
+        items:
+          type: string
+      TotalNumberFound:
+        type: integer
+        format: int64
+      numberReturned:
+        type: integer
+        format: int64
+      nextStartNumber:
+        type: integer
+        format: int64
+
 
