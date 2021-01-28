@@ -3995,7 +3995,7 @@ paths:
           required: true
           type: string
       tags:
-        - System
+        - User
       responses:
         '200':
           description: Success
