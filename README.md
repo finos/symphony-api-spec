@@ -1,3 +1,5 @@
+[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
+
 # symphony-api-spec
 
 This repository will contain the Swagger API definition files for the Symphony REST API. These files were previously available from Symphony LLC at https://rest-api.symphony.com/docs/rest-api-specification.  Versions of these files prior to release 1.46 can still be found there.
