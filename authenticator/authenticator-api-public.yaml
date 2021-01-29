@@ -191,7 +191,7 @@ paths:
       produces:
         - application/json
       tags:
-        - Authentication
+        - CertificateAuthentication
       responses:
         '200':
           description: OK.
