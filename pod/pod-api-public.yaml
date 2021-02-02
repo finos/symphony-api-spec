@@ -5545,7 +5545,6 @@ definitions:
     properties:
       id:
         type: string
-        format: long
       name:
         type: string
       userTypes:
