@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.10.0'
+  version: '20.12.0-SNAPSHOT'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -175,44 +175,44 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   '/v1/app/username/{username}/authenticate':
-    post:
-      summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
-      parameters:
-        - name: username
-          description: username
-          in: path
-          required: true
-          type: string
-        - name: sessionToken
-          description: Authorization token obtains from app/authenicate API
-          in: header
-          required: true
-          type: string
-      produces:
-        - application/json
-      tags:
-        - CertificateAuthentication
-      responses:
-        '200':
-          description: OK.
-          schema:
-            $ref: '#/definitions/OboAuthResponse'
-        '400':
-          description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'Username not found'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
+      post:
+        summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
+        parameters:
+          - name: username
+            description: username
+            in: path
+            required: true
+            type: string
+          - name: sessionToken
+            description: Authorization token obtains from app/authenicate API
+            in: header
+            required: true
+            type: string
+        produces:
+          - application/json
+        tags:
+          - CertificateAuthentication
+        responses:
+          '200':
+            description: OK.
+            schema:
+              $ref: '#/definitions/OboAuthResponse'
+          '400':
+            description: 'Client error.'
+            schema:
+              $ref: '#/definitions/Error'
+          '403':
+            description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+            schema:
+              $ref: '#/definitions/Error'
+          '404':
+            description: 'Username not found'
+            schema:
+              $ref: '#/definitions/Error'
+          '500':
+            description: 'Server error, see response body for further details.'
+            schema:
+              $ref: '#/definitions/Error'
   '/v1/logout':
     post:
       summary: Logout.
@@ -270,12 +270,12 @@ definitions:
           the client. It is not intended to conatain any data interpretable by the
           client. The format is secret and subject to change without notice.
   ExtensionAppAuthenticateRequest:
-    type: object
-    description: Request body for extension app authentication
-    properties:
-      appToken:
-        type: string
-        description: application generated token
+      type: object
+      description: Request body for extension app authentication
+      properties:
+        appToken:
+          type: string
+          description: application generated token
   ExtensionAppTokens:
     type: object
     properties:
