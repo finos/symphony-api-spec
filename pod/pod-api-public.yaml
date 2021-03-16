@@ -5293,7 +5293,8 @@ definitions:
     properties:
       role:
         type: string
-        format: long
+        description: The user role
+        example: "INDIVIDUAL"
       feature:
         type: string
       status:
