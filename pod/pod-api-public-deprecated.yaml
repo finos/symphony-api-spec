@@ -7551,7 +7551,6 @@ definitions:
         type: object
         required:
           - before
-          - after
         properties:
           before:
             type: string
