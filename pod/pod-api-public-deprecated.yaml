@@ -6268,6 +6268,9 @@ definitions:
       subType:
         type: string
         description: Possible value EMAIL (indicate this room will be used for Email Integration)
+      pinnedMessageId:
+        type: string
+        description: UrlSafe message id of the pinned message inside the room. To perform unpin operation, send an empty string.
 
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
