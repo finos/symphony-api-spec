@@ -5350,7 +5350,6 @@ definitions:
     type: object
     required:
       - name
-      - sku
       - type
       - subscribed
     properties:
