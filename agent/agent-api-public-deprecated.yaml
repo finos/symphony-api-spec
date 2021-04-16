@@ -2961,6 +2961,11 @@ paths:
           in: header
           required: true
           type: string
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/V5DatafeedCreateBody'
       produces:
         - application/json
       responses:
@@ -3006,6 +3011,12 @@ paths:
           description: Key Manager authentication token.
           in: header
           required: true
+          type: string
+        - name: tag
+          maxLength: 100
+          required: false
+          description: A unique identifier to ensure uniqueness of the datafeed. Used to restrict search.
+          in: query
           type: string
       responses:
         200:
@@ -6159,6 +6170,13 @@ definitions:
     description: Container for the feed ID
     example:
       id: '8e7c8672-220...'
+  V5DatafeedCreateBody:
+    type: object
+    properties:
+      tag:
+        type: string
+        maxLength: 100
+        description: A unique identifier to ensure uniqueness of the datafeed.
   AckId:
     description: An object containing the ackId associated with events that the
       client has received through an individual feed.
