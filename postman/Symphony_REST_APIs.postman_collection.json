@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "af79fcb4-25ae-4fec-b56b-d48a46ee18f1",
+		"_postman_id": "d8d06c76-d9db-46f9-9b67-12effbe714e4",
 		"name": "Symphony REST APIs",
 		"description": "[Full documentation on the developer's website](https://developers.symphony.com/restapi/reference)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -16,7 +16,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"sessionToken\", pm.response.json().token);"
+									"pm.environment.set(\"sessionToken\", pm.response.json().token);",
+									"",
+									"// parse JWT token",
+									"var parts = pm.response.json().token.split('.');",
+									"pm.environment.set(\"user_id\", JSON.parse(atob(parts[1])).userId);"
 								],
 								"type": "text/javascript"
 							}
@@ -343,8 +347,7 @@
 							"variable": [
 								{
 									"key": "username",
-									"value": "yong.tan",
-									"type": "string"
+									"value": "yong.tan"
 								}
 							]
 						}
@@ -949,8 +952,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id",
-									"type": "string"
+									"value": "id"
 								}
 							]
 						},
@@ -2108,8 +2110,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid",
-									"type": "string"
+									"value": "sid"
 								}
 							]
 						},
@@ -2530,8 +2531,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid",
-									"type": "string"
+									"value": "sid"
 								}
 							]
 						},
@@ -3111,8 +3111,7 @@
 							"variable": [
 								{
 									"key": "mid",
-									"value": "mid46",
-									"type": "string"
+									"value": "mid46"
 								}
 							]
 						},
@@ -3461,8 +3460,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid31",
-									"type": "string"
+									"value": "sid31"
 								}
 							]
 						},
@@ -3835,8 +3833,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid31",
-									"type": "string"
+									"value": "sid31"
 								}
 							]
 						},
@@ -4588,8 +4585,7 @@
 							"variable": [
 								{
 									"key": "messageId",
-									"value": "messageId46",
-									"type": "string"
+									"value": "messageId46"
 								}
 							]
 						},
@@ -5008,8 +5004,7 @@
 							"variable": [
 								{
 									"key": "streamId",
-									"value": "streamId46",
-									"type": "string"
+									"value": "streamId46"
 								}
 							]
 						},
@@ -5530,8 +5525,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -6829,8 +6823,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -7125,8 +7118,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -7469,8 +7461,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -8203,8 +8194,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid6",
-									"type": "string"
+									"value": "sid6"
 								}
 							]
 						},
@@ -8507,8 +8497,7 @@
 							"variable": [
 								{
 									"key": "sid",
-									"value": "sid6",
-									"type": "string"
+									"value": "sid6"
 								}
 							]
 						},
@@ -9191,8 +9180,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -9901,8 +9889,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -10261,8 +10248,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -10601,8 +10587,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -10941,8 +10926,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -11281,8 +11265,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -11613,8 +11596,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -11912,8 +11894,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -12248,8 +12229,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -12594,8 +12574,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id6",
-									"type": "string"
+									"value": "id6"
 								}
 							]
 						},
@@ -12905,49 +12884,360 @@
 			"name": "Datafeed",
 			"item": [
 				{
-					"name": "Create a new real time message event stream.",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
+					"name": "v1",
+					"item": [
+						{
+							"name": "Create a new real time message event stream. Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "keyManagerToken",
+										"value": "{{keyManToken}}",
+										"description": "Key Manager authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+									"protocol": "https",
+									"host": [
+										"{{agentUrl}}"
+									],
+									"path": [
+										"agent",
+										"v4",
+										"datafeed",
+										"create"
+									]
+								},
+								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
 							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v4",
-								"datafeed",
-								"create"
+							"response": [
+								{
+									"name": "Response_200",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"id\": \"id74\"\r\n}"
+								},
+								{
+									"name": "Response_400",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "Client error.",
+									"code": 400,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								},
+								{
+									"name": "Response_401",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "Unauthorized: Session tokens invalid.",
+									"code": 401,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								},
+								{
+									"name": "Response_503",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "Max number of data feeds reached.",
+									"code": 503,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								},
+								{
+									"name": "Response_403",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "Forbidden: Caller lacks necessary entitlement.",
+									"code": 403,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								},
+								{
+									"name": "Response_500",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												"create"
+											]
+										},
+										"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+									},
+									"status": "Server error, see response body for further details.",
+									"code": 500,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								}
 							]
 						},
-						"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-					},
-					"response": [
 						{
-							"name": "Response_200",
-							"originalRequest": {
-								"method": "POST",
+							"name": "Read a given datafeed.",
+							"request": {
+								"method": "GET",
 								"header": [
 									{
 										"key": "sessionToken",
@@ -12964,12 +13254,8 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
+									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
 									"protocol": "https",
 									"host": [
 										"{{agentUrl}}"
@@ -12978,333 +13264,462 @@
 										"agent",
 										"v4",
 										"datafeed",
-										"create"
-									]
-								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"id\": \"id74\"\r\n}"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
+										":id",
+										"read"
 									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										"create"
-									]
-								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-							},
-							"status": "Client error.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
+									"query": [
+										{
+											"key": "limit",
+											"value": "32"
+										}
 									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										"create"
+									"variable": [
+										{
+											"key": "id",
+											"value": "id12"
+										}
 									]
 								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
 							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
+							"response": [
 								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_503",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
+									"name": "Response_403",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												":id",
+												"read"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "32"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "id12"
+												}
+											]
+										},
+										"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
 									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
+									"status": "Forbidden: Caller lacks necessary entitlement.",
+									"code": 403,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
 									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										"create"
-									]
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
 								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-							},
-							"status": "Max number of data feeds reached.",
-							"code": 503,
-							"_postman_previewlanguage": "Text",
-							"header": [
 								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_403",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
+									"name": "Response_401",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												":id",
+												"read"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "32"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "id12"
+												}
+											]
+										},
+										"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
 									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
+									"status": "Unauthorized: Session tokens invalid.",
+									"code": 401,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
 									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										"create"
-									]
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
 								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
 								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
+									"name": "Response_200",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												":id",
+												"read"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "32"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "id12"
+												}
+											]
+										},
+										"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
 									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
+									"status": "List of messages that have occurred since last time this URL was polled. If the list is empty, it means the request has reached its timeout, and the client should poll again.",
+									"code": 200,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
 									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										"create"
-									]
+									"cookie": [],
+									"body": "[\r\n  {\r\n    \"id\": \"id74\",\r\n    \"messageId\": \"messageId74\",\r\n    \"timestamp\": 192,\r\n    \"type\": \"type74\",\r\n    \"diagnostic\": \"diagnostic74\",\r\n    \"initiator\": {\r\n      \"user\": {\r\n        \"userId\": 192,\r\n        \"firstName\": \"firstName74\",\r\n        \"lastName\": \"lastName74\",\r\n        \"displayName\": \"displayName74\",\r\n        \"email\": \"email74\",\r\n        \"username\": \"username74\"\r\n      }\r\n    },\r\n    \"payload\": {\r\n      \"messageSent\": {\r\n        \"message\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        }\r\n      },\r\n      \"sharedPost\": {\r\n        \"message\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        },\r\n        \"sharedMessage\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        }\r\n      },\r\n      \"instantMessageCreated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"roomCreated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"roomProperties\": {\r\n          \"name\": \"name74\",\r\n          \"description\": \"description74\",\r\n          \"creatorUser\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"createdDate\": 192,\r\n          \"external\": false,\r\n          \"crossPod\": false,\r\n          \"public\": false,\r\n          \"copyProtected\": false,\r\n          \"readOnly\": false,\r\n          \"discoverable\": false,\r\n          \"membersCanInvite\": false,\r\n          \"keywords\": [\r\n            {\r\n              \"key\": \"key74\",\r\n              \"value\": \"value74\"\r\n            }\r\n          ],\r\n          \"canViewHistory\": false\r\n        }\r\n      },\r\n      \"roomUpdated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"newRoomProperties\": {\r\n          \"name\": \"name74\",\r\n          \"description\": \"description74\",\r\n          \"creatorUser\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"createdDate\": 192,\r\n          \"external\": false,\r\n          \"crossPod\": false,\r\n          \"public\": false,\r\n          \"copyProtected\": false,\r\n          \"readOnly\": false,\r\n          \"discoverable\": false,\r\n          \"membersCanInvite\": false,\r\n          \"keywords\": [\r\n            {\r\n              \"key\": \"key74\",\r\n              \"value\": \"value74\"\r\n            }\r\n          ],\r\n          \"canViewHistory\": false\r\n        }\r\n      },\r\n      \"roomDeactivated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"roomReactivated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"userJoinedRoom\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 192,\r\n          \"firstName\": \"firstName74\",\r\n          \"lastName\": \"lastName74\",\r\n          \"displayName\": \"displayName74\",\r\n          \"email\": \"email74\",\r\n          \"username\": \"username74\"\r\n        }\r\n      },\r\n      \"userLeftRoom\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"roomMemberPromotedToOwner\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"roomMemberDemotedFromOwner\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"connectionRequested\": {\r\n        \"toUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"connectionAccepted\": {\r\n        \"fromUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"messageSuppressed\": {\r\n        \"messageId\": \"messageId44\",\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      }\r\n    }\r\n  }\r\n]"
 								},
-								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
 								{
-									"key": "Content-Type",
-									"value": "application/json"
+									"name": "Response_400",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												":id",
+												"read"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "32"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "id12"
+												}
+											]
+										},
+										"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
+									},
+									"status": "Client error, see response body for further details.",
+									"code": 400,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+								},
+								{
+									"name": "Response_500",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "sessionToken",
+												"value": "{{sessionToken}}",
+												"description": "Session authentication token."
+											},
+											{
+												"key": "keyManagerToken",
+												"value": "{{keyManToken}}",
+												"description": "Key Manager authentication token."
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+											"protocol": "https",
+											"host": [
+												"{{agentUrl}}"
+											],
+											"path": [
+												"agent",
+												"v4",
+												"datafeed",
+												":id",
+												"read"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "32"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "id12"
+												}
+											]
+										},
+										"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
+									},
+									"status": "Server error, see response body for further details.",
+									"code": 500,
+									"_postman_previewlanguage": "Text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
 								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+							]
 						}
 					]
 				},
 				{
-					"name": "Read a given datafeed.",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
-							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v4",
-								"datafeed",
-								":id",
-								"read"
-							],
-							"query": [
-								{
-									"key": "limit",
-									"value": "32"
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "id12",
-									"type": "string"
-								}
-							]
-						},
-						"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
-					},
-					"response": [
+					"name": "v2",
+					"item": [
 						{
-							"name": "Response_403",
-							"originalRequest": {
+							"name": "Create Datafeed v2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"datafeed_id\", pm.response.json().id);",
+											"pm.environment.set(\"ack_id\", \"\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "keyManagerToken",
+										"value": "{{keyManToken}}",
+										"description": "Key Manager authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"tag\": \"mybot\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{agentUrl}}/agent/v5/datafeeds",
+									"protocol": "https",
+									"host": [
+										"{{agentUrl}}"
+									],
+									"path": [
+										"agent",
+										"v5",
+										"datafeeds"
+									]
+								},
+								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Read Datafeed v2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"if (!pm.environment.get(\"ack_id\")) {",
+											"    pm.environment.set(\"ack_id\", \"\")",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// update ack id for next read",
+											"pm.environment.set(\"ack_id\", pm.response.json().ackId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "keyManagerToken",
+										"value": "{{keyManToken}}",
+										"description": "Key Manager authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ackId\": \"{{ack_id}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{agentUrl}}/agent/v5/datafeeds/{{datafeed_id}}/read",
+									"protocol": "https",
+									"host": [
+										"{{agentUrl}}"
+									],
+									"path": [
+										"agent",
+										"v5",
+										"datafeeds",
+										"{{datafeed_id}}",
+										"read"
+									]
+								},
+								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+							},
+							"response": []
+						},
+						{
+							"name": "List Datafeed v2",
+							"request": {
 								"method": "GET",
 								"header": [
 									{
@@ -13323,49 +13738,37 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+									"raw": "https://{{agentUrl}}/agent/v5/datafeeds/",
 									"protocol": "https",
 									"host": [
 										"{{agentUrl}}"
 									],
 									"path": [
 										"agent",
-										"v4",
-										"datafeed",
-										":id",
-										"read"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "32"
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id12"
-										}
+										"v5",
+										"datafeeds",
+										""
 									]
 								},
-								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
+								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
 							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+							"response": []
 						},
 						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "GET",
+							"name": "Delete Datafeed v2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.unset(\"datafeed_id\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
 								"header": [
 									{
 										"key": "sessionToken",
@@ -13383,224 +13786,21 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
+									"raw": "https://{{agentUrl}}/agent/v5/datafeeds/{{datafeed_id}}",
 									"protocol": "https",
 									"host": [
 										"{{agentUrl}}"
 									],
 									"path": [
 										"agent",
-										"v4",
-										"datafeed",
-										":id",
-										"read"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "32"
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id12"
-										}
+										"v5",
+										"datafeeds",
+										"{{datafeed_id}}"
 									]
 								},
-								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
+								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
 							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										":id",
-										"read"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "32"
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id12"
-										}
-									]
-								},
-								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
-							},
-							"status": "List of messages that have occurred since last time this URL was polled. If the list is empty, it means the request has reached its timeout, and the client should poll again.",
-							"code": 200,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\r\n  {\r\n    \"id\": \"id74\",\r\n    \"messageId\": \"messageId74\",\r\n    \"timestamp\": 192,\r\n    \"type\": \"type74\",\r\n    \"diagnostic\": \"diagnostic74\",\r\n    \"initiator\": {\r\n      \"user\": {\r\n        \"userId\": 192,\r\n        \"firstName\": \"firstName74\",\r\n        \"lastName\": \"lastName74\",\r\n        \"displayName\": \"displayName74\",\r\n        \"email\": \"email74\",\r\n        \"username\": \"username74\"\r\n      }\r\n    },\r\n    \"payload\": {\r\n      \"messageSent\": {\r\n        \"message\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        }\r\n      },\r\n      \"sharedPost\": {\r\n        \"message\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        },\r\n        \"sharedMessage\": {\r\n          \"messageId\": \"messageId74\",\r\n          \"timestamp\": 192,\r\n          \"message\": \"message74\",\r\n          \"data\": \"data74\",\r\n          \"attachments\": [\r\n            {\r\n              \"id\": \"id74\",\r\n              \"name\": \"name74\",\r\n              \"size\": 192,\r\n              \"images\": [\r\n                {\r\n                  \"id\": \"id74\",\r\n                  \"dimension\": \"dimension74\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"user\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"externalRecipients\": false,\r\n          \"diagnostic\": \"diagnostic74\",\r\n          \"userAgent\": \"userAgent74\",\r\n          \"originalFormat\": \"originalFormat74\",\r\n          \"disclaimer\": \"disclaimer74\"\r\n        }\r\n      },\r\n      \"instantMessageCreated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"roomCreated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"roomProperties\": {\r\n          \"name\": \"name74\",\r\n          \"description\": \"description74\",\r\n          \"creatorUser\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"createdDate\": 192,\r\n          \"external\": false,\r\n          \"crossPod\": false,\r\n          \"public\": false,\r\n          \"copyProtected\": false,\r\n          \"readOnly\": false,\r\n          \"discoverable\": false,\r\n          \"membersCanInvite\": false,\r\n          \"keywords\": [\r\n            {\r\n              \"key\": \"key74\",\r\n              \"value\": \"value74\"\r\n            }\r\n          ],\r\n          \"canViewHistory\": false\r\n        }\r\n      },\r\n      \"roomUpdated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"newRoomProperties\": {\r\n          \"name\": \"name74\",\r\n          \"description\": \"description74\",\r\n          \"creatorUser\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          },\r\n          \"createdDate\": 192,\r\n          \"external\": false,\r\n          \"crossPod\": false,\r\n          \"public\": false,\r\n          \"copyProtected\": false,\r\n          \"readOnly\": false,\r\n          \"discoverable\": false,\r\n          \"membersCanInvite\": false,\r\n          \"keywords\": [\r\n            {\r\n              \"key\": \"key74\",\r\n              \"value\": \"value74\"\r\n            }\r\n          ],\r\n          \"canViewHistory\": false\r\n        }\r\n      },\r\n      \"roomDeactivated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"roomReactivated\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      },\r\n      \"userJoinedRoom\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId74\",\r\n          \"streamType\": \"streamType74\",\r\n          \"roomName\": \"roomName74\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 192,\r\n          \"firstName\": \"firstName74\",\r\n          \"lastName\": \"lastName74\",\r\n          \"displayName\": \"displayName74\",\r\n          \"email\": \"email74\",\r\n          \"username\": \"username74\"\r\n        }\r\n      },\r\n      \"userLeftRoom\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"roomMemberPromotedToOwner\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"roomMemberDemotedFromOwner\": {\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        },\r\n        \"affectedUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"connectionRequested\": {\r\n        \"toUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"connectionAccepted\": {\r\n        \"fromUser\": {\r\n          \"userId\": 114,\r\n          \"firstName\": \"firstName44\",\r\n          \"lastName\": \"lastName44\",\r\n          \"displayName\": \"displayName44\",\r\n          \"email\": \"email44\",\r\n          \"username\": \"username44\"\r\n        }\r\n      },\r\n      \"messageSuppressed\": {\r\n        \"messageId\": \"messageId44\",\r\n        \"stream\": {\r\n          \"streamId\": \"streamId44\",\r\n          \"streamType\": \"streamType44\",\r\n          \"roomName\": \"roomName44\",\r\n          \"members\": [\r\n            {\r\n              \"userId\": 114,\r\n              \"firstName\": \"firstName44\",\r\n              \"lastName\": \"lastName44\",\r\n              \"displayName\": \"displayName44\",\r\n              \"email\": \"email44\",\r\n              \"username\": \"username44\"\r\n            }\r\n          ],\r\n          \"external\": false,\r\n          \"crossPod\": false\r\n        }\r\n      }\r\n    }\r\n  }\r\n]"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										":id",
-										"read"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "32"
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id12"
-										}
-									]
-								},
-								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
-							},
-							"status": "Client error, see response body for further details.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v4/datafeed/:id/read?limit=32",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v4",
-										"datafeed",
-										":id",
-										"read"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "32"
-										}
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id12"
-										}
-									]
-								},
-								"description": "Read messages from the given datafeed. If no more messages are available then this method will block.\nIt is intended that the client should re-call this method as soon as it has processed the messages\nreceived in the previous call. If the client is able to consume messages more quickly than they become\navailable then each call will initially block, there is no need to delay before re-calling this method.\n\nA datafeed will expire if its unread capacity is reached.\nA datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
+							"response": []
 						}
 					]
 				}
@@ -13955,6 +14155,204 @@
 							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
 						}
 					]
+				},
+				{
+					"name": "Follow users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"followers\": [\n        13056700579848,\n        13056700580889,\n        13056700580890\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/user/{{user_id}}/follow",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"user",
+								"{{user_id}}",
+								"follow"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "16",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "email6",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get user information"
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"followers\": [\n        13056700579848,\n        13056700580889,\n        13056700580890\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/user/{{user_id}}/unfollow",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"user",
+								"{{user_id}}",
+								"unfollow"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "16",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "email6",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get user information"
+					},
+					"response": []
+				},
+				{
+					"name": "List followers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/user/{{user_id}}/followers",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"user",
+								"{{user_id}}",
+								"followers"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "16",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "email6",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get user information"
+					},
+					"response": []
+				},
+				{
+					"name": "List followed",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/user/{{user_id}}/following",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"user",
+								"{{user_id}}",
+								"following"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "16",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "email6",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get user information"
+					},
+					"response": []
 				},
 				{
 					"name": "Search users by emails or ids.\nOnly one of the search lists should be informed at a time.\nSearch lists may containt up to 100 elements.\n",
@@ -15388,8 +15786,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "16",
-									"type": "string"
+									"value": "16"
 								}
 							]
 						},
@@ -15734,8 +16131,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -16130,8 +16526,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -16431,8 +16826,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -16768,8 +17162,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -17069,8 +17462,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -17406,8 +17798,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -17707,8 +18098,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -18044,8 +18434,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -18345,8 +18734,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -18682,8 +19070,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -18983,8 +19370,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -19625,8 +20011,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -19956,8 +20341,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "119",
-									"type": "string"
+									"value": "119"
 								}
 							]
 						},
@@ -20521,8 +20905,7 @@
 							"variable": [
 								{
 									"key": "feedId",
-									"value": "feedId6",
-									"type": "string"
+									"value": "feedId6"
 								}
 							]
 						},
@@ -20817,8 +21200,7 @@
 							"variable": [
 								{
 									"key": "feedId",
-									"value": "feedId6",
-									"type": "string"
+									"value": "feedId6"
 								}
 							]
 						},
@@ -21924,8 +22306,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "16",
-									"type": "string"
+									"value": "16"
 								}
 							]
 						},
@@ -22905,1400 +23286,6 @@
 							],
 							"cookie": [],
 							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Firehose",
-			"item": [
-				{
-					"name": "Create a new real time stream for all events in a pod.",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
-							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v5",
-								"firehose",
-								"create"
-							]
-						},
-						"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-					},
-					"response": [
-						{
-							"name": "Response_403",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"create"
-									]
-								},
-								"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"create"
-									]
-								},
-								"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-							},
-							"status": "Client error.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"create"
-									]
-								},
-								"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_200",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"create"
-									]
-								},
-								"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"id\": \"id44\"\r\n}"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/create",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"create"
-									]
-								},
-								"description": "A firehose provides all user entered messages that occur within a\nSymphony pod beginning at the point in time that it is created.\n\nNote that unlike a datafeed, the user calling a firehose does not need to be a member of the conversations\nfor which it will receive messages.\n\nA firehose can be created and accessed by a user with a \"canUseFirehose\" entitlement.\n\nA firehose can be deleted by using the delete firehose endpoint.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						}
-					]
-				},
-				{
-					"name": "Lists all active firehoses for the calling user.",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
-							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v5",
-								"firehose",
-								"list"
-							]
-						},
-						"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-					},
-					"response": [
-						{
-							"name": "Response_200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"list"
-									]
-								},
-								"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\r\n  {\r\n    \"firehoseId\": \"firehoseId44\",\r\n    \"creationDate\": 114,\r\n    \"userId\": 114\r\n  }\r\n]"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"list"
-									]
-								},
-								"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"list"
-									]
-								},
-								"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-							},
-							"status": "Client error.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"list"
-									]
-								},
-								"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_403",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/list",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										"list"
-									]
-								},
-								"description": "Lists all active firehoses for the calling user.\n\nIf there are no active firehoses for the calling user, this endpoint returns a No Content response.\n"
-							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						}
-					]
-				},
-				{
-					"name": "Read a given firehose.",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
-							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-						},
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v5",
-								"firehose",
-								":id",
-								"read"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "id90",
-									"type": "string"
-								}
-							]
-						},
-						"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-					},
-					"response": [
-						{
-							"name": "Response_403",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "Client error, see response body for further details.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_404",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "Not Found: Firehose Id cannot be found.",
-							"code": 404,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_200",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "List of messages that have occurred since last time this URL was polled. If the list is empty, it may mean that all the messages have been read and acknowleged by the client and there are no more messages.",
-							"code": 200,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"events\": [\r\n    {\r\n      \"id\": \"id74\",\r\n      \"messageId\": \"messageId74\",\r\n      \"timestamp\": 192,\r\n      \"type\": \"type74\",\r\n      \"diagnostic\": \"diagnostic74\",\r\n      \"initiator\": {\r\n        \"user\": {\r\n          \"userId\": 192,\r\n          \"firstName\": \"firstName74\",\r\n          \"lastName\": \"lastName74\",\r\n          \"displayName\": \"displayName74\",\r\n          \"email\": \"email74\",\r\n          \"username\": \"username74\"\r\n        }\r\n      },\r\n      \"payload\": {\r\n        \"messageSent\": {\r\n          \"message\": {\r\n            \"messageId\": \"messageId74\",\r\n            \"timestamp\": 192,\r\n            \"message\": \"message74\",\r\n            \"data\": \"data74\",\r\n            \"attachments\": [\r\n              {\r\n                \"id\": \"id74\",\r\n                \"name\": \"name74\",\r\n                \"size\": 192,\r\n                \"images\": [\r\n                  {\r\n                    \"id\": \"id74\",\r\n                    \"dimension\": \"dimension74\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"user\": {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            },\r\n            \"stream\": {\r\n              \"streamId\": \"streamId74\",\r\n              \"streamType\": \"streamType74\",\r\n              \"roomName\": \"roomName74\",\r\n              \"members\": [\r\n                {\r\n                  \"userId\": 192,\r\n                  \"firstName\": \"firstName74\",\r\n                  \"lastName\": \"lastName74\",\r\n                  \"displayName\": \"displayName74\",\r\n                  \"email\": \"email74\",\r\n                  \"username\": \"username74\"\r\n                }\r\n              ],\r\n              \"external\": false,\r\n              \"crossPod\": false\r\n            },\r\n            \"externalRecipients\": false,\r\n            \"diagnostic\": \"diagnostic74\",\r\n            \"userAgent\": \"userAgent74\",\r\n            \"originalFormat\": \"originalFormat74\",\r\n            \"disclaimer\": \"disclaimer74\"\r\n          }\r\n        },\r\n        \"sharedPost\": {\r\n          \"message\": {\r\n            \"messageId\": \"messageId74\",\r\n            \"timestamp\": 192,\r\n            \"message\": \"message74\",\r\n            \"data\": \"data74\",\r\n            \"attachments\": [\r\n              {\r\n                \"id\": \"id74\",\r\n                \"name\": \"name74\",\r\n                \"size\": 192,\r\n                \"images\": [\r\n                  {\r\n                    \"id\": \"id74\",\r\n                    \"dimension\": \"dimension74\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"user\": {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            },\r\n            \"stream\": {\r\n              \"streamId\": \"streamId74\",\r\n              \"streamType\": \"streamType74\",\r\n              \"roomName\": \"roomName74\",\r\n              \"members\": [\r\n                {\r\n                  \"userId\": 192,\r\n                  \"firstName\": \"firstName74\",\r\n                  \"lastName\": \"lastName74\",\r\n                  \"displayName\": \"displayName74\",\r\n                  \"email\": \"email74\",\r\n                  \"username\": \"username74\"\r\n                }\r\n              ],\r\n              \"external\": false,\r\n              \"crossPod\": false\r\n            },\r\n            \"externalRecipients\": false,\r\n            \"diagnostic\": \"diagnostic74\",\r\n            \"userAgent\": \"userAgent74\",\r\n            \"originalFormat\": \"originalFormat74\",\r\n            \"disclaimer\": \"disclaimer74\"\r\n          },\r\n          \"sharedMessage\": {\r\n            \"messageId\": \"messageId74\",\r\n            \"timestamp\": 192,\r\n            \"message\": \"message74\",\r\n            \"data\": \"data74\",\r\n            \"attachments\": [\r\n              {\r\n                \"id\": \"id74\",\r\n                \"name\": \"name74\",\r\n                \"size\": 192,\r\n                \"images\": [\r\n                  {\r\n                    \"id\": \"id74\",\r\n                    \"dimension\": \"dimension74\"\r\n                  }\r\n                ]\r\n              }\r\n            ],\r\n            \"user\": {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            },\r\n            \"stream\": {\r\n              \"streamId\": \"streamId74\",\r\n              \"streamType\": \"streamType74\",\r\n              \"roomName\": \"roomName74\",\r\n              \"members\": [\r\n                {\r\n                  \"userId\": 192,\r\n                  \"firstName\": \"firstName74\",\r\n                  \"lastName\": \"lastName74\",\r\n                  \"displayName\": \"displayName74\",\r\n                  \"email\": \"email74\",\r\n                  \"username\": \"username74\"\r\n                }\r\n              ],\r\n              \"external\": false,\r\n              \"crossPod\": false\r\n            },\r\n            \"externalRecipients\": false,\r\n            \"diagnostic\": \"diagnostic74\",\r\n            \"userAgent\": \"userAgent74\",\r\n            \"originalFormat\": \"originalFormat74\",\r\n            \"disclaimer\": \"disclaimer74\"\r\n          }\r\n        },\r\n        \"instantMessageCreated\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          }\r\n        },\r\n        \"roomCreated\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"roomProperties\": {\r\n            \"name\": \"name74\",\r\n            \"description\": \"description74\",\r\n            \"creatorUser\": {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            },\r\n            \"createdDate\": 192,\r\n            \"external\": false,\r\n            \"crossPod\": false,\r\n            \"public\": false,\r\n            \"copyProtected\": false,\r\n            \"readOnly\": false,\r\n            \"discoverable\": false,\r\n            \"membersCanInvite\": false,\r\n            \"keywords\": [\r\n              {\r\n                \"key\": \"key74\",\r\n                \"value\": \"value74\"\r\n              }\r\n            ],\r\n            \"canViewHistory\": false\r\n          }\r\n        },\r\n        \"roomUpdated\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"newRoomProperties\": {\r\n            \"name\": \"name74\",\r\n            \"description\": \"description74\",\r\n            \"creatorUser\": {\r\n              \"userId\": 192,\r\n              \"firstName\": \"firstName74\",\r\n              \"lastName\": \"lastName74\",\r\n              \"displayName\": \"displayName74\",\r\n              \"email\": \"email74\",\r\n              \"username\": \"username74\"\r\n            },\r\n            \"createdDate\": 192,\r\n            \"external\": false,\r\n            \"crossPod\": false,\r\n            \"public\": false,\r\n            \"copyProtected\": false,\r\n            \"readOnly\": false,\r\n            \"discoverable\": false,\r\n            \"membersCanInvite\": false,\r\n            \"keywords\": [\r\n              {\r\n                \"key\": \"key74\",\r\n                \"value\": \"value74\"\r\n              }\r\n            ],\r\n            \"canViewHistory\": false\r\n          }\r\n        },\r\n        \"roomDeactivated\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          }\r\n        },\r\n        \"roomReactivated\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          }\r\n        },\r\n        \"userJoinedRoom\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId74\",\r\n            \"streamType\": \"streamType74\",\r\n            \"roomName\": \"roomName74\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 192,\r\n                \"firstName\": \"firstName74\",\r\n                \"lastName\": \"lastName74\",\r\n                \"displayName\": \"displayName74\",\r\n                \"email\": \"email74\",\r\n                \"username\": \"username74\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"affectedUser\": {\r\n            \"userId\": 192,\r\n            \"firstName\": \"firstName74\",\r\n            \"lastName\": \"lastName74\",\r\n            \"displayName\": \"displayName74\",\r\n            \"email\": \"email74\",\r\n            \"username\": \"username74\"\r\n          }\r\n        },\r\n        \"userLeftRoom\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId44\",\r\n            \"streamType\": \"streamType44\",\r\n            \"roomName\": \"roomName44\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 114,\r\n                \"firstName\": \"firstName44\",\r\n                \"lastName\": \"lastName44\",\r\n                \"displayName\": \"displayName44\",\r\n                \"email\": \"email44\",\r\n                \"username\": \"username44\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"affectedUser\": {\r\n            \"userId\": 114,\r\n            \"firstName\": \"firstName44\",\r\n            \"lastName\": \"lastName44\",\r\n            \"displayName\": \"displayName44\",\r\n            \"email\": \"email44\",\r\n            \"username\": \"username44\"\r\n          }\r\n        },\r\n        \"roomMemberPromotedToOwner\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId44\",\r\n            \"streamType\": \"streamType44\",\r\n            \"roomName\": \"roomName44\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 114,\r\n                \"firstName\": \"firstName44\",\r\n                \"lastName\": \"lastName44\",\r\n                \"displayName\": \"displayName44\",\r\n                \"email\": \"email44\",\r\n                \"username\": \"username44\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"affectedUser\": {\r\n            \"userId\": 114,\r\n            \"firstName\": \"firstName44\",\r\n            \"lastName\": \"lastName44\",\r\n            \"displayName\": \"displayName44\",\r\n            \"email\": \"email44\",\r\n            \"username\": \"username44\"\r\n          }\r\n        },\r\n        \"roomMemberDemotedFromOwner\": {\r\n          \"stream\": {\r\n            \"streamId\": \"streamId44\",\r\n            \"streamType\": \"streamType44\",\r\n            \"roomName\": \"roomName44\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 114,\r\n                \"firstName\": \"firstName44\",\r\n                \"lastName\": \"lastName44\",\r\n                \"displayName\": \"displayName44\",\r\n                \"email\": \"email44\",\r\n                \"username\": \"username44\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          },\r\n          \"affectedUser\": {\r\n            \"userId\": 114,\r\n            \"firstName\": \"firstName44\",\r\n            \"lastName\": \"lastName44\",\r\n            \"displayName\": \"displayName44\",\r\n            \"email\": \"email44\",\r\n            \"username\": \"username44\"\r\n          }\r\n        },\r\n        \"connectionRequested\": {\r\n          \"toUser\": {\r\n            \"userId\": 114,\r\n            \"firstName\": \"firstName44\",\r\n            \"lastName\": \"lastName44\",\r\n            \"displayName\": \"displayName44\",\r\n            \"email\": \"email44\",\r\n            \"username\": \"username44\"\r\n          }\r\n        },\r\n        \"connectionAccepted\": {\r\n          \"fromUser\": {\r\n            \"userId\": 114,\r\n            \"firstName\": \"firstName44\",\r\n            \"lastName\": \"lastName44\",\r\n            \"displayName\": \"displayName44\",\r\n            \"email\": \"email44\",\r\n            \"username\": \"username44\"\r\n          }\r\n        },\r\n        \"messageSuppressed\": {\r\n          \"messageId\": \"messageId44\",\r\n          \"stream\": {\r\n            \"streamId\": \"streamId44\",\r\n            \"streamType\": \"streamType44\",\r\n            \"roomName\": \"roomName44\",\r\n            \"members\": [\r\n              {\r\n                \"userId\": 114,\r\n                \"firstName\": \"firstName44\",\r\n                \"lastName\": \"lastName44\",\r\n                \"displayName\": \"displayName44\",\r\n                \"email\": \"email44\",\r\n                \"username\": \"username44\"\r\n              }\r\n            ],\r\n            \"external\": false,\r\n            \"crossPod\": false\r\n          }\r\n        }\r\n      }\r\n    }\r\n  ],\r\n  \"ackId\": \"ackId44\"\r\n}"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"ackId\": \"ackId44\",\r\n  \"maxMsgs\": 114,\r\n  \"timeout\": 114\r\n}"
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/read",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"read"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Read messages from the given firehose. The client should use the ackId to acknowledge received messages whenever it does the next so that the server will not send the same messages again.\nA firehose can be read by a user with CAN_READ_FIREHOSE entitlement.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete a firehose",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "sessionToken",
-								"value": "{{sessionToken}}",
-								"description": "Session authentication token."
-							},
-							{
-								"key": "keyManagerToken",
-								"value": "{{keyManToken}}",
-								"description": "Key Manager authentication token."
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-							"protocol": "https",
-							"host": [
-								"{{agentUrl}}"
-							],
-							"path": [
-								"agent",
-								"v5",
-								"firehose",
-								":id",
-								"delete"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "id90",
-									"type": "string"
-								}
-							]
-						},
-						"description": "Deletes a firehose.\n"
-					},
-					"response": [
-						{
-							"name": "Response_401",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Unauthorized: Session tokens invalid.",
-							"code": 401,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_403",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Forbidden: Caller lacks necessary entitlement.",
-							"code": 403,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_204",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Successfully deleted the firehose",
-							"code": 204,
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Response_404",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Not Found: Firehose Id cannot be found.",
-							"code": 404,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_400",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Client error, see response body for further details.",
-							"code": 400,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
-						},
-						{
-							"name": "Response_500",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "sessionToken",
-										"value": "{{sessionToken}}",
-										"description": "Session authentication token."
-									},
-									{
-										"key": "keyManagerToken",
-										"value": "{{keyManToken}}",
-										"description": "Key Manager authentication token."
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "https://{{agentUrl}}/agent/v5/firehose/:id/delete",
-									"protocol": "https",
-									"host": [
-										"{{agentUrl}}"
-									],
-									"path": [
-										"agent",
-										"v5",
-										"firehose",
-										":id",
-										"delete"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "id90"
-										}
-									]
-								},
-								"description": "Deletes a firehose.\n"
-							},
-							"status": "Server error, see response body for further details.",
-							"code": 500,
-							"_postman_previewlanguage": "Text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\r\n  \"code\": 15,\r\n  \"message\": \"message5\",\r\n  \"details\": {\r\n    \"details0\": \"details47\",\r\n    \"details1\": \"details24\"\r\n  }\r\n}"
 						}
 					]
 				}
@@ -25740,8 +24727,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "userId6",
-									"type": "string"
+									"value": "userId6"
 								}
 							]
 						},
@@ -26086,8 +25072,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "16",
-									"type": "string"
+									"value": "16"
 								}
 							]
 						},
@@ -26794,8 +25779,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -27494,8 +26478,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -27916,8 +26899,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -28266,8 +27248,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -28660,8 +27641,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -29026,8 +28006,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id31",
-									"type": "string"
+									"value": "id31"
 								}
 							]
 						},
@@ -29599,8 +28578,7 @@
 							"variable": [
 								{
 									"key": "did",
-									"value": "did6",
-									"type": "string"
+									"value": "did6"
 								}
 							]
 						},
@@ -30135,8 +29113,7 @@
 							"variable": [
 								{
 									"key": "did",
-									"value": "did6",
-									"type": "string"
+									"value": "did6"
 								}
 							]
 						},
@@ -30682,8 +29659,7 @@
 							"variable": [
 								{
 									"key": "gid",
-									"value": "gid6",
-									"type": "string"
+									"value": "gid6"
 								}
 							]
 						},
@@ -31039,8 +30015,7 @@
 							"variable": [
 								{
 									"key": "gid",
-									"value": "gid6",
-									"type": "string"
+									"value": "gid6"
 								}
 							]
 						},
@@ -31385,8 +30360,7 @@
 							"variable": [
 								{
 									"key": "gid",
-									"value": "gid6",
-									"type": "string"
+									"value": "gid6"
 								}
 							]
 						},
@@ -32640,8 +31614,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -32994,8 +31967,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -33354,8 +32326,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -33695,8 +32666,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -34041,8 +33011,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -35042,8 +34011,7 @@
 							"variable": [
 								{
 									"key": "dictId",
-									"value": "dictId31",
-									"type": "string"
+									"value": "dictId31"
 								}
 							]
 						},
@@ -35396,8 +34364,7 @@
 							"variable": [
 								{
 									"key": "dictId",
-									"value": "dictId31",
-									"type": "string"
+									"value": "dictId31"
 								}
 							]
 						},
@@ -35756,8 +34723,7 @@
 							"variable": [
 								{
 									"key": "dictId",
-									"value": "dictId31",
-									"type": "string"
+									"value": "dictId31"
 								}
 							]
 						},
@@ -36100,8 +35066,7 @@
 							"variable": [
 								{
 									"key": "dictId",
-									"value": "dictId31",
-									"type": "string"
+									"value": "dictId31"
 								}
 							]
 						},
@@ -36468,8 +35433,7 @@
 							"variable": [
 								{
 									"key": "dictId",
-									"value": "dictId31",
-									"type": "string"
+									"value": "dictId31"
 								}
 							]
 						},
@@ -37504,8 +36468,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -37859,8 +36822,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -38225,8 +37187,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId31",
-									"type": "string"
+									"value": "policyId31"
 								}
 							]
 						},
@@ -38571,8 +37532,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId1",
-									"type": "string"
+									"value": "policyId1"
 								}
 							]
 						},
@@ -38917,8 +37877,7 @@
 							"variable": [
 								{
 									"key": "policyId",
-									"value": "policyId1",
-									"type": "string"
+									"value": "policyId1"
 								}
 							]
 						},
@@ -43349,8 +42308,7 @@
 							"variable": [
 								{
 									"key": "fingerPrint",
-									"value": "fingerPrint6",
-									"type": "string"
+									"value": "fingerPrint6"
 								}
 							]
 						},
@@ -43643,8 +42601,7 @@
 							"variable": [
 								{
 									"key": "fingerPrint",
-									"value": "fingerPrint6",
-									"type": "string"
+									"value": "fingerPrint6"
 								}
 							]
 						},
@@ -43969,8 +42926,7 @@
 							"variable": [
 								{
 									"key": "fingerPrint",
-									"value": "fingerPrint6",
-									"type": "string"
+									"value": "fingerPrint6"
 								}
 							]
 						},
@@ -45531,8 +44487,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id46",
-									"type": "string"
+									"value": "id46"
 								}
 							]
 						},
@@ -45867,8 +44822,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id46",
-									"type": "string"
+									"value": "id46"
 								}
 							]
 						},
@@ -46179,8 +45133,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "id46",
-									"type": "string"
+									"value": "id46"
 								}
 							]
 						},
@@ -47036,8 +45989,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "16",
-									"type": "string"
+									"value": "16"
 								}
 							]
 						},
@@ -47348,8 +46300,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "16",
-									"type": "string"
+									"value": "16"
 								}
 							]
 						},
@@ -48809,8 +47760,7 @@
 							"variable": [
 								{
 									"key": "scheme",
-									"value": "scheme46",
-									"type": "string"
+									"value": "scheme46"
 								}
 							]
 						},
@@ -49779,8 +48729,7 @@
 							"variable": [
 								{
 									"key": "extension",
-									"value": "extension46",
-									"type": "string"
+									"value": "extension46"
 								}
 							]
 						},
@@ -50048,8 +48997,7 @@
 							"variable": [
 								{
 									"key": "extension",
-									"value": "extension46",
-									"type": "string"
+									"value": "extension46"
 								}
 							]
 						},
