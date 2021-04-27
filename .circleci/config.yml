@@ -3,7 +3,22 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
+jobs:
+  postman:
+    docker:
+      - image: cimg/base:2021.04
+    steps:
+      - checkout
+      - run: ./postman/publish-on-postman.sh $POSTMAN_API_KEY
+
 workflows:
   maven_test:
     jobs:
       - maven/test # checkout, build, test, and upload test results
+  postman:
+    jobs:
+      - postman:
+          filters:
+            branches:
+              only:
+                - master
