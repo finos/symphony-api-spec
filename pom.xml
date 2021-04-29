@@ -24,7 +24,7 @@
         <swagger-annotations.version>1.6.2</swagger-annotations.version>
 
         <!-- Code Gen -->
-        <openapi-generator-maven-plugin.version>4.3.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>5.1.0</openapi-generator-maven-plugin.version>
         <codegen.generatorName>java</codegen.generatorName>
         <codegen.invoker.library>webclient</codegen.invoker.library>
         <codegen.base.package>com.symphony.api.gen</codegen.base.package>
