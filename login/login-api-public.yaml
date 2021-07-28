@@ -205,6 +205,44 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/idm/tokens':
+    post:
+      summary: Returns a valid OAuth2 access token from a given session token to be used for authentication
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: User session authentication token
+          in: header
+          required: true
+          type: string
+        - name: scope
+          description: |
+            Optional field used to get access with specific entitlements, use space separated list to define more that one
+          in: query
+          required: false
+          type: string
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/JwtToken'
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden to access this endpoint .'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Error:
     type: object
@@ -263,4 +301,19 @@ definitions:
           type: integer
           format: int64
           description: unix timestamp when the token expired
+  JwtToken:
+    type: object
+    properties:
+      token_type:
+        type: string
+        description: Type of token, string "Bearer"
+      expires_in:
+        type: integer
+        format: int64
+        description: Duration of time the access token is granted for in seconds
+      access_token:
+        type: string
+        description: |
+          A JWT containing the caller's username or application, an expiration date and a set of entitlements related to the
+          specified scope, signed by the caller's private key.
 
