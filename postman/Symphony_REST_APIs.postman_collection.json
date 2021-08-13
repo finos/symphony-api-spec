@@ -46610,7 +46610,7 @@
 					]
 				},
                 {
-                    "name": "[Admin] Partial update the application entitlements for this user",
+                    "name": "[Admin] Partially update the application entitlements for this user",
                     "request": {
                         "method": "PATCH",
                         "header": [
