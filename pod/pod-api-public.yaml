@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.12.1'
+  version: '20.13.0'
   title: Pod API
   description: |
     This document refers to Symphony API calls that do not need
@@ -724,6 +724,95 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Stream'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/im/{id}/update':
+    post:
+      summary: Update the attributes of an existing IM.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: IM streamID
+          in: path
+          required: true
+          type: string
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V1IMAttributes'
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1IMDetail'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '451':
+          description: 'Unavailable for Legal Reasons: Compliance Issues found in IM update request.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/im/{id}/info':
+    get:
+      summary: Get information about a partcular IM.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: IM streamId
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1IMDetail'
         '400':
           description: 'Client error.'
           schema:
@@ -2976,6 +3065,52 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+    patch:
+      summary: Update unique entitlement of an app for this user. Entitlement can be installation, visibility or product
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/UserAppEntitlementsPatchList'
+      tags:
+        - AppEntitlement
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/UserAppEntitlementList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/Error'
   '/v1/admin/user/{uid}/avatar':
     get:
       summary: Get the URL of the avatar of a particular user
@@ -4938,7 +5073,7 @@ definitions:
         type : string
       accountType:
         type: string
-        enum: [NORMAL, SYSTEM]
+        enum: [NORMAL, SYSTEM, SDL]
       avatars:
         # avatar urls for both original size and small size
         $ref: '#/definitions/AvatarList'
@@ -4999,6 +5134,9 @@ definitions:
   UserSearchFilter:
     type: object
     properties:
+      accountTypes:
+        $ref: '#/definitions/StringList'
+        description: type of user used to search
       title:
         type: string
         description: user's job title
@@ -5114,7 +5252,9 @@ definitions:
       subType:
         type: string
         description: Possible value EMAIL (indicate this room will be used for Email Integration)
-
+      pinnedMessageId:
+        type: string
+        description: UrlSafe message id of the pinned message inside the room. To perform unpin operation, send an empty string.
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
     properties:
@@ -5495,6 +5635,52 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Group'
+  UserAppEntitlementsPatchList:
+    description: Array of app entitlements to patch for a user
+    type: array
+    items:
+      $ref: '#/definitions/UserAppEntitlementPatch'
+  UserAppEntitlementPatchEnum:
+    type: object
+    default: "KEEP"
+    description:
+    properties:
+      type:
+        type: string
+        enum: &UserAppEntitlementPatchEnum
+          - "TRUE"
+          - "FALSE"
+          - "KEEP"
+          - "REMOVE"
+        description: >
+          UserAppEntitlementPatchEnum type :
+           * TRUE - The parameter should be set to true.
+           * FALSE - The parameter should be set to false.
+           * KEEP - The parameter should not be updated, the current value will be kept.
+           * REMOVE - The parameter should be reverted to tenant level's value.
+  UserAppEntitlementPatch:
+    description: Application Entitlements to patch for the user
+    type: object
+    required:
+      - appId
+    properties:
+      appId:
+        type: string
+        description: Unique ID for the Application
+        maxLength: 32
+        minLength: 1
+      listed:
+        type: string
+        enum: *UserAppEntitlementPatchEnum
+        default: KEEP
+        description: If "TRUE", this application will be listed in the appstore for this user. If "FALSE", this application will be hidden in the appstore. If "KEEP" or not set, the current value is kept. If "REMOVE", it will be removed from user settings and the pod level setting's value will be used.
+      install:
+        type: string
+        enum: *UserAppEntitlementPatchEnum
+        default: KEEP
+        description: If "TRUE", this application will be installed for this user. If "FALSE", this application will not be installed for this user. If "KEEP" or not set, the current value is kept. If "REMOVE", it will be removed from user settings and the pod level setting's value will be used.
+      product:
+        $ref: '#/definitions/Product'
   UserAppEntitlementList:
     type: array
     items:
@@ -5599,6 +5785,7 @@ definitions:
         enum:
           - NORMAL
           - SYSTEM
+          - SDL
       location:
         type: string
       jobFunction:
@@ -5666,6 +5853,7 @@ definitions:
         enum:
           - NORMAL
           - SYSTEM
+          - SDL
       location:
         type: string
       recommendedLanguage:
@@ -7084,4 +7272,28 @@ definitions:
           format: int64
       pagination:
         $ref: '#/definitions/Pagination'
-
+  V1IMAttributes:
+    type: object
+    properties:
+      pinnedMessageId:
+        type: string
+        description: UrlSafe message id of the pinned message inside the IM. To perform unpin operation, send an empty string.
+  V1IMDetail:
+    type: object
+    properties:
+      V1IMAttributes:
+        $ref: '#/definitions/V1IMAttributes'
+      IMSystemInfo:
+        $ref: '#/definitions/IMSystemInfo'
+  IMSystemInfo:
+    type: object
+    properties:
+      id:
+        type: string
+      creationDate:
+        type: integer
+        format: int64
+        description: The datetime when the stream was originally created. Milliseconds since Jan 1 1970.
+      active:
+        type: boolean
+        description: If false, no messages can be sent in this stream, and membership is locked.
