@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.12.1'
+  version: '20.13.0'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once

@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.12.0'
+  version: '20.13.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -768,6 +768,95 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/V2Error'
+
+  '/v4/stream/{sid}/message/{mid}/update':
+    post:
+      summary: Update an existing message.
+      description: |
+        Update an existing message. The existing message must be a valid social message, that has not been deleted.
+
+        The message can be provided as MessageMLV2 or PresentationML. Both formats support Freemarker templates.
+
+        The optional parameter "data" can be used to provide a JSON payload containing entity data.
+        If the message contains explicit references to entity data (in "data-entity-id" element attributes),
+        this parameter is required.
+
+        If the message is in MessageML and fails schema validation
+        a client error results
+
+        If the message is updated then 200 is returned.
+
+        Regarding authentication, you must either use the sessionToken which was created for delegated app access
+        or both the sessionToken and keyManagerToken together.
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: sid
+          description: Stream ID
+          in: path
+          required: true
+          type: string
+        - name: mid
+          description: Parent message ID
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Authorization token used to make delegated calls.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          type: string
+          required: false
+        - name: message
+          description: The message payload in MessageML.
+          in: formData
+          type: string
+          required: false
+        - name: data
+          description: Optional message data in EntityJSON.
+          in: formData
+          type: string
+          required: false
+        - name: version
+          description: |
+            Optional message version in the format "major.minor". If empty, defaults to the latest supported version.
+          in: formData
+          type: string
+          required: false
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: Message sent.
+          schema:
+            $ref: '#/definitions/V4Message'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '451':
+          description: 'Compliance Issues found in message or file'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+
   '/v3/stream/{sid}/share':
     post:
       summary: PROVISIONAL -  Share a piece of content into Symphony
@@ -3743,6 +3832,19 @@ definitions:
         description: |
           Unique session identifier from where the message was created.
         example: 'fa691cd3-484a-4109-aeb2-57c05b78c95b'
+      replacing:
+        type: string
+        description: Id of the message that the current message is replacing (present only if set)
+      replacedBy:
+        type: string
+        description: Id of the message that the current message is being replaced with (present only if set)
+      initialTimestamp:
+        type: integer
+        format: int64
+        description: Timestamp of when the initial message has been created in milliseconds since Jan 1 1970 (present only if set)
+      initialMessageId:
+        type: string
+        description: Id the the initial message that has been updated (present only if set)
   V4MessageBlastResponse:
     type: object
     description: Wrapper response for a single message sent to multiple streams
@@ -5116,14 +5218,18 @@ definitions:
         maxLength: 100
         description: A unique identifier to ensure uniqueness of the datafeed.
   AckId:
-    description: An object containing the ackId associated with events that the
+    description: An object containing the ackId (and parameters) associated with events that the
       client has received through an individual feed.
     type: object
     properties:
       ackId:
         type: string
-        description: A unique id for events that can be deleted from a client's
+        description: A unique id for events that can be deleted from a client's. Empty for the first read.
           feed.
+      updatePresence:
+        type: boolean
+        default: true
+        description: Set to false to avoid updating the user's presence when reading events. Default is true.
   V5EventList:
     type: object
     properties:

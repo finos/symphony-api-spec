@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.12.1'
+  version: '20.13.0'
   title: Login API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -243,6 +243,7 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+
 definitions:
   Error:
     type: object
@@ -310,10 +311,9 @@ definitions:
       expires_in:
         type: integer
         format: int64
-        description: Duration of time the access token is granted for in seconds
+        description:  Duration of time the access token is granted for in seconds
       access_token:
         type: string
         description: |
           A JWT containing the caller's username or application, an expiration date and a set of entitlements related to the
           specified scope, signed by the caller's private key.
-
