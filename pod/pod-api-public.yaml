@@ -3087,30 +3087,30 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/UserAppEntitlementsPatchList'
+            $ref: '#/definitions/UserAppEntitlementsPatchList'
       tags:
         - AppEntitlement
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/UserAppEntitlementList'
+            $ref: '#/definitions/UserAppEntitlementList'
         '400':
           description: 'Client error, see response body for further details.'
           schema:
-            $ref: '#/Error'
+            $ref: '#/definitions/Error'
         '401':
           description: 'Unauthorized: Session tokens invalid.'
           schema:
-            $ref: '#/Error'
+            $ref: '#/definitions/Error'
         '403':
           description: 'Forbidden: Caller lacks necessary entitlement.'
           schema:
-            $ref: '#/Error'
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
-            $ref: '#/Error'
+            $ref: '#/definitions/Error'
   '/v1/admin/user/{uid}/avatar':
     get:
       summary: Get the URL of the avatar of a particular user
