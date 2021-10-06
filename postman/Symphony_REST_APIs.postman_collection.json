@@ -6101,6 +6101,681 @@
 					]
 				},
 				{
+					"name": "Update the attributes of an existing IM/MIM (single or multi party instant message).",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+						},
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"im",
+								":id",
+								"update"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "id6"
+								}
+							]
+						},
+						"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+					},
+					"response": [
+						{
+							"name": "Response_200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"V1IMAttributes\": {\r\n    \"pinnedMessageId\": \"id36\"\r\n  },\r\n  \"IMSystemInfo\": {\r\n    \"id\": \"id36\",\r\n    \"creationDate\": 94,\r\n    \"active\": true\r\n  }\r\n}"
+						},
+						{
+							"name": "Response_400",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "Client error.",
+							"code": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "Unauthorized: Session tokens invalid.",
+							"code": 401,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "Forbidden: Caller lacks necessary entitlement.",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_451",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "Unavailable for Legal Reasons: Compliance Issues found in room update request.",
+							"code": 451,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_500",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"pinnedMessageId\": \"id36\"\r\n}"
+								},
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/update",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Update the attributes of an existing IM/MIM (single or multi party instant message)."
+							},
+							"status": "Server error, see response body for further details.",
+							"code": 500,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Get information about a particular IM/MIM (single or multi party instant message).",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"pod",
+								"v1",
+								"im",
+								":id",
+								"info"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "id6"
+								}
+							]
+						},
+						"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+					},
+					"response": [
+						{
+							"name": "Response_200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"V1IMAttributes\": {\r\n    \"pinnedMessageId\": \"id36\"\r\n  },\r\n  \"IMSystemInfo\": {\r\n    \"id\": \"id36\",\r\n    \"creationDate\": 94,\r\n    \"active\": true\r\n  }\r\n}"
+						},
+						{
+							"name": "Response_400",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+							},
+							"status": "Client error.",
+							"code": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+							},
+							"status": "Unauthorized: Session tokens invalid.",
+							"code": 401,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_403",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+							},
+							"status": "Forbidden: Caller lacks necessary entitlement.",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						},
+						{
+							"name": "Response_500",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{podUrl}}/pod/v1/im/:id/info",
+									"protocol": "https",
+									"host": [
+										"{{podUrl}}"
+									],
+									"path": [
+										"pod",
+										"v1",
+										"im",
+										":id",
+										"info"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "id6"
+										}
+									]
+								},
+								"description": "Get information about a particular IM/MIM (single or multi party instant message)."
+							},
+							"status": "Server error, see response body for further details.",
+							"code": 500,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						}
+					]
+				},
+				{
 					"name": "Create a new chatroom.",
 					"request": {
 						"method": "POST",
@@ -6793,7 +7468,7 @@
 					]
 				},
 				{
-					"name": "Get information about a partcular chatroom.",
+					"name": "Get information about a particular chatroom.",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -6827,7 +7502,7 @@
 								}
 							]
 						},
-						"description": "Get information about a partcular chatroom."
+						"description": "Get information about a particular chatroom."
 					},
 					"response": [
 						{
@@ -6865,7 +7540,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular chatroom."
+								"description": "Get information about a particular chatroom."
 							},
 							"status": "Client error.",
 							"code": 400,
@@ -6914,7 +7589,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular chatroom."
+								"description": "Get information about a particular chatroom."
 							},
 							"status": "Server error, see response body for further details.",
 							"code": 500,
@@ -6963,7 +7638,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular chatroom."
+								"description": "Get information about a particular chatroom."
 							},
 							"status": "OK",
 							"code": 200,
@@ -7012,7 +7687,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular chatroom."
+								"description": "Get information about a particular chatroom."
 							},
 							"status": "Unauthorized: Session tokens invalid.",
 							"code": 401,
@@ -7061,7 +7736,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular chatroom."
+								"description": "Get information about a particular chatroom."
 							},
 							"status": "Forbidden: Caller lacks necessary entitlement.",
 							"code": 403,
@@ -8164,7 +8839,7 @@
 					]
 				},
 				{
-					"name": "Get information about a partcular stream.",
+					"name": "Get information about a particular stream.",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -8198,7 +8873,7 @@
 								}
 							]
 						},
-						"description": "Get information about a partcular stream."
+						"description": "Get information about a particular stream."
 					},
 					"response": [
 						{
@@ -8236,7 +8911,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular stream."
+								"description": "Get information about a particular stream."
 							},
 							"status": "Unauthorized: Session tokens invalid.",
 							"code": 401,
@@ -8285,7 +8960,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular stream."
+								"description": "Get information about a particular stream."
 							},
 							"status": "Server error, see response body for further details.",
 							"code": 500,
@@ -8334,7 +9009,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular stream."
+								"description": "Get information about a particular stream."
 							},
 							"status": "OK",
 							"code": 200,
@@ -8383,7 +9058,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular stream."
+								"description": "Get information about a particular stream."
 							},
 							"status": "Client error.",
 							"code": 400,
@@ -8432,7 +9107,7 @@
 										}
 									]
 								},
-								"description": "Get information about a partcular stream."
+								"description": "Get information about a particular stream."
 							},
 							"status": "Forbidden: Caller lacks necessary entitlement.",
 							"code": 403,
