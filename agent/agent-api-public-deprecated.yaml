@@ -6285,12 +6285,7 @@ definitions:
         type: string
         description: ID of the datafeed
       type:
-        type: string
-        description: Different types will drive how DF2 components handle the message
-          dispatching mechaninsm implementation.
-        enum:
-          - datahose
-          - fanout
+        $ref: "#/definitions/V5DatafeedType"
       createdAt:
         type: integer
         format: int64
@@ -6312,29 +6307,29 @@ definitions:
         maxLength: 100
         description: A unique identifier to ensure uniqueness of the datafeed.
       type:
-        type: string
-        description: Different types will drive how DF2 components handle the message
-          dispatching mechaninsm implementation.
-        enum:
-          - datahose
-          - fanout
+        $ref: "#/definitions/V5DatafeedType"
       filters:
         maxItems: 6
         type: array
         description: An array of event types allowed to receive in the created feed.
         items:
           $ref: '#/definitions/V5DatafeedEventType'
+  V5DatafeedType:
+    type: string
+      type: string
+      description: Different types will drive how DF2 components handle the message
+        dispatching mechaninsm implementation.
+      enum:
+        - datahose
+        - fanout
   V5DatafeedEventType:
     type: string
     description: A string representing the event type allowed to go through in the
       related feed.
     enum:
       - SOCIALMESSAGE
-      - CHANNEL_CREATE
-      - CHANNEL_UPDATE
       - CREATE_ROOM
       - UPDATE_ROOM
-      - UPDATE_STREAM
   AckId:
     description: An object containing the ackId (and parameters) associated with events that the
       client has received through an individual feed.
