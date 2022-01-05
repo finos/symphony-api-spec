@@ -15,6 +15,21 @@ info:
     system even if ome subset of the request would have succeeded.
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
+    
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+
+security: [
+  # empty to make it optional
+  {},
+  {
+    BearerAuth: []
+  }
+]
+
 paths:
   '/v1/companycert/list':
     get:

@@ -25,6 +25,20 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
+    
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+
+security: [
+  # empty to make it optional
+  {},
+  {
+    BearerAuth: []
+  }
+]
 
 paths:
   '/v4/datafeed/create':
