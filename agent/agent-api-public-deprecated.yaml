@@ -32,13 +32,10 @@ securityDefinitions:
     in: header
     name: Authorization
 
-security: [
+security:
   # empty to make it optional
-  {},
-  {
-    BearerAuth: []
-  }
-]
+  - { }
+  - BearerAuth: [ ]
 
 paths:
   '/v4/datafeed/create':
