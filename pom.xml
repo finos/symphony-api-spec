@@ -17,14 +17,14 @@
         <maven.compiler.source>1.8</maven.compiler.source>
 
         <!-- Alphabetical order -->
-        <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
+        <jackson.version>2.13.1</jackson.version>
         <jsr305.version>3.0.2</jsr305.version>
-        <spring-boot-starter-webflux.version>2.4.5</spring-boot-starter-webflux.version>
-        <swagger-annotations.version>1.6.2</swagger-annotations.version>
+        <spring-boot-starter-webflux.version>2.6.2</spring-boot-starter-webflux.version>
+        <swagger-annotations.version>1.6.4</swagger-annotations.version>
 
         <!-- Code Gen -->
-        <openapi-generator-maven-plugin.version>4.3.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>5.3.1</openapi-generator-maven-plugin.version>
         <codegen.generatorName>java</codegen.generatorName>
         <codegen.invoker.library>webclient</codegen.invoker.library>
         <codegen.base.package>com.symphony.api.gen</codegen.base.package>
@@ -151,6 +151,16 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/login/login-api-public.yaml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>profile-manager-api</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/profile-manager/profile-manager-api.yaml</inputSpec>
                         </configuration>
                     </execution>
                 </executions>
