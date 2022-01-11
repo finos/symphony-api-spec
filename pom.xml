@@ -153,6 +153,16 @@
                             <inputSpec>${project.basedir}/login/login-api-public.yaml</inputSpec>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>profile-manager-api</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/profile-manager/profile-manager-api.yaml</inputSpec>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
