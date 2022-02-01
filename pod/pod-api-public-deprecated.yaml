@@ -6582,6 +6582,13 @@ definitions:
         enum:
           - ENABLED
           - DISABLED
+      suspended:
+        type: boolean
+      suspendedUntil:
+        type: integer
+        format: int64
+      suspensionReason:
+        type: string
   UserFilter:
     type: object
     properties:
@@ -7093,6 +7100,13 @@ definitions:
         enum:
           - ENABLED
           - DISABLED
+      suspended:
+        type: boolean
+      suspendedUntil:
+        type: integer
+        format: int64
+      suspensionReason:
+        type: string
       createdDate:
         type: integer
         format: int64
