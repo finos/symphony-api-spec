@@ -5430,7 +5430,7 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
-        description: Whether the user is temporarily suspended or not
+        description: An optional attribute indicating whether the user is temporarily suspended or not
       suspendedUntil:
         type: integer
         format: int64
@@ -5471,7 +5471,7 @@ definitions:
         type: string
       enabled:
         type: boolean
-        description: Whether this entitlement is enabled for the user.
+        description: An optional Whether this entitlement is enabled for the user.
   Group:
     description: Information Barrier Group record.
     type: object
@@ -5951,7 +5951,7 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
-        description: Whether the user is temporarily suspended or not
+        description: An optional attribute indicating whether the user is temporarily suspended or not
       suspendedUntil:
         type: integer
         format: int64
