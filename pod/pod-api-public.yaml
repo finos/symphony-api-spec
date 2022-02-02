@@ -5430,11 +5430,14 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
+        description: whether the user is temporarily suspended or not
       suspendedUntil:
         type: integer
         format: int64
+        description: An optional unix timestamp until which the suspension is effective
       suspensionReason:
         type: string
+        description: An optional description of the suspension reason
   UserFilter:
     type: object
     properties:
@@ -5948,11 +5951,14 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
+        description: whether the user is temporarily suspended or not
       suspendedUntil:
         type: integer
         format: int64
+        description: An optional unix timestamp until which the suspension is effective
       suspensionReason:
         type: string
+        description: An optional description of the suspension reason
       createdDate:
         type: integer
         format: int64
