@@ -5951,7 +5951,7 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
-        description: whether the user is temporarily suspended or not
+        description: Whether the user is temporarily suspended or not
       suspendedUntil:
         type: integer
         format: int64
