@@ -5471,7 +5471,7 @@ definitions:
         type: string
       enabled:
         type: boolean
-        description: An optional Whether this entitlement is enabled for the user.
+        description: Whether this entitlement is enabled for the user.
   Group:
     description: Information Barrier Group record.
     type: object
