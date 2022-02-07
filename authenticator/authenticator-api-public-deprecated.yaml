@@ -264,15 +264,14 @@ definitions:
     properties:
       name:
         description: |
-          The name of the header in which the token should be presented on subsequent
-          API calls.
+          The name of the header in which the token should be presented on subsequent PI calls.
         type: string
       token:
         type: string
         description: |
           Token that can be passed as header, it can be considered a refresh token along with the
           idm/tokens ("authorizationToken").
-          This should be considered opaque data by the client. It is not intended to contain any data interpretable by the
+          This should be considered opaque data by the client. It is not intended to conatain any data interpretable by the
           client. The format is secret and subject to change without notice.
       authorizationToken:
         type: string

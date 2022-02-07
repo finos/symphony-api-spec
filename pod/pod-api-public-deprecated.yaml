@@ -6405,10 +6405,13 @@ definitions:
         description: If true, this room is for a scheduled meeting.
       subType:
         type: string
-        description: Possible value EMAIL (indicate this room will be used for Email Integration)
+        description: This field is ignored when creating a new room as it was only used for email integration which is now sunset.
       pinnedMessageId:
         type: string
         description: UrlSafe message id of the pinned message inside the room. To perform unpin operation, send an empty string.
+      elementsReply:
+        type: string
+        description: If members is specified, members can reply to form elements in read only room otherwise only owners can. na value specifies Not Applicable. Null value is also acceptable.
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
     properties:
@@ -8471,6 +8474,7 @@ definitions:
       active:
         type: boolean
         description: If false, no messages can be sent in this stream, and membership is locked.
+
   SessionInfo:
     description: Information about the current user's session
     type: object
