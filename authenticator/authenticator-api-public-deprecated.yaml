@@ -264,8 +264,7 @@ definitions:
     properties:
       name:
         description: |
-          The name of the header in which the token should be presented on subsequent
-          API calls.
+          The name of the header in which the token should be presented on subsequent PI calls.
         type: string
       token:
         type: string
@@ -312,7 +311,7 @@ definitions:
         type: string
         description: |
           The token which should be passed. This should be considered opaque data by
-          the client. It is not intended to conatain any data interpretable by the
+          the client. It is not intended to contain any data interpretable by the
           client. The format is secret and subject to change without notice.
   PodCertificate:
     type: object
