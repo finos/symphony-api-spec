@@ -5251,7 +5251,7 @@ definitions:
         description: If true, this room is for a scheduled meeting.
       subType:
         type: string
-        description: Possible value EMAIL (indicate this room will be used for Email Integration)
+        description: This field is ignored when creating a new room as it was only used for email integration which is now sunset.
       pinnedMessageId:
         type: string
         description: UrlSafe message id of the pinned message inside the room. To perform unpin operation, send an empty string.
@@ -5391,6 +5391,22 @@ definitions:
         $ref: '#/definitions/V3RoomAttributes'
       roomSystemInfo:
         $ref: '#/definitions/RoomSystemInfo'
+      groups:
+        description: List of groups (aka SDLs) that were added to the room.
+        type: array
+        items:
+          $ref: '#/definitions/GroupItem'
+  GroupItem:
+    type: object
+    properties:
+      id:
+        description: The ID of the added group (aka SDL).
+        type: integer
+        format: int64
+      addedBy:
+        description: The user ID who added the group to the room.
+        type: integer
+        format: int64
   SuccessResponse:
     type: object
     properties:
@@ -6028,6 +6044,12 @@ definitions:
       joinDate:
         type: integer
         format: int64
+      addedThroughGroups:
+        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to.
+        type: array
+        items:
+          type: integer
+          format: int64
   MembershipList:
     description: List of members in a room.
     type: array
@@ -6075,6 +6097,12 @@ definitions:
         description: unix timestamp for join date
         type: integer
         format: int64
+      addedThroughGroups:
+        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to.
+        type: array
+        items:
+          type: integer
+          format: int64
   V2MemberInfoList:
     type: array
     items:
@@ -6265,6 +6293,11 @@ definitions:
       name:
         type: string
         description: Room name.
+      groups:
+        description: List of groups (aka SDLs) that were added to the room.
+        type: array
+        items:
+          $ref: '#/definitions/GroupItem'
   V2AdminStreamFilter:
     description: stream filter criteria
     type: object
@@ -6423,6 +6456,9 @@ definitions:
             - GET_BASIC_CONTACT_INFO
             - GET_EXTENDED_CONTACT_INFO
             - ACT_AS_USER
+            - MANAGE_SIGNALS
+            - MANAGE_USER_FOLLOWING
+            - TRUST_APP
         type: array
         items:
           type: string
@@ -6433,6 +6469,8 @@ definitions:
         $ref: '#/definitions/AppAuthenticationKeys'
       notification:
         $ref: '#/definitions/AppNotification'
+      properties:
+        $ref: '#/definitions/AppProperties'
   V2PresenceList:
     type: array
     items:
@@ -6688,6 +6726,21 @@ definitions:
       apiKey:
         type: string
         description: "apiKey sent into every callback request, using the X-API-KEY header"
+  AppProperties:
+    type: array
+    description: Application configuration properties that are shared with the extension application, client side. Do not store sensitive information here.
+    items:
+      $ref: '#/definitions/AppProperty'
+  AppProperty:
+    type: object
+    description: Application configuration property that is shared with the extension application, client side. Do not store sensitive information here.
+    properties:
+      key:
+        type: string
+        description: Name of an application configuration property. It cannot be null or empty and its length is limited to 1024 characters. Keys are unique.
+      value:
+        type: string
+        description: Value of an application configuration property. It cannot be null and its length is limited to 4096 characters. It can be empty.
   StreamAttachmentResponse:
     type: array
     items:
@@ -7317,3 +7370,4 @@ definitions:
       active:
         type: boolean
         description: If false, no messages can be sent in this stream, and membership is locked.
+

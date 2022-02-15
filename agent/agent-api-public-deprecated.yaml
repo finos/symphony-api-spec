@@ -10,10 +10,13 @@ info:
     - sessionToken and keyManagerToken can be obtained by calling the
     authenticationAPI on the symphony back end and the key manager
     respectively. Refer to the methods described in authenticatorAPI.yaml.
+    - A new authorizationToken has been introduced in the authenticationAPI
+    response payload. It can be used to replace the sessionToken in any of
+    the API calls and can be passed as "Authorization" header.
     - Actions are defined to be atomic, ie will succeed in their entirety
     or fail and have changed nothing.
     - If it returns a 40X status then it will have sent no message to any
-    stream even if a request to aome subset of the requested streams
+    stream even if a request to some subset of the requested streams
     would have succeeded.
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
@@ -6336,7 +6339,7 @@ definitions:
     properties:
       ackId:
         type: string
-        description: A unique id for events that can be deleted from a client's. Empty for the first read.
+        description: A unique id for events that can be deleted from a client's. Empty for the first read. If set to null or missing, it will be considered empty.
           feed.
       updatePresence:
         type: boolean
