@@ -832,6 +832,12 @@ paths:
           in: formData
           type: string
           required: false
+        - name: silent
+          in: formData
+          type: string
+          required: false
+          description: |
+            Optional boolean field that will determine if the user/s should receive the message as read or not (true by default)
       tags:
         - Messages
       responses:
@@ -3868,6 +3874,9 @@ definitions:
       initialMessageId:
         type: string
         description: Id the the initial message that has been updated (present only if set)
+      silent:
+        type: boolean
+        description: When false the user/s will receive the message update as unread (true by default).
   V4MessageBlastResponse:
     type: object
     description: Wrapper response for a single message sent to multiple streams
