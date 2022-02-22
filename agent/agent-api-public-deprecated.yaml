@@ -6296,8 +6296,6 @@ definitions:
       id:
         type: string
         description: ID of the datafeed
-      type:
-        $ref: "#/definitions/V5DatafeedType"
       createdAt:
         type: integer
         format: int64
@@ -6307,40 +6305,11 @@ definitions:
       id: '8e7c8672-220...'
   V5DatafeedCreateBody:
     type: object
-    description: A feed parameterization object, specifying type. It's itended to
-      be used when creating datahose feeds used to oversee POD's acitivity. The
-      regular DF2's feed is a 'fanout' type. On the absence of parameterization
-      DF2 will always create it's default type of feed (fanout) and will allow all
-      event types. If the filters property is passed and is an empty array, it will
-      block all event types.
     properties:
       tag:
         type: string
         maxLength: 100
         description: A unique identifier to ensure uniqueness of the datafeed.
-      type:
-        $ref: "#/definitions/V5DatafeedType"
-      filters:
-        maxItems: 6
-        type: array
-        description: An array of event types allowed to receive in the created feed.
-        items:
-          $ref: '#/definitions/V5DatafeedEventType'
-  V5DatafeedType:
-    type: string
-    description: Different types will drive how DF2 components handle the message
-      dispatching mechaninsm implementation.
-    enum:
-      - datahose
-      - fanout
-  V5DatafeedEventType:
-    type: string
-    description: A string representing the event type allowed to go through in the
-      related feed.
-    enum:
-      - SOCIALMESSAGE
-      - CREATE_ROOM
-      - UPDATE_ROOM
   AckId:
     description: An object containing the ackId (and parameters) associated with events that the
       client has received through an individual feed.
