@@ -45,46 +45,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/authenticate/extensionApp':
-    post:
-      summary: Authenticate a client-extension application
-      description: |
-        Based on the application's SSL client certificate presented by the TLS layer, it authenticates the client-extension
-        application and return a symphony verification token.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      tags:
-        - CertificateAuthentication
-      parameters:
-        - name: authRequest
-          description: application generated token
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ExtensionAppAuthenticateRequest'
-      responses:
-        '200':
-          description: OK.
-          schema:
-            $ref: '#/definitions/ExtensionAppTokens'
-        '400':
-          description: 'Request object is invalid'
-          schema:
-            $ref: '#/definitions/Error'
-        '401':
-          description: 'Client is unauthorized to access this resource'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden to access this endpoint .'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/app/pod/certificate':
     get:
       summary: |
@@ -107,112 +67,6 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/app/authenticate':
-    post:
-      summary: PROVISIONAL - Authenticate an application in a delegated context.
-      description: |
-        Based on the SSL client certificate presented by the TLS layer, authenticate
-        the API caller and return an application session.
-      produces:
-        - application/json
-      tags:
-        - CertificateAuthentication
-      responses:
-        '200':
-          description: OK.
-          schema:
-            $ref: '#/definitions/Token'
-        '400':
-          description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v1/app/user/{uid}/authenticate':
-    post:
-      summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
-      parameters:
-        - name: uid
-          description: user id
-          in: path
-          required: true
-          type: integer
-          format: int64
-        - name: sessionToken
-          description: Authorization token obtains from app/authenicate API
-          in: header
-          required: true
-          type: string
-      produces:
-        - application/json
-      tags:
-        - CertificateAuthentication
-      responses:
-        '200':
-          description: OK.
-          schema:
-            $ref: '#/definitions/OboAuthResponse'
-        '400':
-          description: 'Client error.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: 'User id not found'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
-  '/v1/app/username/{username}/authenticate':
-      post:
-        summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
-        parameters:
-          - name: username
-            description: username
-            in: path
-            required: true
-            type: string
-          - name: sessionToken
-            description: Authorization token obtains from app/authenicate API
-            in: header
-            required: true
-            type: string
-        produces:
-          - application/json
-        tags:
-          - CertificateAuthentication
-        responses:
-          '200':
-            description: OK.
-            schema:
-              $ref: '#/definitions/OboAuthResponse'
-          '400':
-            description: 'Client error.'
-            schema:
-              $ref: '#/definitions/Error'
-          '403':
-            description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
-            schema:
-              $ref: '#/definitions/Error'
-          '404':
-            description: 'Username not found'
-            schema:
-              $ref: '#/definitions/Error'
-          '500':
-            description: 'Server error, see response body for further details.'
-            schema:
-              $ref: '#/definitions/Error'
   '/v1/logout':
     post:
       summary: Logout.
@@ -275,40 +129,6 @@ definitions:
           Short lived access token built from a user session. It can be used for the same purposes as the sessionToken
           and it should be passed as an header named "Authorization". At least either one of SessionToken or
           Authorization header must me provided on subsequent API calls.
-  ExtensionAppAuthenticateRequest:
-      type: object
-      description: Request body for extension app authentication
-      properties:
-        appToken:
-          type: string
-          description: application generated token
-  ExtensionAppTokens:
-    type: object
-    properties:
-      appId:
-        description: Application ID
-        type: string
-      appToken:
-        description: |
-          This token generated by the application when calling authentication endpoint
-        type: string
-      symphonyToken:
-        type: string
-        description: |
-          This token generated by Symphony and should be used by the application to verify that it's talking to Symphony.
-      expireAt:
-        type: integer
-        format: int64
-        description: unix timestamp when the token expired
-  OboAuthResponse:
-    type: object
-    properties:
-      sessionToken:
-        type: string
-        description: |
-          The token which should be passed. This should be considered opaque data by
-          the client. It is not intended to contain any data interpretable by the
-          client. The format is secret and subject to change without notice.
   PodCertificate:
     type: object
     properties:

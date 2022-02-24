@@ -45,9 +45,69 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/app/pod/certificate':
+    get:
+      summary: |
+        Retrieve the certificate that can be use to validate the JWT token obtain
+        through the extension application authentication flow.
+      produces:
+        - application/json
+      tags:
+        - CertificatePod
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PodCertificate'
+        '401':
+          description: 'Client is unauthorized to access this resource'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/logout':
+    post:
+      summary: Logout.
+      description: |
+        Logout a users session.
+      parameters:
+        - name: sessionToken
+          description: the session token to logout.
+          in: header
+          required: true
+          type: string
+      produces:
+        - application/json
+      tags:
+        - CertificateAuthentication
+      responses:
+        '200':
+          description: OK.
+          schema:
+            $ref: '#/definitions/Token'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  
+  #
+  # Deprecated paths
+  #
   '/v1/authenticate/extensionApp':
     post:
-      summary: Authenticate a client-extension application
+      summary: |
+        (Deprecated - use RSA authentication instead /login/v1/pubkey/app/authenticate/extensionApp) 
+        Authenticate a client-extension application
       description: |
         Based on the application's SSL client certificate presented by the TLS layer, it authenticates the client-extension
         application and return a symphony verification token.
@@ -85,31 +145,11 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  '/v1/app/pod/certificate':
-    get:
-      summary: |
-        Retrieve the certificate that can be use to validate the JWT token obtain
-        through the extension application authentication flow.
-      produces:
-        - application/json
-      tags:
-        - CertificatePod
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PodCertificate'
-        '401':
-          description: 'Client is unauthorized to access this resource'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
   '/v1/app/authenticate':
     post:
-      summary: PROVISIONAL - Authenticate an application in a delegated context.
+      summary: |
+        (Deprecated - use RSA authentication instead /login/v1/pubkey/app/authenticate) 
+        PROVISIONAL - Authenticate an application in a delegated context.
       description: |
         Based on the SSL client certificate presented by the TLS layer, authenticate
         the API caller and return an application session.
@@ -136,7 +176,9 @@ paths:
             $ref: '#/definitions/Error'
   '/v1/app/user/{uid}/authenticate':
     post:
-      summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
+      summary: |
+        (Deprecated - use RSA authentication instead /login/v1/app/user/{uid}/authenticate) 
+        PROVISIONAL - Authenticate an application in a delegated context to act on behalf of a user
       parameters:
         - name: uid
           description: user id
@@ -175,52 +217,18 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   '/v1/app/username/{username}/authenticate':
-      post:
-        summary: PROVISIONAL - Authenicate an application in a delegated context to act on behalf of a user
-        parameters:
-          - name: username
-            description: username
-            in: path
-            required: true
-            type: string
-          - name: sessionToken
-            description: Authorization token obtains from app/authenicate API
-            in: header
-            required: true
-            type: string
-        produces:
-          - application/json
-        tags:
-          - CertificateAuthentication
-        responses:
-          '200':
-            description: OK.
-            schema:
-              $ref: '#/definitions/OboAuthResponse'
-          '400':
-            description: 'Client error.'
-            schema:
-              $ref: '#/definitions/Error'
-          '403':
-            description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
-            schema:
-              $ref: '#/definitions/Error'
-          '404':
-            description: 'Username not found'
-            schema:
-              $ref: '#/definitions/Error'
-          '500':
-            description: 'Server error, see response body for further details.'
-            schema:
-              $ref: '#/definitions/Error'
-  '/v1/logout':
     post:
-      summary: Logout.
-      description: |
-        Logout a users session.
+      summary: |
+        (Deprecated - use RSA authentication instead /login/v1/app/username/{username}/authenticate) 
+        PROVISIONAL - Authenticate an application in a delegated context to act on behalf of a user
       parameters:
+        - name: username
+          description: username
+          in: path
+          required: true
+          type: string
         - name: sessionToken
-          description: the session token to logout.
+          description: Authorization token obtains from app/authenicate API
           in: header
           required: true
           type: string
@@ -232,7 +240,7 @@ paths:
         '200':
           description: OK.
           schema:
-            $ref: '#/definitions/Token'
+            $ref: '#/definitions/OboAuthResponse'
         '400':
           description: 'Client error.'
           schema:
@@ -241,14 +249,14 @@ paths:
           description: 'Forbidden: Certificate authentication is not allowed for the requested user.'
           schema:
             $ref: '#/definitions/Error'
+        '404':
+          description: 'Username not found'
+          schema:
+            $ref: '#/definitions/Error'
         '500':
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-
-#
-# Deprecated paths
-#
 
 definitions:
   Error:
@@ -279,13 +287,23 @@ definitions:
           Short lived access token built from a user session. It can be used for the same purposes as the sessionToken
           and it should be passed as an header named "Authorization". At least either one of SessionToken or
           Authorization header must me provided on subsequent API calls.
+  PodCertificate:
+    type: object
+    properties:
+      certificate:
+        description: Certificate in PEM format
+        type: string
+  
+  #
+  # Deprecated definitions
+  #
   ExtensionAppAuthenticateRequest:
-      type: object
-      description: Request body for extension app authentication
-      properties:
-        appToken:
-          type: string
-          description: application generated token
+    type: object
+    description: Request body for extension app authentication
+    properties:
+      appToken:
+        type: string
+        description: application generated token
   ExtensionAppTokens:
     type: object
     properties:
@@ -313,14 +331,4 @@ definitions:
           The token which should be passed. This should be considered opaque data by
           the client. It is not intended to contain any data interpretable by the
           client. The format is secret and subject to change without notice.
-  PodCertificate:
-    type: object
-    properties:
-      certificate:
-        description: Certificate in PEM format
-        type: string
-
-#
-# Deprecated definitions
-#
 
