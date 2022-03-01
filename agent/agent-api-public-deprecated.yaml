@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.14.0-SNAPSHOT'
+  version: '20.14.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -10,13 +10,10 @@ info:
     - sessionToken and keyManagerToken can be obtained by calling the
     authenticationAPI on the symphony back end and the key manager
     respectively. Refer to the methods described in authenticatorAPI.yaml.
-    - A new authorizationToken has been introduced in the authenticationAPI
-    response payload. It can be used to replace the sessionToken in any of
-    the API calls and can be passed as "Authorization" header.
     - Actions are defined to be atomic, ie will succeed in their entirety
     or fail and have changed nothing.
     - If it returns a 40X status then it will have sent no message to any
-    stream even if a request to some subset of the requested streams
+    stream even if a request to aome subset of the requested streams
     would have succeeded.
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
@@ -832,12 +829,6 @@ paths:
           in: formData
           type: string
           required: false
-        - name: silent
-          in: formData
-          type: string
-          required: false
-          description: |
-            Optional boolean field that will determine if the user/s should receive the message as read or not (true by default)
       tags:
         - Messages
       responses:
@@ -4776,32 +4767,12 @@ definitions:
         type: string
       streamId:
         type: string
-      attachments:
-        description: List of message attachments
-        type: array
-        items:
-          $ref: '#/definitions/V4ImportedMessageAttachment'
-      previews:
-        description: List of attachments previews
-        type: array
-        items:
-          $ref: '#/definitions/V4ImportedMessageAttachment'
     required:
     - message
     - intendedMessageTimestamp
     - intendedMessageFromUserId
     - originatingSystemId
     - streamId
-  V4ImportedMessageAttachment:
-    type: object
-    properties:
-      filename:
-        description: Attachment filename
-        type: string
-        example: 'car.png'
-      content:
-        description: Attachment content as Base64 encoded string
-        type: string
   V4ImportResponseList:
     type: array
     items:
@@ -4935,9 +4906,6 @@ definitions:
       initialMessageId:
         type: string
         description: Id the the initial message that has been updated (present only if set)
-      silent:
-        type: boolean
-        description: When false the user/s will receive the message update as unread (true by default).
   V4MessageBlastResponse:
     type: object
     description: Wrapper response for a single message sent to multiple streams
