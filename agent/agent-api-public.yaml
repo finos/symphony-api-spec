@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.14.0-SNAPSHOT'
+  version: '20.14.0'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -10,9 +10,6 @@ info:
     - sessionToken and keyManagerToken can be obtained by calling the
     authenticationAPI on the symphony back end and the key manager
     respectively. Refer to the methods described in authenticatorAPI.yaml.
-    - A new authorizationToken has been introduced in the authenticationAPI
-    response payload. It can be used to replace the sessionToken in any of
-    the API calls and can be passed as "Authorization" header.
     - Actions are defined to be atomic, ie will succeed in their entirety
     or fail and have changed nothing.
     - If it returns a 40X status then it will have sent no message to any
