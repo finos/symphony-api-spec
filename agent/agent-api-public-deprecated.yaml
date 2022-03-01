@@ -3124,12 +3124,11 @@ paths:
             items:
               $ref: '#/definitions/V5Datafeed'
           examples:
-            '200 OK':
-              value:
-                - id: '8e7c8672-220...'
-                  createdAt: 1536346282592
-                - id: '8e7c8672-221...'
-                  createdAt: 1536346282500
+            application/json:
+              - id: '8e7c8672-220...'
+                createdAt: 1536346282592
+              - id: '8e7c8672-221...'
+                createdAt: 1536346282500
         400:
           description: Bad request.
           schema:
@@ -3239,8 +3238,6 @@ paths:
           description: Datafeed successfully read.
           schema:
             $ref: '#/definitions/V5EventList'
-          examples:
-            '200 OK':
         400:
           description: Bad request.
           schema:
