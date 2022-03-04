@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.14.0-SNAPSHOT'
+  version: '20.14.1'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once

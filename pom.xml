@@ -4,7 +4,7 @@
 
     <groupId>com.symphony</groupId>
     <artifactId>symphony-api-spec</artifactId>
-    <version>20.14.0-SNAPSHOT</version>
+    <version>20.14.0</version>
     <packaging>jar</packaging>
 
     <name>Swagger definitions for Symphony LLC public REST API</name>

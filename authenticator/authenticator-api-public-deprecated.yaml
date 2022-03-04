@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.14.0-SNAPSHOT'
+  version: '20.14.1'
   title: Authenticator API
   description: |
     For bots and other on-premise processes to authenticate. Once
@@ -99,10 +99,10 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
-  
-  #
-  # Deprecated paths
-  #
+
+#
+# Deprecated paths
+#
   '/v1/authenticate/extensionApp':
     post:
       summary: |
@@ -293,10 +293,10 @@ definitions:
       certificate:
         description: Certificate in PEM format
         type: string
-  
-  #
-  # Deprecated definitions
-  #
+
+#
+# Deprecated definitions
+#
   ExtensionAppAuthenticateRequest:
     type: object
     description: Request body for extension app authentication
