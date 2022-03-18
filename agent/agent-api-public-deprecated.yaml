@@ -3457,7 +3457,10 @@ paths:
     post:
       deprecated: true
       summary: |
-        (Deprecated - Datafeed v1 will be soon fully replaced by Datafeed v2. Use Datafeed v2 related API instead /agent/v5/datafeeds)
+        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.  
+        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds. For more information on the 
+        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to 
+        our developer documentation https://docs.developers.symphony.com/building-bots-on-symphony/datafeed)
         Create a new real time message event stream.
       description: |
         A datafeed provides the messages in all conversations that a user is in.
@@ -3534,7 +3537,10 @@ paths:
     get:
       deprecated: true
       summary: |
-        (Deprecated - Datafeed v1 will be soon fully replaced by Datafeed v2. Use Datafeed v2 related API instead /agent/v5/datafeeds/{id}/read)
+        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.  
+        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds/{id}/read. For more information on the 
+        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to 
+        our developer documentation https://docs.developers.symphony.com/building-bots-on-symphony/datafeed)
         Read a given datafeed.
       description: |
         Read messages from the given datafeed. If no more messages are available then this method will block.
