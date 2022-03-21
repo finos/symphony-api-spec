@@ -3382,10 +3382,10 @@ paths:
           description: The Agent is functioning properly.
           schema:
             $ref: '#/definitions/V2HealthCheckResponse'
-            headers:
-              X-Warning:
-                description: This method is deprecated
-                type: string
+          headers:
+            X-Warning:
+              description: This method is deprecated
+              type: string
   '/v2/datafeed/{id}/read':
     get:
       deprecated: true
@@ -6620,7 +6620,6 @@ definitions:
       - timestamp
       - streamId
   V1HealthCheckResponse:
-    deprecated: true
     type: object
     properties:
       podConnectivity:
