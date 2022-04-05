@@ -494,7 +494,7 @@ paths:
         an additional message is processed with the same timestamp as the last
         message returned by the previous call, and the case where there are
         more than maxMessages with the same timestamp value.
-        
+
         This method is intended for historic queries and is generally reliable
         but if guaranteed delivery of every message in real time is required
         then the equivilent firehose method should be called.
@@ -3154,7 +3154,7 @@ paths:
       description: |
         A datafeed provides the messages in all conversations that a user is in.
         System messages like new users joining a chatroom are not part of the datafeed.
-        
+
         A datafeed will expire after if it isn't read before its capacity is reached.
       parameters:
         - name: sessionToken
@@ -3211,7 +3211,7 @@ paths:
         It is intended that the client should re-call this method as soon as it has processed the messages
         received in the previous call. If the client is able to consume messages more quickly than they become
         available then each call will initially block, there is no need to delay before re-calling this method.
-        
+
         A datafeed will expire if its unread capacity is reached.
         A datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.
       parameters:
@@ -3395,7 +3395,7 @@ paths:
         It is intended that the client should re-call this method as soon as it has processed the messages
         received in the previous call. If the client is able to consume messages more quickly than they become
         available then each call will initially block, there is no need to delay before re-calling this method.
-        
+
         A datafeed will expire if its unread capacity is reached.
         A datafeed can only be consumed by one client thread at a time. E.g. polling the datafeed by two threads may lead to messages being delivered out of order.
       parameters:
@@ -3457,9 +3457,9 @@ paths:
     post:
       deprecated: true
       summary: |
-        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.  
-        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds. For more information on the 
-        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to 
+        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.
+        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds. For more information on the
+        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to
         our developer documentation https://docs.developers.symphony.com/building-bots-on-symphony/datafeed)
         Create a new real time message event stream.
       description: |
@@ -3537,9 +3537,9 @@ paths:
     get:
       deprecated: true
       summary: |
-        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.  
-        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds/{id}/read. For more information on the 
-        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to 
+        (Deprecated - Datafeed v1 will be fully replaced by the datafeed 2 service in the future.
+        Please consider migrating over to datafeed 2 APIs /agent/v5/datafeeds/{id}/read. For more information on the
+        timeline as well as on the benefits of datafeed 2, please reach out to your Technical Account Manager or to
         our developer documentation https://docs.developers.symphony.com/building-bots-on-symphony/datafeed)
         Read a given datafeed.
       description: |
@@ -3886,7 +3886,7 @@ paths:
         an additional message is processed with the same timestamp as the last
         message returned by the previous call, and the case where there are
         more than maxMessages with the same timestamp value.
-        
+
         This method is intended for historic queries and is generally reliable
         but if guaranteed delivery of every message in real time is required
         then the equivilent firehose method should be called.
@@ -3971,7 +3971,7 @@ paths:
         an additional message is processed with the same timestamp as the last
         message returned by the previous call, and the case where there are
         more than maxMessages with the same timestamp value.
-        
+
         This method is intended for historic queries and is generally reliable
         but if guaranteed delivery of every message in real time is required
         then the equivilent firehose method should be called.
@@ -6278,9 +6278,6 @@ definitions:
     properties:
       cursors:
         type: object
-        required:
-          - before
-          - after
         properties:
           before:
             type: string
