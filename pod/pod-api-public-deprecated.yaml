@@ -6676,6 +6676,8 @@ definitions:
       appId:
         type: string
         description: App ID for the Product
+        maxLength: 256
+        minLength: 1
       name:
         type: string
         minLength: 1
@@ -6737,7 +6739,7 @@ definitions:
       appId:
         type: string
         description: Unique ID for the Application
-        maxLength: 32
+        maxLength: 256
         minLength: 1
       appName:
         type: string
@@ -6765,7 +6767,7 @@ definitions:
       appId:
         type: string
         description: Unique ID for the Application
-        maxLength: 32
+        maxLength: 256
         minLength: 1
       appName:
         type: string
@@ -6847,7 +6849,7 @@ definitions:
       appId:
         type: string
         description: Unique ID for the Application
-        maxLength: 32
+        maxLength: 256
         minLength: 1
       listed:
         type: string
@@ -7566,6 +7568,8 @@ definitions:
       appId:
         description: An unique id for the application.
         type: string
+        maxLength: 256
+        minLength: 1
       name:
         description: User defined name for the application.
         type: string
