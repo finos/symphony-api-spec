@@ -494,7 +494,7 @@ paths:
         an additional message is processed with the same timestamp as the last
         message returned by the previous call, and the case where there are
         more than maxMessages with the same timestamp value.
-        
+
         This method is intended for historic queries and is generally reliable
         but if guaranteed delivery of every message in real time is required
         then the equivilent firehose method should be called.
@@ -5045,9 +5045,6 @@ definitions:
     properties:
       cursors:
         type: object
-        required:
-          - before
-          - after
         properties:
           before:
             type: string
