@@ -234,21 +234,21 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: sessionToken
-          description: Session authentication token.
-          in: header
-          required: true
-          type: string
-        - name: keyManagerToken
-          description: Key Manager authentication token.
-          in: header
-          required: true
-          type: string
-        - name: id
-          description: Message ID as a URL-safe string
-          in: path
-          required: true
-          type: string
+          - name: sessionToken
+            description: Session authentication token.
+            in: header
+            required: true
+            type: string
+          - name: keyManagerToken
+            description: Key Manager authentication token.
+            in: header
+            required: true
+            type: string
+          - name: id
+            description: Message ID as a URL-safe string
+            in: path
+            required: true
+            type: string
       tags:
         - Messages
       responses:
@@ -278,13 +278,13 @@ paths:
     get:
       summary: Search messages
       description: |
-        Search messages according to the specified criteria. The "query" parameter takes a search query defined as
-        "field:value" pairs combined by the operator "AND" (e.g. "text:foo AND autor:bar"). Supported fields are
-         (case-insensitive): "text", "author", "hashtag", "cashtag", "mention", "signal", "fromDate", "toDate",
-         "streamId", "streamType".
-         "text" search requires a "streamId" to be specified.
-         "streamType" accepts one of the following values: "chat" (IMs and MIMs), "im", "mim", "chatroom", "post".
-         "signal" queries can only be combined with "fromDate", "toDate", "skip" and "limit" parameters.
+          Search messages according to the specified criteria. The "query" parameter takes a search query defined as
+          "field:value" pairs combined by the operator "AND" (e.g. "text:foo AND autor:bar"). Supported fields are
+           (case-insensitive): "text", "author", "hashtag", "cashtag", "mention", "signal", "fromDate", "toDate",
+           "streamId", "streamType".
+           "text" search requires a "streamId" to be specified.
+           "streamType" accepts one of the following values: "chat" (IMs and MIMs), "im", "mim", "chatroom", "post".
+           "signal" queries can only be combined with "fromDate", "toDate", "skip" and "limit" parameters.
       produces:
         - application/json
       parameters:
@@ -354,7 +354,7 @@ paths:
     post:
       summary: Search messages
       description: |
-        Search messages according to the specified criteria.
+          Search messages according to the specified criteria.
       consumes:
         - application/json
       produces:
@@ -487,17 +487,17 @@ paths:
     get:
       summary: Get messages from an existing stream.
       description: |
-        A caller can fetch all unseen messages by passing the timestamp of
-        the last message seen as the since parameter and the number of messages
-        with the same timestamp value already seen as the skip parameter. This
-        means that every message will be seen exactly once even in the case that
-        an additional message is processed with the same timestamp as the last
-        message returned by the previous call, and the case where there are
-        more than maxMessages with the same timestamp value.
+          A caller can fetch all unseen messages by passing the timestamp of
+          the last message seen as the since parameter and the number of messages
+          with the same timestamp value already seen as the skip parameter. This
+          means that every message will be seen exactly once even in the case that
+          an additional message is processed with the same timestamp as the last
+          message returned by the previous call, and the case where there are
+          more than maxMessages with the same timestamp value.
 
-        This method is intended for historic queries and is generally reliable
-        but if guaranteed delivery of every message in real time is required
-        then the equivilent firehose method should be called.
+          This method is intended for historic queries and is generally reliable
+          but if guaranteed delivery of every message in real time is required
+          then the equivilent firehose method should be called.
       produces:
         - application/json
       parameters:
@@ -858,8 +858,8 @@ paths:
   '/v1/signals/list':
     get:
       summary: |
-        List signals for the requesting user. This includes signals that the user has created and public signals
-        to which they subscribed.
+          List signals for the requesting user. This includes signals that the user has created and public signals
+          to which they subscribed.
       consumes:
         - application/json
       produces:
@@ -3144,6 +3144,74 @@ paths:
           schema:
             $ref: '#/definitions/V2Error'
 
+  '/v5/events/read':
+    post:
+      tags:
+        - Datafeed
+      summary: Read Real Time Events from an event stream (aka datafeed)
+      description: |
+        _Available on Agent 20.15.0 and above._
+
+        This endpoint provides messages and events from all conversations that the user
+        is in or events from the whole pod depending on the "type" field value.
+        When "type": "fanout" is provided in the body, then only events from streams the account belongs to are returned.
+        Otherwise, if "type": "datahose" is provided in the body, then events returned are not limited to the streams user
+        belongs to. In this case, at least one event type must be provided in the "filters" field. 
+        In case you are using a datahose feed and retrieving SOCIALMESSAGE events, ceservice account must be properly
+        configured in the Agent.
+
+        The types of events returned can be found in the Real Time Events list (see definition on top of the file).
+
+        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back and it can be used for
+        the next call: in this way you acknowledge that you have received the events that came with that ackId.
+
+        If you have several instances of the same bot, they must share the same feed so that events are spread across
+        all bot instances. To do so, you must:
+        * share the same service account
+        * provide the same "tag" and same "filters" values
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      operationId: readEvents
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: true
+          type: string
+        - name: body
+          description: body containing all information of events to be fetched
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/V5EventsReadBody'
+      responses:
+        200:
+          description: Datafeed successfully read.
+          schema:
+            $ref: '#/definitions/V5EventList'
+        400:
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/V2Error'
+        401:
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/V2Error'
+        403:
+          description: Forbidden.
+          schema:
+            $ref: '#/definitions/V2Error'
+        500:
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/V2Error'
 definitions:
   Error:
     type: object
@@ -3164,8 +3232,8 @@ definitions:
       details:
         type: object
     required:
-      - code
-      - message
+    - code
+    - message
   SuccessResponse:
     type: object
     properties:
@@ -3190,187 +3258,187 @@ definitions:
       streamId:
         type: string
     required:
-      - v2messageType
-      - timestamp
-      - streamId
+    - v2messageType
+    - timestamp
+    - streamId
   V2Message:
     type: object
     description: A representation of a message sent by a user of Symphony.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          message:
-            type: string
-            format: MessageML
-            description: Message text in MessageML
-          fromUserId:
-            type: integer
-            format: int64
-            description: the Symphony userId of the user who sent the message. This will be populated by the server (and actually ignored if included when sending a message).
-          attachments:
-            type: array
-            items:
-              $ref: '#/definitions/AttachmentInfo'
-        required:
-          - message
-          - fromUserId
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        message:
+          type: string
+          format: MessageML
+          description: Message text in MessageML
+        fromUserId:
+          type: integer
+          format: int64
+          description: the Symphony userId of the user who sent the message. This will be populated by the server (and actually ignored if included when sending a message).
+        attachments:
+          type: array
+          items:
+            $ref: '#/definitions/AttachmentInfo'
+      required:
+      - message
+      - fromUserId
   RoomCreatedMessage:
     type: object
     description: Generated when a room is created.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          creationDate:
-            type: integer
-            format: int64
-          name:
-            type: string
-          keywords:
-            type: array
-            items:
-              $ref: '#/definitions/RoomTag'
-          description:
-            type: string
-          createdByUserId:
-            type: integer
-            format: int64
-            description: The Symphony userId of the user who created the room.
-          readOnly:
-            type: boolean
-          discoverable:
-            type: boolean
-          public:
-            type: boolean
-          membersCanInvite:
-            type: boolean
-          copyProtected:
-            type: boolean
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        creationDate:
+          type: integer
+          format: int64
+        name:
+          type: string
+        keywords:
+          type: array
+          items:
+            $ref: '#/definitions/RoomTag'
+        description:
+          type: string
+        createdByUserId:
+          type: integer
+          format: int64
+          description: The Symphony userId of the user who created the room.
+        readOnly:
+          type: boolean
+        discoverable:
+          type: boolean
+        public:
+          type: boolean
+        membersCanInvite:
+          type: boolean
+        copyProtected:
+          type: boolean
   RoomDeactivatedMessage:
     type: object
     description: Generated when a room is deactivated.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          deactivatedByUserId:
-            type: integer
-            format: int64
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        deactivatedByUserId:
+          type: integer
+          format: int64
   RoomReactivatedMessage:
     type: object
     description: Generated when a room is reactivated.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          reactivatedByUserId:
-            type: integer
-            format: int64
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        reactivatedByUserId:
+          type: integer
+          format: int64
   RoomUpdatedMessage:
     type: object
     description: Generated when a room is updated.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          oldName:
-            type: string
-          newName:
-            type: string
-          keywords:
-            type: array
-            items:
-              $ref: '#/definitions/RoomTag'
-          oldDescription:
-            type: string
-          newDescription:
-            type: string
-          membersCanInvite:
-            type: boolean
-          discoverable:
-            type: boolean
-          readOnly:
-            type: boolean
-          copyProtected:
-            type: boolean
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        oldName:
+          type: string
+        newName:
+          type: string
+        keywords:
+          type: array
+          items:
+            $ref: '#/definitions/RoomTag'
+        oldDescription:
+          type: string
+        newDescription:
+          type: string
+        membersCanInvite:
+          type: boolean
+        discoverable:
+          type: boolean
+        readOnly:
+          type: boolean
+        copyProtected:
+          type: boolean
   UserJoinedRoomMessage:
     type: object
     description: Generated when a user joins a room.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          addedByUserId:
-            type: integer
-            format: int64
-          memberAddedUserId:
-            type: integer
-            format: int64
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        addedByUserId:
+          type: integer
+          format: int64
+        memberAddedUserId:
+          type: integer
+          format: int64
   UserLeftRoomMessage:
     type: object
     description: Generated when a user leaves a room.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          removedByUserId:
-            type: integer
-            format: int64
-          memberLeftUserId:
-            type: integer
-            format: int64
-          informationBarrierRemediation:
-            type: boolean
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        removedByUserId:
+          type: integer
+          format: int64
+        memberLeftUserId:
+          type: integer
+          format: int64
+        informationBarrierRemediation:
+          type: boolean
   RoomMemberPromotedToOwnerMessage:
     type: object
     description: Generated when a room member is promoted to owner.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          promotedByUserId:
-            type: integer
-            format: int64
-          promotedUserId:
-            type: integer
-            format: int64
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        promotedByUserId:
+          type: integer
+          format: int64
+        promotedUserId:
+          type: integer
+          format: int64
   RoomMemberDemotedFromOwnerMessage:
     type: object
     description: Generated when a room member is promoted to owner.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          demotedByUserId:
-            type: integer
-            format: int64
-          demotedUserId:
-            type: integer
-            format: int64
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        demotedByUserId:
+          type: integer
+          format: int64
+        demotedUserId:
+          type: integer
+          format: int64
   ConnectionRequestMessage:
     type: object
     description: Generated when a connection request is sent.
     allOf:
-      - $ref: '#/definitions/V2BaseMessage'
-      - type: object
-        properties:
-          requestingUserId:
-            type: integer
-            format: int64
-          targetUserId:
-            type: integer
-            format: int64
-          firstRequestedAt:
-            type: integer
-            format: int64
-          updatedAt:
-            type: integer
-            format: int64
-          requestCounter:
-            type: integer
-          status:
-            type: string
+    - $ref: '#/definitions/V2BaseMessage'
+    - type: object
+      properties:
+        requestingUserId:
+          type: integer
+          format: int64
+        targetUserId:
+          type: integer
+          format: int64
+        firstRequestedAt:
+          type: integer
+          format: int64
+        updatedAt:
+          type: integer
+          format: int64
+        requestCounter:
+          type: integer
+        status:
+          type: string
   AttachmentInfo:
     type: object
     properties:
@@ -3385,9 +3453,9 @@ definitions:
         format: int64
         description: Size in bytes.
     required:
-      - id
-      - name
-      - size
+    - id
+    - name
+    - size
   V2MessageList:
     type: array
     items:
@@ -3409,8 +3477,8 @@ definitions:
         description: The value of this Tag's label.
         type: string
     required:
-      - key
-      - value
+    - key
+    - value
   ShareArticle:
     type: object
     properties:
@@ -3455,10 +3523,10 @@ definitions:
         type: string
         description: App icon url of the calling application
     required:
-      - title
-      - publisher
-      - author
-      - appId
+    - title
+    - publisher
+    - author
+    - appId
   ShareContent:
     type: object
     properties:
@@ -3468,50 +3536,50 @@ definitions:
       content:
         $ref: '#/definitions/ShareArticle'
   V2HealthCheckResponse:
-    type: object
-    properties:
-      podConnectivity:
-        type: boolean
-        description: Indicates whether the Agent server can connect to the Pod
-      podConnectivityError:
-        type: string
-        description: Error details in case of no Pod connectivity
-      keyManagerConnectivity:
-        type: boolean
-        description: Indicates whether the Agent server can connect to the Key Manager
-      keyManagerConnectivityError:
-        type: string
-        description: Error details in case of no Key Manager connectivity
-      firehoseConnectivity:
-        type: boolean
-        description: Indicates whether the Agent server can connect to Firehose Service
-      firehoseConnectivityError:
-        type: string
-        description: Error details in case of no Firehose connectivity
-      encryptDecryptSuccess:
-        type: boolean
-        description: Indicates whether the Agent can successfully decrypt and encrypt messages
-      encryptDecryptError:
-        type: string
-        description: Error details in case of the encryption or decryption of the message fails
-      podVersion:
-        type: string
-        description: The version number of the pod
-      agentVersion:
-        type: string
-        description: The version number of the Agent server
-      agentServiceUser:
-        type: boolean
-        description: Indicates whether agent service user is setup correctly.
-      agentServiceUserError:
-        type: string
-        description: Error details in case agent service user is setup incorrectly.
-      ceServiceUser:
-        type: boolean
-        description: Indicates whether CEService user is setup correctly.
-      ceServiceUserError:
-        type: string
-        description: Error details in case CEService user is setup incorrectly.
+     type: object
+     properties:
+       podConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to the Pod
+       podConnectivityError:
+         type: string
+         description: Error details in case of no Pod connectivity
+       keyManagerConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to the Key Manager
+       keyManagerConnectivityError:
+         type: string
+         description: Error details in case of no Key Manager connectivity
+       firehoseConnectivity:
+         type: boolean
+         description: Indicates whether the Agent server can connect to Firehose Service
+       firehoseConnectivityError:
+         type: string
+         description: Error details in case of no Firehose connectivity
+       encryptDecryptSuccess:
+         type: boolean
+         description: Indicates whether the Agent can successfully decrypt and encrypt messages
+       encryptDecryptError:
+         type: string
+         description: Error details in case of the encryption or decryption of the message fails
+       podVersion:
+         type: string
+         description: The version number of the pod
+       agentVersion:
+         type: string
+         description: The version number of the Agent server
+       agentServiceUser:
+         type: boolean
+         description: Indicates whether agent service user is setup correctly.
+       agentServiceUserError:
+         type: string
+         description: Error details in case agent service user is setup incorrectly.
+       ceServiceUser:
+         type: boolean
+         description: Indicates whether CEService user is setup correctly.
+       ceServiceUserError:
+         type: string
+         description: Error details in case CEService user is setup incorrectly.
   MessageSearchQuery:
     type: object
     properties:
@@ -3608,11 +3676,11 @@ definitions:
         items:
           $ref: '#/definitions/V4ImportedMessageAttachment'
     required:
-      - message
-      - intendedMessageTimestamp
-      - intendedMessageFromUserId
-      - originatingSystemId
-      - streamId
+    - message
+    - intendedMessageTimestamp
+    - intendedMessageFromUserId
+    - originatingSystemId
+    - streamId
   V4ImportedMessageAttachment:
     type: object
     properties:
@@ -3667,9 +3735,9 @@ definitions:
         items:
           $ref: '#/definitions/V4ThumbnailInfo'
     required:
-      - id
-      - name
-      - size
+    - id
+    - name
+    - size
   V4ThumbnailInfo:
     type: object
     properties:
@@ -4220,10 +4288,10 @@ definitions:
   V1DLPPolicy:
     type: object
     required:
-      - "contentTypes"
-      - "name"
-      - "scopes"
-      - "type"
+    - "contentTypes"
+    - "name"
+    - "scopes"
+    - "type"
     properties:
       active:
         type: boolean
@@ -4282,10 +4350,10 @@ definitions:
   V1DLPPolicyRequest:
     type: object
     required:
-      - "contentTypes"
-      - "name"
-      - "scopes"
-      - "type"
+    - "contentTypes"
+    - "name"
+    - "scopes"
+    - "type"
     properties:
       contentTypes:
         type: array
@@ -4322,7 +4390,7 @@ definitions:
   V1DLPDictionary:
     type: object
     required:
-      - dictionaryMetadata
+    - dictionaryMetadata
     properties:
       content:
         $ref: '#/definitions/V1DLPDictionaryContent'
@@ -4364,7 +4432,7 @@ definitions:
   V1DLPDictionaryMetadataResponse:
     type: object
     required:
-      - data
+    - data
     properties:
       data:
         $ref: '#/definitions/V1DLPDictionaryMetadata'
@@ -4372,8 +4440,8 @@ definitions:
   V1DLPDictionaryMetadataCreateRequest:
     type: object
     required:
-      - name
-      - type
+    - name
+    - type
     properties:
       name:
         type: string
@@ -4388,7 +4456,7 @@ definitions:
   V1DLPDictionaryMetadataUpdateRequest:
     type: object
     required:
-      - name
+    - name
     properties:
       name:
         type: string
@@ -4398,8 +4466,8 @@ definitions:
   V1DLPDictionaryMetadata:
     type: object
     required:
-      - dictRef
-      - type
+    - dictRef
+    - type
     properties:
       creationDate:
         type: integer
@@ -4423,7 +4491,7 @@ definitions:
   V1DLPDictionaryRef:
     type: object
     required:
-      - name
+    - name
     properties:
       dictId:
         type: string
@@ -4483,8 +4551,8 @@ definitions:
       diagnostic:
         type: string
         description: |
-          A diagnostic message containing an error message in the event there are parsing errors.
-          May also be present in the case of a successful call if there is useful narrative to return.
+            A diagnostic message containing an error message in the event there are parsing errors.
+            May also be present in the case of a successful call if there is useful narrative to return.
   V1DLPViolationStream:
     type: object
     properties:
@@ -4538,8 +4606,8 @@ definitions:
         type: string
         description: Version of application which processed the message and produced this violation.
       ignoreDLPwarning:
-        type: boolean
-        description: Did the user chose to ignore DLP warning that was presented?
+          type: boolean
+          description: Did the user chose to ignore DLP warning that was presented?
   V1DLPMatchedPolicyList:
     type: array
     items:
@@ -4567,9 +4635,9 @@ definitions:
       diagnostic:
         type: string
         description: |
-          A diagnostic message containing an error message in the event that the
-          decryption of terms failed. May also be present in the case of a successful
-          call if there is useful narrative to return.
+            A diagnostic message containing an error message in the event that the
+            decryption of terms failed. May also be present in the case of a successful
+            call if there is useful narrative to return.
   V1DLPOutcome:
     type: object
     description: A representation of outcome of DLP message/stream/signal sent by a user of Symphony
@@ -4588,93 +4656,93 @@ definitions:
     type: object
     description: Room details in the context of violation.
     properties:
-      name:
-        type: string
-        description:  Name of the Stream/Room.
-      creatorPrettyName:
-        type: string
-        description:  Name of the creator of the Room.
-      publicRoom:
-        type: boolean
-        description:  Is this a public room?
-      crossPod:
-        type: boolean
-        description:  Is this a cross pod scenario?
-      allowExternal:
-        type: boolean
-        description:  Is external messaging allowed
-      creatorId:
-        type: string
-        description:  Id of the creator of the Room.
-      roomDescription:
-        type: string
-        description:  Description of the Room.
-      streamId:
-        type: string
-        description:  ThreadId of the Room.
-      state:
-        type: string
-        description:  State of the Room (example CREATED etc)
-      type:
-        type: string
-        description:  Type of the Room (example ROOM (or IM or Wall))
-      lastDisabled:
-        type: integer
-        format: int64
-        description: Timestamp of last time the room is Disabled
-      memberAddUserEnabled:
-        type: boolean
-        description:  Is memberAddUserEnabled
-      active:
-        type: boolean
-        description:  Is Room Active
-      discoverable:
-        type: boolean
-        description:  Is Room discoverable
-      readOnly:
-        type: boolean
-        description:  Is Room read-only
-      copyDisabled:
-        type: boolean
-        description:  Is Room copyDisabled
-      externalOwned:
-        type: boolean
-        description:  Is Room externalOwned
-      sendMessageDisabled:
-        type: boolean
-        description:  Is sendMessage Disabled for this Room
-      moderated:
-        type: boolean
-        description:  Is room moderated
-      shareHistoryEnabled:
-        type: boolean
-        description:  Is room shareHistoryEnabled
-      diagnostic:
-        type: string
-        description: |
-          A diagnostic message containing an error message in the event that the
-          stream retrieval failed. May also be present in the case of a successful
-          call if there is useful narrative to return.
+        name:
+          type: string
+          description:  Name of the Stream/Room.
+        creatorPrettyName:
+          type: string
+          description:  Name of the creator of the Room.
+        publicRoom:
+          type: boolean
+          description:  Is this a public room?
+        crossPod:
+          type: boolean
+          description:  Is this a cross pod scenario?
+        allowExternal:
+          type: boolean
+          description:  Is external messaging allowed
+        creatorId:
+          type: string
+          description:  Id of the creator of the Room.
+        roomDescription:
+          type: string
+          description:  Description of the Room.
+        streamId:
+          type: string
+          description:  ThreadId of the Room.
+        state:
+          type: string
+          description:  State of the Room (example CREATED etc)
+        type:
+          type: string
+          description:  Type of the Room (example ROOM (or IM or Wall))
+        lastDisabled:
+          type: integer
+          format: int64
+          description: Timestamp of last time the room is Disabled
+        memberAddUserEnabled:
+          type: boolean
+          description:  Is memberAddUserEnabled
+        active:
+          type: boolean
+          description:  Is Room Active
+        discoverable:
+          type: boolean
+          description:  Is Room discoverable
+        readOnly:
+          type: boolean
+          description:  Is Room read-only
+        copyDisabled:
+          type: boolean
+          description:  Is Room copyDisabled
+        externalOwned:
+          type: boolean
+          description:  Is Room externalOwned
+        sendMessageDisabled:
+          type: boolean
+          description:  Is sendMessage Disabled for this Room
+        moderated:
+          type: boolean
+          description:  Is room moderated
+        shareHistoryEnabled:
+          type: boolean
+          description:  Is room shareHistoryEnabled
+        diagnostic:
+          type: string
+          description: |
+              A diagnostic message containing an error message in the event that the
+              stream retrieval failed. May also be present in the case of a successful
+              call if there is useful narrative to return.
   V1DLPSignal:
     type: object
     description: Signal details
     properties:
-      name:
-        type: string
-        description:  Name of the Signal
-      rules:
-        type: string
-        description:  Signal rules decrypted.
-      diagnostic:
-        type: string
-        description: |
-          A diagnostic message containing an error message in the event that the
-          signal decryption failed. May also be present in the case of a successful
-          call if there is useful narrative to return.
+        name:
+          type: string
+          description:  Name of the Signal
+        rules:
+          type: string
+          description:  Signal rules decrypted.
+        diagnostic:
+          type: string
+          description: |
+              A diagnostic message containing an error message in the event that the
+              signal decryption failed. May also be present in the case of a successful
+              call if there is useful narrative to return.
 
-  #
-  # V3 Policies definitions
-  #
+#
+# V3 Policies definitions
+#
   V3DLPPolicyRequest:
     type: object
     required:
@@ -4762,8 +4830,8 @@ definitions:
   V3DLPRule:
     type: object
     required:
-      - "type"
-      - "name"
+     - "type"
+     - "name"
     properties:
       id:
         type: string
@@ -4784,25 +4852,25 @@ definitions:
       fileClassifierConfig:
         $ref: '#/definitions/V3DLPFileClassifierConfig'
     description: |
-      A Rule defines the actual matching specification for policies. It holds a type and a configuration
-      for the rule, these properties should be used to build the corresponding matching implementation.
-      Only one of the configuration property should be set [textMatchConfig, fileSizeConfig, fileExtensionConfig, filePasswordConfig, fileClassifierConfig].
+     A Rule defines the actual matching specification for policies. It holds a type and a configuration
+     for the rule, these properties should be used to build the corresponding matching implementation.
+     Only one of the configuration property should be set [textMatchConfig, fileSizeConfig, fileExtensionConfig, filePasswordConfig, fileClassifierConfig].
   V3DLPFilePasswordConfig:
     type: object
     required:
       - "applicableFileTypes"
       - "matchCriteria"
     properties:
-      applicableFileTypes:
-        type: array
-        items:
+        applicableFileTypes:
+          type: array
+          items:
+            type: string
+          description: File types that can be applied. Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
+        matchCriteria:
           type: string
-        description: File types that can be applied. Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
-      matchCriteria:
-        type: string
-        description: |
-          Based on the criteria, whether a file is password protected or not means a match.
-          Can be ["PASSWORD_PROTECTED", "NOT_PASSWORD_PROTECTED"]. The default is "NOT_PASSWORD_PROTECTED".
+          description: |
+           Based on the criteria, whether a file is password protected or not means a match.
+           Can be ["PASSWORD_PROTECTED", "NOT_PASSWORD_PROTECTED"]. The default is "NOT_PASSWORD_PROTECTED".
     description: Password protected detection config for files that are password protected or not.
   V3DLPFileExtensionConfig:
     type: object
@@ -4833,14 +4901,14 @@ definitions:
       dictionaries:
         type: array
         items:
-          $ref: '#/definitions/V3DLPDictionaryMeta'
+         $ref: '#/definitions/V3DLPDictionaryMeta'
       countUniqueOccurrences:
         type: integer
         format: int32
       applicableFileTypes:
         type: array
         items:
-          type: string
+         type: string
         description: |
           File types must be applied only for rule type "FileContent", otherwise must be empty.
           Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
@@ -4871,16 +4939,16 @@ definitions:
       classifiers:
         type: object
         additionalProperties:
-          type: string
+         type: string
         description: |
-          Classifier is defined as a Key and its Value: e.g.: "classification": "Internal".
-          Name and value can contain UTF-8 characters. Neither the name nor value cannot be left empty.
-          Maximum 30 characters for the name and value, case insensitive.
-          If files contains k-v pairs in the classifers map, it means a match. Maximum 30 classifiers per policy.
+         Classifier is defined as a Key and its Value: e.g.: "classification": "Internal".
+         Name and value can contain UTF-8 characters. Neither the name nor value cannot be left empty.
+         Maximum 30 characters for the name and value, case insensitive.
+         If files contains k-v pairs in the classifers map, it means a match. Maximum 30 classifiers per policy.
       applicableFileTypes:
         type: array
         items:
-          type: string
+         type: string
         description: |
           File types that can be applied. Can be ["PDF", "WORD", "EXCEL", "POWERPOINT", "ZIP", "CSV", "TXT"].
   V3DLPPolicyAppliesTo:
@@ -4974,8 +5042,8 @@ definitions:
         # Message details when DLP was enforced
         $ref: '#/definitions/V4Message'
       sharedMessage:
-        description: Shared message details if present in message.
-        $ref: '#/definitions/V4Message'
+              description: Shared message details if present in message.
+              $ref: '#/definitions/V4Message'
       diagnostic:
         type: string
         description: |
@@ -5036,8 +5104,8 @@ definitions:
         type: string
         description: Version of application which processed the message and produced this violation.
       ignoreDLPwarning:
-        type: boolean
-        description: Did the user chose to ignore DLP warning that was presented?
+          type: boolean
+          description: Did the user chose to ignore DLP warning that was presented?
   Pagination:
     type: object
     required:
@@ -5151,22 +5219,54 @@ definitions:
       ackId:
         type: string
         description: The ackId which acknowledges that the current batch of messages have been successfully received by the client
-  V3Health:
-    properties:
-      services:
-        additionalProperties:
-          $ref: '#/definitions/V3HealthComponent'
-        type: object
-      status:
-        $ref: '#/definitions/V3HealthStatus'
-      users:
-        additionalProperties:
-          $ref: '#/definitions/V3HealthComponent'
-        type: object
-      version:
-        description: Required Agent verison
-        type: string
+  V5EventsReadBody:
     type: object
+    properties:
+      type:
+        type: string
+        description: type of the feed. Allowed values are "fanout" and "datahose"
+      tag:
+        type: string
+        minLength: 1
+        maxLength: 80
+        description: A unique identifier to ensure uniqueness of the datafeed.
+      filters:
+        type: array
+        description: |
+          At least one value is required if type datahose is specified. Values must be valid real event types, allowed values are:
+          * SOCIALMESSAGE
+          * CHANNEL_CREATE
+          * CHANNEL_UPDATE
+          * CREATE_ROOM
+          * UPDATE_ROOM
+          * UPDATE_STREAM
+        items:
+          type: string
+      ackId:
+        type: string
+        description: should be empty for the first call, acknowledges that the current batch of messages have been successfully received by the client.
+      updatePresence:
+        type: boolean
+        description: whether to update the presence status of the account to AVAILABLE when calling the endpoint. Default value is true.
+    required:
+      - type
+      - tag
+  V3Health:
+      properties:
+        services:
+          additionalProperties:
+            $ref: '#/definitions/V3HealthComponent'
+          type: object
+        status:
+          $ref: '#/definitions/V3HealthStatus'
+        users:
+          additionalProperties:
+            $ref: '#/definitions/V3HealthComponent'
+          type: object
+        version:
+          description: Required Agent verison
+          type: string
+      type: object
   V3HealthAuthType:
     description: Type of authentication
     enum:
@@ -5192,4 +5292,3 @@ definitions:
       - UP
       - DOWN
     type: string
-
