@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1e868f65-9dda-496a-acae-cccfe7720d08",
+		"_postman_id": "b0d4d0d6-5cf3-424b-8546-59fd8c8271b7",
 		"name": "Symphony REST APIs",
 		"description": "[Full documentation on the developer's website](https://developers.symphony.com/restapi/reference)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13844,6 +13844,48 @@
 									]
 								},
 								"description": "A datafeed provides the messages in all conversations that a user is in.\nThis also includes system messages like new users joining a chatroom.\n\nA datafeed will expire if it isn't read before its capacity is reached.\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Read Events",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"pm.collectionVariables.set(\"ackId\", jsonData.ackId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"datahose\",\n    \"tag\": \"mytag\",\n    \"filters\": [\"SOCIALMESSAGE\", \"CREATE_ROOM\", \"UPDATE_ROOM\"],\n    \"ackId\": \"{{ackId}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{agentUrl}}/agent/v5/events/read",
+									"protocol": "https",
+									"host": [
+										"{{agentUrl}}"
+									],
+									"path": [
+										"agent",
+										"v5",
+										"events",
+										"read"
+									]
+								}
 							},
 							"response": []
 						}
@@ -49953,6 +49995,33 @@
 					]
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ackId",
+			"value": "",
+			"type": "default"
 		}
 	]
 }
