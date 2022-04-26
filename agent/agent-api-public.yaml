@@ -3758,6 +3758,10 @@ definitions:
       messageId:
         type: string
         description: Id of the message
+      parentMessageId:
+        type: string
+        description: Id of the parent message, set when the message is a reply to another message or a forwarded message. Since Agent 20.14.
+        x-since: 20.14
       timestamp:
         type: integer
         format: int64
