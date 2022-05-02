@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '20.15.0-SNAPSHOT'
+  version: '22.5.1-SNAPSHOT'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -3150,7 +3150,7 @@ paths:
         - Datafeed
       summary: Read Real Time Events from an event stream (aka datafeed)
       description: |
-        _Available on Agent 20.15.0 and above._
+        _Available on Agent 22.5.1 and above._
 
         This endpoint provides messages and events from all conversations that the user
         is in or events from the whole pod depending on the "type" field value.
