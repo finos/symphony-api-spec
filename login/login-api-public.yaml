@@ -246,7 +246,8 @@ paths:
   '/idm/keys':
     get:
       summary: Returns the Common Access Token (JWT) public keys as a JWKS.
-      description: This is a public endpoint, no authentication is required. The JWKS can be used to verify JWT issued by the idm/tokens endpoint.
+      x-since: 20.14
+      description: This is a public endpoint, no authentication is required. The JWKS can be used to verify JWT issued by the idm/tokens endpoint. Since SBE 20.14.
       produces:
         - application/json
       tags:
