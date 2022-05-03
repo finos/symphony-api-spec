@@ -725,7 +725,8 @@ paths:
           type: string
           required: false
           description: |
-            Optional boolean field that will determine if the user/s should receive the message as read or not (true by default)
+            Optional boolean field that will determine if the user/s should receive the message as read or not (true by default). Since Agent 20.14.
+          x-since: 20.14
       tags:
         - Messages
       responses:
@@ -3150,7 +3151,7 @@ paths:
         - Datafeed
       summary: Read Real Time Events from an event stream (aka datafeed)
       description: |
-        _Available on Agent 22.5.1 and above._
+        _Available on Agent 22.5 and above._
 
         This endpoint provides messages and events from all conversations that the user
         is in or events from the whole pod depending on the "type" field value.
@@ -4898,15 +4899,17 @@ definitions:
       streamId:
         type: string
       attachments:
-        description: List of message attachments
+        description: List of message attachments. Since Agent 20.14.
         type: array
         items:
           $ref: '#/definitions/V4ImportedMessageAttachment'
+        x-since: 20.14
       previews:
-        description: List of attachments previews
+        description: List of attachments previews. Since Agent 20.14.
         type: array
         items:
           $ref: '#/definitions/V4ImportedMessageAttachment'
+        x-since: 20.14
     required:
     - message
     - intendedMessageTimestamp
@@ -5062,7 +5065,8 @@ definitions:
         description: Id the the initial message that has been updated (present only if set)
       silent:
         type: boolean
-        description: When false the user/s will receive the message update as unread (true by default).
+        description: When false the user/s will receive the message update as unread (true by default). Since Agent 20.14.
+        x-since: 20.14
   V4MessageBlastResponse:
     type: object
     description: Wrapper response for a single message sent to multiple streams
