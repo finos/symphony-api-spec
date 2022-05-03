@@ -5446,14 +5446,17 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
-        description: An optional attribute indicating whether the user is temporarily suspended or not
+        description: An optional attribute indicating whether the user is temporarily suspended or not. Since SBE 20.14.
+        x-since: 20.14
       suspendedUntil:
         type: integer
         format: int64
-        description: An optional unix timestamp until which the suspension is effective
+        description: An optional unix timestamp until which the suspension is effective. Since SBE 20.14.
+        x-since: 20.14
       suspensionReason:
         type: string
-        description: An optional description of the suspension reason
+        description: An optional description of the suspension reason. Since SBE 20.14.
+        x-since: 20.14
   UserFilter:
     type: object
     properties:
@@ -5969,14 +5972,17 @@ definitions:
           - DISABLED
       suspended:
         type: boolean
-        description: An optional attribute indicating whether the user is temporarily suspended or not
+        description: An optional attribute indicating whether the user is temporarily suspended or not. Since SBE 20.14.
+        x-since: 20.14
       suspendedUntil:
         type: integer
         format: int64
-        description: An optional unix timestamp until which the suspension is effective
+        description: An optional unix timestamp until which the suspension is effective. Since SBE 20.14.
+        x-since: 20.14
       suspensionReason:
         type: string
-        description: An optional description of the suspension reason
+        description: An optional description of the suspension reason. Since SBE 20.14.
+        x-since: 20.14
       createdDate:
         type: integer
         format: int64
@@ -6047,7 +6053,8 @@ definitions:
         type: integer
         format: int64
       addedThroughGroups:
-        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to.
+        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to. Since SBE 20.14.
+        x-since: 20.14
         type: array
         items:
           type: integer
@@ -6100,7 +6107,8 @@ definitions:
         type: integer
         format: int64
       addedThroughGroups:
-        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to.
+        description: When the user has been added to the stream through a group (aka SDL), this array contains the group ID which the user belongs to. Since SBE 20.14.
+        x-since: 20.14
         type: array
         items:
           type: integer
@@ -6296,7 +6304,8 @@ definitions:
         type: string
         description: Room name.
       groups:
-        description: List of groups (aka SDLs) that were added to the room.
+        description: List of groups (aka SDLs) that were added to the room. Since SBE 20.14.
+        x-since: 20.14
         type: array
         items:
           $ref: '#/definitions/GroupItem'
@@ -6738,7 +6747,8 @@ definitions:
         description: "apiKey sent into every callback request, using the X-API-KEY header"
   AppProperties:
     type: array
-    description: Application configuration properties that are shared with the extension application, client side. Do not store sensitive information here.
+    description: Application configuration properties that are shared with the extension application, client side. Do not store sensitive information here. Since SBE 20.14.
+    x-since: 20.14
     items:
       $ref: '#/definitions/AppProperty'
   AppProperty:
