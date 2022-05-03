@@ -2,16 +2,22 @@
 
 # symphony-api-spec
 
-This repository contains the Swagger (2.0) API definition files for the Symphony REST API. The full
+This repository contains the OpenAPI/Swagger API definition files for the Symphony REST API. The full
 documentation of the API is available on
 the [developer's website](https://developers.symphony.com/restapi/reference).
 
-Branches and releases of this repository will match those of the Symphony platform (20.10,
-20.12,...).
+The master branch of the repository can be used. Endpoints or attributes added in recent versions
+will be documented accordingly.
 
-There are three sets of definition files (login, agent and pod) and each set has two files:
-a "-public" file which contains all the current endpoint definitions, and a "-public-deprecated"
-file which contains all the current and the all the deprecated endpoint definitions.
+The main documented endpoints are:
+
+- [Pod APIs](./pod)
+- [Agent APIs](./agent)
+- [RSA login APIs](./login)
+- [Certificate login APIs](./authenticator)
+- [Profile Manager APIs](./profile-manager) _(using OpenAPI 3.0)_
+
+Specifications can be split in 2 different files to separate current endpoints and deprecated ones.
 
 A [Postman collection](./postman) is provided to help you test the API. You can paste the definition
 files into [Swagger Editor](http://editor.swagger.io/), from which you can generate client code.
@@ -49,7 +55,7 @@ If `BUILD FAILURE`, check the command output where the validation error has been
 
 ## License
 
-Copyright 2021 Symphony LLC
+Copyright 2022 Symphony LLC
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 

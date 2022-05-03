@@ -18,9 +18,9 @@
 
         <!-- Alphabetical order -->
         <jackson-databind-nullable.version>0.2.2</jackson-databind-nullable.version>
-        <jackson.version>2.13.1</jackson.version>
+        <jackson.version>2.13.2.20220328</jackson.version>
         <jsr305.version>3.0.2</jsr305.version>
-        <spring-boot-starter-webflux.version>2.6.2</spring-boot-starter-webflux.version>
+        <spring-boot-starter-webflux.version>2.6.7</spring-boot-starter-webflux.version>
         <swagger-annotations.version>1.6.4</swagger-annotations.version>
 
         <!-- Code Gen -->
@@ -30,6 +30,18 @@
         <codegen.base.package>com.symphony.api.gen</codegen.base.package>
 
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
