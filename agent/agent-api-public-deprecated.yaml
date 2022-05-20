@@ -6473,13 +6473,11 @@ definitions:
       filters:
         type: array
         description: |
+          If type is set to be fanout, this should not be set.
           At least one value is required if type datahose is specified. Values must be valid real event types, allowed values are:
           * SOCIALMESSAGE
-          * CHANNEL_CREATE
-          * CHANNEL_UPDATE
           * CREATE_ROOM
           * UPDATE_ROOM
-          * UPDATE_STREAM
         items:
           type: string
       ackId:
