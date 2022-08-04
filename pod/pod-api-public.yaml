@@ -2347,6 +2347,19 @@ paths:
           in: header
           required: true
           type: string
+        - name: skip
+          description: Number of records to skip. Must be a positive integer.
+          in: query
+          type: integer
+          required: false
+          x-since: 20.15
+        - name: limit
+          description: Max number of records to return. Default is 10000. Must be a positive
+            integer and must not exceed 10000.
+          in: query
+          type: integer
+          required: false
+          x-since: 20.15
       tags:
         - InfoBarriers
       responses:
