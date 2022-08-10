@@ -1,0 +1,611 @@
+openapi: 3.0.1
+info:
+  title: Community Connect API
+  description: 'Community Connect public API'
+  version: 1.3.0
+tags:
+  - name: channelco
+    description: Public API for channelco
+
+paths:
+  /v1/onboarding/tenant:
+    get:
+      tags:
+        - channelco
+      security:
+        - ApiKeyAuth: [ ]
+      summary: Get user's pod and availability for onboarding
+      operationId: getUserOnboardingAvailability
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+          required: true
+          description: The user email
+          example: user@companyDomain.com
+      responses:
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOnboardingAvaibilityResponse'
+              example: "Company is already on Symphony but user needs access"
+  /v1/channelco/user:
+    get:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: [ ]
+      summary: Search channelco user
+      operationId: searchUser
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+          required: true
+          description: user's email
+          example: user@comcocompany.com
+      responses:
+        200:
+          description: body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCoUserAndCompany'
+        404:
+          description: The user do not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: []
+      summary: Create channelco user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelCoUsersListRequest'
+      responses:
+        201:
+          description: body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCoUsersListResponse'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/channelco/company/{companyId}/user/{userId}/roles/add:
+    post:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: [ ]
+      summary: Adds a role to a channelco user's account
+      operationId: addRole
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: symphony user id
+          example: 123456789
+        - name: companyId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: company Id of the user
+          example: "10"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        200:
+          description: body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInfo'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        404:
+          description: The user do not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/channelco/company/{companyId}/user/{userId}:
+    get:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: [ ]
+      summary: Get channelco user by companyId and userId
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: symphony user id
+          example: 123456789
+        - name: companyId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: company Id of the user
+          example: "10"
+      responses:
+        200:
+          description: body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCoUserAndCompany'
+        404:
+          description: The user do not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    put:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: [ ]
+      summary: Update channelco user
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: symphony user id
+          example: 123456789
+        - name: companyId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: company Id of the user
+          example: "10"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChannelCoUserRequest'
+      responses:
+        200:
+          description: body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCoUser'
+        404:
+          description: The user do not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+        - channelco
+      security:
+        - JwtAuth: [ ]
+      summary: Disable channelco user
+      operationId: disableUser
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: symphony user id
+          example: 123456789
+        - name: companyId
+          in: path
+          schema:
+            type: string
+          required: true
+          description: company Id of the user
+          example: "10"
+      responses:
+        204:
+          description: The user was disabled successfully.
+        404:
+          description: The user do not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        400:
+          description: Something was wrong about the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        401:
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: error code
+        message:
+          type: string
+          description: Human readable details about the error
+        details:
+          description: Full details about error, usefull for 400
+          type: object
+    ApiInfo:
+      type: object
+      properties:
+        code:
+          type: string
+          description: info code
+        message:
+          type: string
+          description: Human readable details about the information the api is returning
+        details:
+          description: Full details about info
+          type: object
+    Config:
+      type: object
+      properties:
+        id:
+          type: string
+          description: config key
+        value:
+          type: string
+          description: config value
+      required:
+        - id
+    ChannelCoPartner:
+      type: object
+      properties:
+        id:
+          type: string
+          description: partner id
+        name:
+          type: string
+          description: partner name
+        appName:
+          type: string
+          description: app name (visible in user invitation email)
+        supportSso:
+          type: boolean
+          description: support sso or not
+        ssoUrl:
+          type: string
+          description: if support sso enabled, the sso url
+        ssoType:
+          type: string
+          enum: [SAML, OAUTH]
+        defaultEmailLanguage:
+          type: string
+          description: Invitation email language used. It will work only if the template for the specified language is configured, if no custom language are configured, leave it empty
+        idp:
+          type: string
+          description: identity provider for partner
+      required:
+        - id
+        - name
+        - idp
+    UserOnboardingAvaibilityResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiInfo'
+        - type: object
+          properties:
+            podUrl:
+              type: string
+              example: ces4-dev.symphony.com
+
+    ChannelCoUserRequest:
+      type: object
+      description: payload to onboard a channelco user account
+      properties:
+        email:
+          type: string
+          format: email
+          example: foo@example.com
+        firstName:
+          type: string
+          example: Paul
+          maxLength: 64
+        lastName:
+          type: string
+          example: Smith
+          maxLength: 64
+        displayName:
+          type: string
+          example: Paul Smith
+          maxLength: 128
+          description: if omitted, it will be generated with the pattern <firstName lastName>
+        phoneNumber:
+          type: string
+          example: +33612345678
+        department:
+          type: string
+          example: Product Engineering
+          maxLength: 256
+        title:
+          type: string
+          example: Engineering manager
+          maxLength: 256
+        location:
+          type: string
+          description: country
+      required:
+        - email
+        - firstName
+        - lastName
+    ChannelCoUsersListRequest:
+      type: object
+      description: payload to onboard channelco users
+      properties:
+        companyName:
+          type: string
+          description: This field is mandatory only if a company with same domain (taken from email) does not exist yet
+          example: Symphony
+          maxLength: 64
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelCoUserRequest'
+      required:
+        - companyName
+        - users
+    UpdateChannelCoUserRequest:
+      type: object
+      description: payload to update a channelco user account
+      properties:
+        email:
+          type: string
+          format: email
+          example: foo@example.com
+        firstName:
+          type: string
+          example: Paul
+          maxLength: 64
+        lastName:
+          type: string
+          example: Smith
+          maxLength: 64
+        displayName:
+          type: string
+          example: Paul Smith
+        phoneNumber:
+          type: string
+          example: +33612345678
+        department:
+          type: string
+          example: Product Engineering
+          maxLength: 256
+        title:
+          type: string
+          example: Engineering manager
+          maxLength: 256
+        location:
+          type: string
+          description: country
+    ChannelCoUser:
+      allOf:
+        - $ref: '#/components/schemas/ChannelCoUserRequest'
+        - type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+              description: Member's user id
+            username:
+              type: string
+              description: Member's username generated by API. If there is no naming conflict it is <firstName.lastName> (in lower case)
+    ChannelCoUserAndCompany:
+      allOf:
+        - $ref: '#/components/schemas/ChannelCoUser'
+        - type: object
+          properties:
+            companyId:
+              type: string
+              description: company Id of the user
+              example: "10"
+            companyName:
+              type: string
+              description: company name of the user
+              example: Symphony
+              maxLength: 64
+    ChannelCoUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/ChannelCoUserRequest'
+        - type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+              description: Member's user id
+            username:
+              type: string
+              description: Member's username generated by API. It is expected to be the same as email
+            code:
+              type: string
+              description: info code
+              example:
+                newCompany:
+                  value: USER_ADDED_NEW_COMPANY
+                  description: new company created and user added into it
+                existingCompany:
+                  value: USER_ADDED_EXISTING_COMPANY
+                  description: company already exists, user added into it
+                mismatchCompany:
+                  value: USER_ADDED_TO_DIFFERENT_COMPANY_NAME
+                  description: company already exists (lookup by domain name), but the name is different. User is added in the existing one
+            message:
+              type: string
+              description: Human readable details about the information the api is returning
+    ChannelCoUserErrorResponse:
+      allOf:
+        - $ref: '#/components/schemas/ChannelCoUserRequest'
+        - type: object
+          properties:
+            code:
+              type: string
+              description: error code
+              example:
+                alreadyExisting:
+                  value: USER_ALREADY_EXISTS
+                  description: user already existing belong a pod (error message will provide detail about pod url)
+                existingCompany:
+                  value: COMPANY_ALREADY_EXISTS_USER_NEEDS_ACCESS
+                  description: company already exists and the user need access (error message will provide detail about pod url)
+                existingComCoCompany:
+                  value: COMCO_COMPANY_ALREADY_EXISTS_USER_NEED_ACCESS
+                  description: comco company already exists and the user need access
+                mismatchCompany:
+                  value: UNEXPECTED_ERROR
+            message:
+              type: string
+              description: Human readable details about the information the api is returning
+    ChannelCoUsersListResponse:
+      type: object
+      properties:
+        companyId:
+          type: string
+          description: company Id of the users
+          example: "10"
+        companyName:
+          type: string
+          description: company name of the users
+          example: Symphony
+          maxLength: 64
+        success:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelCoUserResponse'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChannelCoUserErrorResponse'
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          description: role Id
+          example: COMPLIANCE_OFFICER
+      required:
+        - id
+  securitySchemes:
+    JwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ExtApp JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+    CommonJwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Common JWT
+security:
+  - JwtAuth: []
+  - ApiKeyAuth: []
