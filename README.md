@@ -16,6 +16,7 @@ The main documented endpoints are:
 - [RSA login APIs](./login)
 - [Certificate login APIs](./authenticator)
 - [Profile Manager APIs](./profile-manager) _(using OpenAPI 3.0)_
+- [Community Connect APIs](./community-connect) _(using OpenAPI 3.0.1)_
 
 Specifications can be split in 2 different files to separate current endpoints and deprecated ones.
 
