@@ -281,16 +281,14 @@ definitions:
       token:
         type: string
         description: |
-          Token that can be passed as header, it can be considered a refresh token along with the
-          idm/tokens ("authorizationToken").
+          Authentication token that should be passed as header in each API rest calls.
           This should be considered opaque data by the client. It is not intended to contain any data interpretable by the
           client. The format is secret and subject to change without notice.
       authorizationToken:
         type: string
         description: |
-          Short lived access token built from a user session. It can be used for the same purposes as the sessionToken
-          and It should be passed as an header named "Authorization". At least one between SessionToken or Authorization
-          header must me provided on subsequent API calls.
+          (Beta) Short lived access token built from a user session. This field is still on Beta, please continue using 
+          the returned "token" instead.
   AuthenticateRequest:
       type: object
       description: Request body for pubkey authentication
