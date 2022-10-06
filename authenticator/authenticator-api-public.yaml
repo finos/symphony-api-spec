@@ -86,7 +86,7 @@ paths:
         '200':
           description: OK.
           schema:
-            $ref: '#/definitions/Token'
+            $ref: '#/definitions/SuccessResponse'
         '400':
           description: 'Client error.'
           schema:
@@ -133,4 +133,8 @@ definitions:
       certificate:
         description: Certificate in PEM format
         type: string
-
+  SuccessResponse:
+    type: object
+    properties:
+      message:
+        type: string
