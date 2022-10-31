@@ -5917,8 +5917,8 @@ components:
           type: boolean
     V4RoomProperties:
       type: object
-      required:
-        - keywords
+#      required:
+#        - keywords
       properties:
         name:
           type: string
@@ -5946,6 +5946,7 @@ components:
           type: boolean
         keywords:
           type: array
+          default: []
           items:
             $ref: '#/components/schemas/V4KeyValuePair'
         canViewHistory:
