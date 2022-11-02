@@ -5855,6 +5855,7 @@ components:
       properties:
         messages:
           type: array
+          default: []
           description: List of messages successfully sent
           items:
             $ref: '#/components/schemas/V4Message'
