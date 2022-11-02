@@ -3827,7 +3827,6 @@ components:
         - required:
             - fromUserId
             - message
-            - attachments
           type: object
           properties:
             message:
@@ -3842,6 +3841,7 @@ components:
               format: int64
             attachments:
               type: array
+              default: []
               items:
                 $ref: '#/components/schemas/AttachmentInfo'
     RoomCreatedMessage:
@@ -3849,8 +3849,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/V2BaseMessage'
         - type: object
-          required:
-            - keywords
           properties:
             creationDate:
               type: integer
@@ -3859,6 +3857,7 @@ components:
               type: string
             keywords:
               type: array
+              default: []
               items:
                 $ref: '#/components/schemas/RoomTag'
             description:
@@ -3900,8 +3899,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/V2BaseMessage'
         - type: object
-          required:
-            - keywords
           properties:
             oldName:
               type: string
@@ -3909,6 +3906,7 @@ components:
               type: string
             keywords:
               type: array
+              default: []
               items:
                 $ref: '#/components/schemas/RoomTag'
             oldDescription:
@@ -4320,8 +4318,6 @@ components:
         $ref: '#/components/schemas/V4Message'
     V4Message:
       type: object
-      required:
-        - attachments
       properties:
         messageId:
           type: string
@@ -4347,6 +4343,7 @@ components:
           format: JSON
         attachments:
           type: array
+          default: []
           description: Message attachments
           items:
             $ref: '#/components/schemas/V4AttachmentInfo'
@@ -4412,11 +4409,13 @@ components:
       properties:
         messages:
           type: array
+          default: []
           description: List of messages successfully sent
           items:
             $ref: '#/components/schemas/V4Message'
         errors:
           type: object
+          default: []
           additionalProperties:
             $ref: '#/components/schemas/Error'
           description: List of streams where the messages ingestion has failed
@@ -4471,8 +4470,6 @@ components:
           type: boolean
     V4RoomProperties:
       type: object
-#      required:
-#        - keywords
       properties:
         name:
           type: string
@@ -5826,11 +5823,10 @@ components:
         events that the client has received through an individual feed.
     V5EventList:
       type: object
-      required:
-        - events
       properties:
         events:
           type: array
+          default: []
           items:
             $ref: '#/components/schemas/V4Event'
         ackId:
