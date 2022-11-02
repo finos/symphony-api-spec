@@ -5861,7 +5861,6 @@ components:
             $ref: '#/components/schemas/V4Message'
         errors:
           type: object
-          default: []
           additionalProperties:
             $ref: '#/components/schemas/Error'
           description: List of streams where the messages ingestion has failed
