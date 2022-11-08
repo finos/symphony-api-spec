@@ -5273,7 +5273,6 @@ components:
         - required:
             - fromUserId
             - message
-            - attachments
           type: object
           properties:
             message:
@@ -5288,6 +5287,7 @@ components:
               format: int64
             attachments:
               type: array
+              default: []
               items:
                 $ref: '#/components/schemas/AttachmentInfo'
     RoomCreatedMessage:
