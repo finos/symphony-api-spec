@@ -1,4 +1,6 @@
 [![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6747/badge)]
+(https://bestpractices.coreinfrastructure.org/projects/6747)
 
 # symphony-api-spec
 
