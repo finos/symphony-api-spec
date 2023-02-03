@@ -792,7 +792,7 @@ paths:
             $ref: '#/definitions/Error'
   '/v1/im/{id}/info':
     get:
-      summary: Get information about a partcular IM.
+      summary: Get information about a particular IM.
       produces:
         - application/json
       parameters:
@@ -1061,7 +1061,7 @@ paths:
             $ref: '#/definitions/Error'
   '/v3/room/{id}/info':
     get:
-      summary: Get information about a partcular chatroom.
+      summary: Get information about a particular chatroom.
       produces:
         - application/json
       parameters:
@@ -1995,7 +1995,7 @@ paths:
             $ref: '#/definitions/Error'
   '/v2/streams/{sid}/info':
     get:
-      summary: Get information about a partcular stream.
+      summary: Get information about a particular stream.
       produces:
         - application/json
       parameters:
