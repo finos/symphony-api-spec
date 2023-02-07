@@ -5268,6 +5268,10 @@ definitions:
       pinnedMessageId:
         type: string
         description: UrlSafe message id of the pinned message inside the room. To perform unpin operation, send an empty string.
+      groupChat:
+        type: boolean
+        description: "If true, this room is a group chat. Note: this parameter is ignored for creating rooms. Since SBE 20.16."
+        x-since: 20.16
   RoomSearchCriteria:
     description: Room Query Object. Used to specify the parameters for room search.
     properties:
@@ -6639,6 +6643,10 @@ definitions:
         type: integer
         format: int64
         description: last date a message was sent in this stream
+      groupChat:
+        type: boolean
+        description: whether a stream is a group chat or not. Since SBE 20.16.
+        x-since: 20.16
   FileExtension:
     type: object
     required:
