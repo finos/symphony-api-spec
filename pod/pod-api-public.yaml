@@ -1993,6 +1993,68 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/user/{uid}/streams/list':
+    post:
+      summary: |
+        Retrieve a list of all streams of which this user is a member,
+        sorted by creation date (ascending). Since SBE 20.16.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: uid
+          description: |
+            User ID as a decimal integer
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: skip
+          description: |
+            No. of results to skip.
+          in: query
+          type: integer
+        - name: limit
+          description: |
+            Max no. of results to return. If no value is provided, 50 is the default.
+          in: query
+          type: integer
+        - name: filter
+          description: Stream filtering criteria.
+          in: body
+          schema:
+            $ref: '#/definitions/StreamFilter'
+      tags:
+        - Streams
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/StreamList'
+        '204':
+          description: 'Stream not found.'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v2/streams/{sid}/info':
     get:
       summary: Get information about a partcular stream.
