@@ -7192,8 +7192,6 @@ definitions:
         $ref: '#/definitions/StringList'
       avatar:
         $ref: '#/definitions/Avatar'
-      authentication:
-        $ref: '#/definitions/UserAuthentication'
   V3UserDetailList:
     type: array
     items:
