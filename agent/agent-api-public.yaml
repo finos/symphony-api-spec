@@ -3697,8 +3697,7 @@ paths:
     post:
       tags:
         - Datafeed
-      summary: Read Real Time Events from an event stream (aka datahose) - Add-on 
-      to Symphony Services
+      summary: Read Real Time Events from an event stream (aka datahose) Add-on to Symphony Services
       description: |
         _Available on Agent 22.5.1 and above. This endpoint provides
         messages and events from all conversations that the user is in or events
