@@ -1,0 +1,705 @@
+swagger: '2.0'
+info:
+  version: '20.14.1'
+  title: Retrieve Audit trails (AT 2.0)
+  description: |
+    Every action performed on a pod like sending a messaging or creating a room is tracked and is called an audit.
+    
+    Allowed users must authenticate first using OAuth2 authentication with "scope" parameter "**at2**" to obtain a JWT token
+    that will be used to call the Audits API. The JWT must be correctly setup in the Authorization header as a Bearer token.
+
+    Some input parameters can be prepended with the exclamation mark character “!” to exclude some results from the search.
+    
+    Here are the compatible parameters:
+    <ul>
+      <li>actionId</li> 
+      <li>groupId</li>
+      <li>policyId</li>
+      <li>attribute</li>
+      <li>authorizationRole</li>
+      <li>streamId</li>
+      <li>applicationId</li>
+      <li>tempAuthId</li>
+      <li>disclaimerId</li>
+    </ul>
+
+
+paths:
+  '/at2/v1/audits':
+    get:
+      summary: Get Audit trails.
+      tags:
+        - Audits
+      description: |
+        The endpoint returns a paginated list of audits of the pod depending on input parameters such as the categories of audits,
+        time interval etc. Each page can contain up to 100 audits.
+      parameters:
+        - $ref: '#/parameters/authorizationHeader'
+        - $ref: '#/parameters/categoriesParameter'
+        - $ref: '#/parameters/startDateParameter'
+        - $ref: '#/parameters/endDateParameter'
+        - $ref: '#/parameters/affectedUserIdParameter'
+        - $ref: '#/parameters/originatingUserIdParameter'
+        - $ref: '#/parameters/actionParameter'
+        - $ref: '#/parameters/attributeParameter'
+        - $ref: '#/parameters/groupIdParameter'
+        - $ref: '#/parameters/authorizationRoleParameter'
+        - $ref: '#/parameters/streamIdParameter'
+        - $ref: '#/parameters/policyIdParameter'
+        - $ref: '#/parameters/applicationIdParameter'
+        - $ref: '#/parameters/temporaryAuthorizationId'
+        - $ref: '#/parameters/disclaimerId'
+        - $ref: '#/parameters/dateTimeFormatParameter'
+        - $ref: '#/parameters/limitParameter'
+        - $ref: '#/parameters/beforeParameter'
+        - $ref: '#/parameters/afterParameter'
+        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/at-events-paginated-list'
+        '400':
+          $ref: '#/definitions/BadRequest'
+        '401':
+          $ref: '#/definitions/Unauthorized'
+        '403':
+          $ref: '#/definitions/Forbidden'
+        '404':
+          $ref: '#/definitions/NotFound'
+
+  '/at2/v1/filters/values':
+    get:
+      summary: Get distinct values of a list of filters.
+      tags:
+        - Filter Values
+      description: |
+        This endpoint returns the possible distinct values for each of the filter names provided
+        in the "filters" parameter.
+
+        The scope of the filter values is restricted with the same type of filters we use to restrict
+        the list of Audit Trail Events we retrieve in the /audits endpoint.
+
+        Beware that a given filter may be included, rather in the list of filters,
+        rather included in the filter restrictions.
+
+        E.g: we can search the distinct "action" values, or we can search for the values of other
+        filters for a given "action=sentMessage"
+      parameters:
+        - $ref: '#/parameters/authorizationHeader'
+        - $ref: '#/parameters/filtersParameter'
+        - $ref: '#/parameters/categoriesParameter'        
+        - $ref: '#/parameters/startDateParameter'
+        - $ref: '#/parameters/endDateParameter'
+        - $ref: '#/parameters/affectedUserIdParameter'
+        - $ref: '#/parameters/originatingUserIdParameter'
+        - $ref: '#/parameters/actionParameter'
+        - $ref: '#/parameters/attributeParameter'
+        - $ref: '#/parameters/groupIdParameter'
+        - $ref: '#/parameters/authorizationRoleParameter'
+        - $ref: '#/parameters/streamIdParameter'
+        - $ref: '#/parameters/policyIdParameter'
+        - $ref: '#/parameters/applicationIdParameter'
+        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/filters-values-list'
+        '400':
+          $ref: '#/definitions/BadRequest'
+        '401':
+          $ref: '#/definitions/Unauthorized'
+        '404':
+          $ref: '#/definitions/NotFound'
+
+  '/at2/v1/audits/stream':
+    get:
+      summary: Get Audit Trail Stream.
+      tags:
+        - Audits Stream
+      description: |
+        The endpoint returns streamed list of audit trail events of the pod
+        depending on input parameters such as the categories of audits, time
+        interval etc. Pages can contain an unlimited number of records.
+      produces:
+        - text/csv
+      parameters:
+      - $ref: '#/parameters/authorizationHeader'
+      - $ref: '#/parameters/categoriesParameter'
+      - $ref: '#/parameters/startDateParameter'
+      - $ref: '#/parameters/endDateParameter'
+      - $ref: '#/parameters/affectedUserIdParameter'
+      - $ref: '#/parameters/originatingUserIdParameter'
+      - $ref: '#/parameters/actionParameter'
+      - $ref: '#/parameters/attributeParameter'
+      - $ref: '#/parameters/groupIdParameter'
+      - $ref: '#/parameters/authorizationRoleParameter'
+      - $ref: '#/parameters/streamIdParameter'
+      - $ref: '#/parameters/policyIdParameter'
+      - $ref: '#/parameters/applicationIdParameter'
+      - $ref: '#/parameters/temporaryAuthorizationId'
+      - $ref: '#/parameters/disclaimerId'
+      - $ref: '#/parameters/dateTimeFormatParameter'
+      - $ref: '#/parameters/limitParameter'
+      - $ref: '#/parameters/contentTypeParameter'
+        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/streaming-response-body'
+        '400':
+          $ref: '#/definitions/BadRequest'
+        '401':
+          $ref: '#/definitions/Unauthorized'
+        '403':
+          $ref: '#/definitions/Forbidden'
+        '404':
+          $ref: '#/definitions/NotFound'
+
+  '/at2/v1/categories/permissions':
+    get:
+      summary: Get categories permissions.
+      tags:
+        - Categories permissions
+      description: |
+        This endpoint returns the categories permissions of audit trail events for the current user. Fetching forbidden categories
+        in other endpoints will end up in a 403 Forbidden response.
+        
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/categories-permissions'
+
+parameters:
+  authorizationHeader:
+    in: header
+    name: Authorization
+    required: true
+    description: >
+      OAuth2 token obtained using the Login API. 
+    schema:
+      type: string
+      example: Bearer JWT-obtained
+
+  contentTypeParameter:
+    in: query
+    name: Content-Type
+    required: false
+    description: >
+      Content-type expected in return
+    schema:
+      type: string
+      enum: [text/csv]
+      example: text/csv
+
+  dateTimeFormatParameter:
+    in: query
+    name: dateFormat
+    required: false
+    description: >
+      Used format for output date values.<br/>
+      Possible values:<br/>
+      <ul>
+      <li>STANDARD_AT_ACP_DATE - MM-dd-YYYY - as historically used in Symphony Audit Trails</li>
+      </ul>
+      or anything supported by java11 DateTimeFormatter (https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html)<br/>
+      <ul>
+      <li>BASIC_ISO_DATE</li>
+      <li>ISO_DATE</li>
+      <li>ISO_DATE_TIME</li>
+      <li>ISO_INSTANT</li>
+      <li>ISO_LOCAL_DATE</li>
+      <li>ISO_LOCAL_DATE_TIME</li>
+      <li>ISO_LOCAL_TIME</li>
+      <li>ISO_OFFSET_DATE</li>
+      <li>ISO_OFFSET_DATE_TIME</li>
+      <li>ISO_OFFSET_TIME</li>
+      <li>ISO_ORDINAL_DATE</li>
+      <li>ISO_TIME</li>
+      <li>ISO_WEEK_DATE</li>
+      <li>ISO_ZONED_DATE_TIME</li>
+      <li>RFC_1123_DATE_TIME</li>
+      <li>any supported date/time pattern - YYYYMMddHHmmss, ....</li>
+      </ul>
+    schema:
+      type: string
+      example: STANDARD_AT_ACP_DATE
+
+  filtersParameter:
+    in: query
+    name: filters
+    required: true
+    description: >
+      Names of the filters for which we want to retrieve their distinct values. All filters must be separated by commas.<br/><br/>
+      All different filters available:
+      <ul>
+        <li>group</li>
+        <li>policy</li>
+        <li>originatingUser</li>
+        <li>affectedUser</li>
+        <li>action</li>
+        <li>stream</li>
+        <li>attribute</li>
+        <li>conversationScope</li>
+        <li>fileName</li>
+        <li>dictionaryName</li>
+        <li>policyType</li>
+        <li>authorizationRole</li>
+      </ul>
+    schema:
+      type: string
+      example: action,originatingUser,affectedUser,group,attribute
+
+  startDateParameter:
+    in: query
+    name: startDate
+    required: false
+    description: >
+      start range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    schema:
+      type: string
+      example: 2023-07-11T14:09:28.375Z
+
+  endDateParameter:
+    in: query
+    name: endDate
+    required: false
+    description: >
+      end range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    schema:
+      type: string
+      example: 2023-07-11T14:09:28.375Z
+
+  categoriesParameter:
+    in: query
+    name: categories
+    required: true
+    description: >
+      List of Audit Trail categories restriction. All values must be separated by commas.<br/><br/>
+      All different categories available:
+      <ul>
+        <li>APP_MANAGEMENT</li>
+        <li>BLACKLIST</li>
+        <li>BULK_JOB_HISTORY</li>
+        <li>CO_SCO_SESSION_LOG</li>
+        <li>CONFIGURE_SSO</li>
+        <li>CONTENT_EXPORT_MANAGEMENT</li>
+        <li>DISCLAIMERS</li>
+        <li>DISCLAIMER_INSERTION_MANAGEMENT</li>
+        <li>ENTITLEMENT</li>
+        <li>EXPRESSION_FILTERS_V1_MANAGEMENT</li>
+        <li>EXPRESSION_FILTERS_V1_ENFORCEMENT</li>
+        <li>EXPRESSION_FILTERS_V3_MANAGEMENT</li>
+        <li>EXPRESSION_FILTERS_V3_DICTIONARY</li>
+        <li>EXPRESSION_FILTERS_V3_ENFORCEMENT</li>
+        <li>EXPRESSION_FILTERS_V3_POLICY</li>
+        <li>EXPRESSION_FILTERS_V3_TROUBLESHOOT</li>
+        <li>INFORMATION_BARRIERS_MANAGEMENT</li>
+        <li>INFORMATION_BARRIERS_GROUPS</li>
+        <li>INFORMATION_BARRIERS_ACTION</li>
+        <li>INTEGRATION_CONFIG</li>
+        <li>MALWARE_SCANNING</li>
+        <li>MANAGE_CERTIFICATES</li>
+        <li>MESSAGE_MANAGEMENT</li>
+        <li>POD_CONFIGURATION</li>
+        <li>PRIVILEGED_ROLES_LOG</li>
+        <li>ROLE_SCOPE_MANAGEMENT</li>
+        <li>USER_MANAGEMENT</li>
+        <li>USER_PROFILE_VISIBILITY</li>
+        <li>CONTENT_EXPORT_SELF_HEALING</li>
+        <li>CONTENT_EXPORT_FILE_LOG</li>
+        <li>CONVERSATIONS</li>
+        <li>LOGIN</li>
+        <li>FILE_EXTENSIONS</li>
+        <li>API_RATE_LIMIT</li>
+        <li>SUPPORT_PORTAL</li>
+        <li>EF_SUPPORT_PORTAL</li>
+        <li>DISTRIBUTION_LIST_MANAGEMENT</li>
+      </ul>
+    schema:
+      type: string
+      example: LOGIN,ROLE_SCOPE_MANAGEMENT,USER_MANAGEMENT
+
+  affectedUserIdParameter:
+    in: query
+    name: affectedUserId
+    required: false
+    description: >
+      "Affected User Id" filter single value restriction
+    schema:
+      type: string
+
+  originatingUserIdParameter:
+    in: query
+    name: originatingUserId
+    required: false
+    description: >
+      "Originating User Id" filter single value restriction (a.k.a. "Performed by)"
+    schema:
+      type: string
+
+  actionParameter:
+    in: query
+    name: actionId
+    required: false
+    description: >
+      "Action Id" filter single value restriction
+    schema:
+      type: string
+
+  attributeParameter:
+    in: query
+    name: attribute
+    required: false
+    description: >
+      "Attribute" filter single value restriction
+    schema:
+      type: string
+
+  groupIdParameter:
+    in: query
+    name: groupId
+    required: false
+    description: >
+      "Group Id" filter single value restriction (used by Info barrier, Role Scope...)
+    schema:
+      type: string
+
+  authorizationRoleParameter:
+    in: query
+    name: authorizationRole
+    required: false
+    description: >
+      "Authorization Role" filter single value restriction
+    schema:
+      type: string
+      example: INDIVIDUAL
+
+  streamIdParameter:
+    in: query
+    name: streamId
+    required: false
+    description: >
+      "Stream Id" filter single value restriction (using either Base64 or Base64URL encoding)
+    schema:
+      type: string
+      example: P1BcwswqFz-y7LDYxYoXi3___oTxM6-idA==
+
+  policyIdParameter:
+    in: query
+    name: policyId
+    required: false
+    description: >
+      "Policy Id" filter single value restriction
+    schema:
+      type: string
+
+  applicationIdParameter:
+    in: query
+    name: applicationId
+    required: false
+    description: >
+      "Application Id" filter single value restriction
+    schema:
+      type: string
+
+  temporaryAuthorizationId:
+    in: query
+    name: tempAuthId
+    required: false
+    description: >
+      "Temporary Authorization Id" filter single value restriction
+    schema:
+      type: string
+
+  disclaimerId:
+    in: query
+    name: disclaimerId
+    required: false
+    description: >
+      "Disclaimer Id" filter single value restriction
+    schema:
+      type: string
+
+  limitParameter:
+    name: limit
+    in: query
+    required: false
+    description: >-
+      Specifies the maximum number of objects to return. It is possible that fewer than the specified number is
+      returned, either due to reaching the end of the record set or due to data access rules that filter results
+      of the back end query.  The number of returned objects should not be used to determine if there are more
+      objects to retrieve.  Instead, the presence of the "next" and "previous" (see below) fields should be used.
+      If the value is higher than 100, it will be set to 100 automatically.
+    schema:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 100
+      default: 100
+      example: 50
+
+  beforeParameter:
+    name: before
+    in: query
+    required: false
+    description: >-
+      Cursor value that specifies that the returned page of data should consist of records that come before this
+      cursor value (essentially the "previous" page).
+    schema:
+      type: string
+      example: 110701036724277909
+
+  afterParameter:
+    name: after
+    in: query
+    required: false
+    description: >-
+      Cursor value that specifies that the returned page of data should consist of records that come after this
+      cursor value (essentially the "next" page).
+    schema:
+      type: string
+      example: 110701036724277909
+
+definitions:
+  at-events-paginated-list:
+    description: >
+      A paged list of Audit Trail events
+    type: object
+    required:
+      - data
+      - pagination
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/at-event'
+      pagination:
+        $ref: '#/definitions/Pagination'
+      warnings:
+        $ref: '#/definitions/warnings'
+
+  at-events-full-list:
+    description: >
+      The full list of Audit Trail events
+    type: array
+    items:
+      $ref: '#/definitions/at-event'
+
+  at-event:
+    description: >
+      An Audit Trail Event
+    type: object
+    required:
+      - id
+      - createdDate
+      - category
+      - details
+    properties:
+      id:
+        description: Unique ID of the resource
+        type: string
+      createdDate:
+        description: Date/time resouces was created in ISO-8601 format (YYYY-MM-DDThh:mm:ss.sZ)
+        type: string
+        format: 'date-time'
+      category:
+        type: string
+        description: >
+          Category
+      details:
+        type: array
+        description: >
+          Audit Event details
+        items:
+          $ref: '#/definitions/at-event-detail'
+
+  at-event-detail:
+    description: >
+      An Audit Trail Event detail
+    type: object
+    required:
+      - key
+    properties:
+      key:
+        description: >
+          Audit Trail event detail key
+        type: string
+      value:
+        description: >
+          Audit Trail event detail single value
+        type: string
+      complexValue:
+        description: >
+          Audit Trail event detail complex value
+        $ref: '#/definitions/key-value-list'
+
+  filters-values-list:
+    description: >
+      List of distinct values by Filter
+    type: array
+    items:
+      $ref: '#/definitions/filter-values'
+
+  filter-values:
+    description: >
+      List of distinct values of a Filter
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: >
+          Filter's Name
+      values:
+        description: >
+          Filter's Simple Values
+        type: array
+        items:
+          type: string
+      complexValues:
+        description: >
+          Filter's Complex Values
+        type: array
+        items:
+          $ref: '#/definitions/key-value-list'
+
+  categories-permissions:
+    description: >
+      List of allowed categories and list of forbidden categories
+    type: object
+    properties:
+      allowed:
+        description: >
+          Only present if there are allowed categories
+        type: array
+        nullable : true
+        items:
+          type: string
+      forbidden:
+        description: >
+          Only present if there are forbidden categories
+        type: array
+        nullable: true
+        items:
+          type: string
+          
+  streaming-response-body:
+    description: >
+      Only used to reference org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+    type: StreamingResponseBody
+
+  Pagination:
+    description: Pagination information
+    required:
+      - cursors
+    properties:
+      previous:
+        description: >-
+          Path to retrieve the previous page of data. If not present, the current page is the first page of data.
+        type: string
+      next:
+        description: >-
+          Path to retrieve the next page of data. If not present, the current page is the last page of data.
+        type: string
+      cursors:
+        $ref: '#/definitions/PaginationCursors'
+  PaginationCursors:
+    description: Cursors for pagination
+    properties:
+      before:
+        description: >-
+          Cursor that points to the start of the current page of data.  If not present, the current page is
+          the first page.
+        type: string
+      after:
+        description: >-
+          Cursor that points to the end of the current page of data.  If not present, the current page is
+          the last page.
+        type: string
+
+  key-value-list:
+    description: Generic Key Value List
+    type: array
+    items:
+      $ref: '#/definitions/key-value'
+  
+  key-value:
+    description: Generic Key Value
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+  
+  warnings:
+    type: array
+    items:
+      $ref: '#/definitions/warning'
+  
+  warning:
+    description: >
+      Warning object
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        description: >
+          Application specific warning code.
+        type: string
+      message:
+        description: >
+          Textual message of the warning
+        type: string
+
+  NotFound:
+    description: Not found. Returned if specified key is not found.
+    schema:
+      $ref: '#/definitions/Error'
+        
+  
+  BadRequest:
+    description: Bad request
+    schema:
+      $ref: '#/definitions/Error'
+
+  Unauthorized:
+    description: Unauthorized. Returned if JWT token verification failed.
+    schema:
+      $ref: '#/definitions/Error'  
+
+  Forbidden:
+    description: Forbidden.  Returned if the caller doesn't have the required entitlements to call an endpoint.
+    schema:
+      $ref: '#/definitions/Error'
+
+  Error:
+    description: Common error response body
+    required:
+      - code
+      - message
+    properties:
+      code:
+        description: >-
+          An internal code that can be used by support/developers to quickly locate the line of code that generated
+          the error response.
+        type: string
+      message:
+        description: A human-readable error message
+        type: string
+      context:
+        description: A name-value map of variables and their value necessary to construct the message
+        type: object
+        additionalProperties:
+          type: string
+      details:
+        description: Additional data that might be included
+        type: object
+
