@@ -232,7 +232,7 @@ components:
       name: Authorization
       required: true
       description: >
-        OAuth2 token obtained using the Login API. 
+        OAuth2 token obtained using the Login API with "scope" parameter "**at2**" to obtain an AT 2.0 working JWT token.
       schema:
         type: string
         example: Bearer JWT-obtained
