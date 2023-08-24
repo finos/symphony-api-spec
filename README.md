@@ -16,6 +16,7 @@ The main documented endpoints are:
 - [Agent APIs](./agent)
 - [RSA login APIs](./login)
 - [Certificate login APIs](./authenticator)
+- [Audit Trail 2.0](./audit-trail) _(using OpenAPI 3.0.1)_
 - [Profile Manager APIs](./profile-manager) _(using OpenAPI 3.0)_
 - [Community Connect APIs](./community-connect) _(using OpenAPI 3.0.1)_
 
