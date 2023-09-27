@@ -2838,6 +2838,59 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v3/admin/user/list':
+    get:
+      summary: Retrieve a list of all users in the company (pod).
+      x-since: 20.16
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session Authentication token.
+          in: header
+          required: true
+          type: string
+        - name: skip
+          description: Number of users to skip. Default is 0. Must be a integer equals or bigger than 0.
+          in: query
+          type: integer
+          required: false
+        - name: limit
+          description: Maximum number of users to return. Default is 100. Must be a positive
+            integer and must not exceed 1000.
+          in: query
+          type: integer
+          required: false
+        - name: includeFeatures
+          description: If true, the response will include the list of features for each users
+          in: query
+          type: boolean
+          required: false
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/V3UserDetailList'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/user/find':
     post:
       summary: Find a user based on attributes
@@ -7125,6 +7178,24 @@ definitions:
       type: array
       items:
         $ref: '#/definitions/V2UserDetail'
+  V3UserDetail:
+    description: V3 Detailed User record.
+    type: object
+    properties:
+      userAttributes:
+        $ref: '#/definitions/V2UserAttributes'
+      userSystemInfo:
+        $ref: '#/definitions/UserSystemInfo'
+      features:
+        $ref: '#/definitions/FeatureList'
+      roles:
+        $ref: '#/definitions/StringList'
+      avatar:
+        $ref: '#/definitions/Avatar'
+  V3UserDetailList:
+    type: array
+    items:
+      $ref: '#/definitions/V3UserDetail'
   UserSystemInfo:
     description: User Status Information.
     type: object
