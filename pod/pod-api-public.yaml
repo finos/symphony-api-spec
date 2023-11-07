@@ -3800,6 +3800,79 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/user/manifest/own':
+    post:
+      summary: Update own service account manifest
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: manifest
+          description: Service Account Manifest to put in user account
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ServiceAccountManifest'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: Get own service account manifest
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ServiceAccountManifest'
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
   '/v1/admin/user/{uid}/status':
     get:
       summary: Get the status, active or inactive, for a particular user
@@ -7473,4 +7546,12 @@ definitions:
       active:
         type: boolean
         description: If false, no messages can be sent in this stream, and membership is locked.
-
+  ServiceAccountManifest:
+    type: object
+    properties:
+      manifest:
+        type: string
+        maxLength: 6144
+        description: Manifest containing commands supported by the service account. Must be valid JSON.
+    required:
+      - manifest
