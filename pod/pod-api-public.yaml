@@ -6801,6 +6801,11 @@ definitions:
         type: boolean
         description: |
           File extension allowed for external scope
+      scope_xpod:
+        type: boolean
+        description: |
+          File extension allowed to be received from another POD
+        x-since: 24.2
       source:
         type: string
         description: |
