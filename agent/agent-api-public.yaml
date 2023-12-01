@@ -3697,25 +3697,30 @@ paths:
     post:
       tags:
         - Datafeed
-      summary: Read Real Time Events from an event stream (aka datafeed)
+      summary: Read Real Time Events from an event stream (aka datahose) Add-on to Symphony Services
       description: |
-        _Available on Agent 22.5.1 and above.This endpoint provides
+        _Available on Agent 22.5.1 and above. This endpoint provides
         messages and events from all conversations that the user is in or events
         from the whole pod depending on the "type" field value.
         When "type":"fanout" is provided in the body, then only events from streams 
-        the accountbelongs to are returned. Otherwise, if "type": "datahose" is provided
+        the account belongs to are returned. Otherwise, if "type": "datahose" is provided
         in the body, then events returned are not limited to the streams user
         belongs to. In this case, at least one event type must be provided in the
         "filters" field. In case you are using a datahose feed and retrieving
         SOCIALMESSAGE events, ceservice account must be properly configured in
-        the Agent.The types of events returned can be found in the Real Time
+        the Agent. The types of events returned can be found in the Real Time
         Events list (see definition on top of the file). The ackId sent as parameter
         can be empty for the first call. In the response an ackId will be sent back
         and it can be used for the next call: in this way you acknowledge that
         you have received the events that came with that ackId.
         If you have several instances of the same bot, they must share the same feed so 
         that events are spread across all bot instances. To do so, you must: share the same 
-        service account provide the same "tag" and same "filters" values
+        service account provide the same "tag" and same "filters" values.
+        The datahose is available as an add-on to Symphony Services, and is subject to
+        additional charges. Prior to using the Datahose in your Symphony environment(s),
+        you will need to enter into a specific contract. Please reach out to
+        sales@symphony.com to discuss the offering, its pricing or for any further
+        information.
       operationId: readEvents
       parameters:
         - name: sessionToken
