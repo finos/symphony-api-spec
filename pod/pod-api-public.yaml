@@ -74,7 +74,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -169,7 +169,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -230,7 +230,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -324,7 +324,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -390,7 +390,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -464,7 +464,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -541,7 +541,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -624,7 +624,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -732,7 +732,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -804,7 +804,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -820,7 +820,7 @@ paths:
               code: 403
               message: The user lacks the required entitlement to perform this operation
         '404':
-          description: 'Not Found: Connection cannot be found.'
+          description: 'Not Found: User cannot be found.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -876,7 +876,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -951,7 +951,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1018,7 +1018,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1089,7 +1089,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1174,7 +1174,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1244,7 +1244,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1315,7 +1315,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1376,7 +1376,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1442,7 +1442,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1504,7 +1504,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1589,7 +1589,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1716,7 +1716,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1795,7 +1795,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1872,7 +1872,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -1959,7 +1959,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2033,7 +2033,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2099,7 +2099,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2165,7 +2165,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2231,7 +2231,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2299,7 +2299,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2349,7 +2349,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2427,7 +2427,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2557,7 +2557,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2619,7 +2619,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2682,7 +2682,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2745,7 +2745,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2813,7 +2813,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2907,7 +2907,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -2977,7 +2977,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3097,7 +3097,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3178,7 +3178,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3275,7 +3275,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3344,7 +3344,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3449,7 +3449,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3508,7 +3508,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3581,7 +3581,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3648,7 +3648,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3718,7 +3718,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3778,7 +3778,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3848,7 +3848,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3921,7 +3921,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -3996,7 +3996,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4063,7 +4063,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4136,7 +4136,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4193,7 +4193,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4263,7 +4263,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4324,7 +4324,7 @@ paths:
                 code: 400
                 message: // Client error, see response body for further details.
           '401':
-            description: 'Unauthorized: Session tokens invalid.'
+            description: 'Unauthorized: Invalid session token.'
             schema:
               $ref: '#/definitions/Error'
             examples:
@@ -4397,7 +4397,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4459,7 +4459,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4521,7 +4521,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4632,7 +4632,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4743,7 +4743,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4811,7 +4811,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4879,7 +4879,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -4965,7 +4965,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5047,7 +5047,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5129,7 +5129,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5194,7 +5194,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5262,7 +5262,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5333,7 +5333,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5395,7 +5395,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5463,7 +5463,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5525,7 +5525,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5593,7 +5593,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5666,7 +5666,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5734,7 +5734,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5802,7 +5802,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5870,7 +5870,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -5952,7 +5952,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6032,7 +6032,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6088,7 +6088,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6137,7 +6137,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6199,7 +6199,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6266,7 +6266,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6404,7 +6404,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6511,7 +6511,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6568,7 +6568,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6620,7 +6620,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6687,7 +6687,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6748,7 +6748,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6803,7 +6803,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6873,7 +6873,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -6969,7 +6969,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7058,7 +7058,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7144,7 +7144,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7205,7 +7205,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7285,7 +7285,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7341,7 +7341,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7450,7 +7450,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7550,7 +7550,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7645,7 +7645,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7701,7 +7701,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -7962,7 +7962,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -8044,7 +8044,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
@@ -8111,7 +8111,7 @@ paths:
               code: 400
               message: // Client error, see response body for further details.
         '401':
-          description: 'Unauthorized: Session tokens invalid.'
+          description: 'Unauthorized: Invalid session token.'
           schema:
             $ref: '#/definitions/Error'
           examples:
