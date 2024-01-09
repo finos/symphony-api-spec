@@ -745,13 +745,10 @@ paths:
         If the message contains explicit references to entity data (in "data-entity-id" element attributes),
         this parameter is required.
 
-        If the message is in MessageML and fails schema validation
-        a client error results
-
-        If the message is updated then 200 is returned.
-
         Regarding authentication, you must either use the sessionToken which was created for delegated app access
         or both the sessionToken and keyManagerToken together.
+
+        Starting with SBE v24.1, attachments are supported.
       parameters:
         - name: sid
           in: path
@@ -761,7 +758,7 @@ paths:
             type: string
         - name: mid
           in: path
-          description: Parent message ID
+          description: ID of the message to be updated
           required: true
           schema:
             type: string
