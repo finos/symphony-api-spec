@@ -6057,7 +6057,7 @@ paths:
               message: // Server error, see response body for further details.
   '/v1/user/manifest/own':
     post:
-      summary: Update own service account manifest
+      summary: Update own service account manifest.
       produces:
         - application/json
       parameters:
@@ -6067,7 +6067,7 @@ paths:
           required: true
           type: string
         - name: manifest
-          description: Service Account Manifest to put in user account
+          description: Service Account Manifest to put in user account.
           in: body
           required: true
           schema:
