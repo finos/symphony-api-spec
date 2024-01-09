@@ -791,6 +791,14 @@ paths:
                   type: string
                   description: |
                     Optional message version in the format "major.minor". If empty, defaults to the latest supported version.
+                attachment:
+                  type: string
+                  description: Optional file attachment.
+                  format: binary
+                preview:
+                  type: string
+                  description: Optional attachment preview.
+                  format: binary
                 silent:
                   type: string
                   description: |
