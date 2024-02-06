@@ -4472,6 +4472,15 @@ components:
           type: boolean
         crossPod:
           type: boolean
+        recipientTenantIds:
+          type: array
+          description: |
+            List of tenant identifiers (aka pod identifiers) involved in the conversation. It contains more than one
+            item if the conversation is external. Field is only present for real time messaging.
+          items:
+            type: integer
+            format: int32
+          x-since: 24.2
     V4RoomProperties:
       type: object
       properties:
