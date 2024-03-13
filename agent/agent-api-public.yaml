@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: '22.9.1'
+  version: 24.3.2
 servers:
   - url: /
 paths:
@@ -3701,26 +3701,30 @@ paths:
   /v5/events/read:
     post:
       tags:
-        - Datafeed
-      summary: Read Real Time Events from an event stream (aka datafeed)
+        - Datahose
+      summary: Creates and Reads a real time feed of messages and events of your pod (Datahose)
       description: |
-        _Available on Agent 22.5.1 and above.This endpoint provides
-        messages and events from all conversations that the user is in or events
-        from the whole pod depending on the "type" field value.
-        When "type":"fanout" is provided in the body, then only events from streams 
-        the accountbelongs to are returned. Otherwise, if "type": "datahose" is provided
-        in the body, then events returned are not limited to the streams user
-        belongs to. In this case, at least one event type must be provided in the
-        "filters" field. In case you are using a datahose feed and retrieving
-        SOCIALMESSAGE events, ceservice account must be properly configured in
-        the Agent.The types of events returned can be found in the Real Time
-        Events list (see definition on top of the file). The ackId sent as parameter
-        can be empty for the first call. In the response an ackId will be sent back
+        _Available on Agent 22.5.1 and above._
+        
+        This API provides a real time feed of all the messages and events in the pod, 
+        even from conversations where the calling service user is not a member. The types of events surfaced 
+        can be found in the Real Time Events list.
+        In case you retrieving SOCIALMESSAGE events, the credentials of the ceservice 
+        account must be properly configured in the Agent.
+        
+        The types of events returned can be found in the Real Time
+        Events list (see definition on top of the file). 
+        
+        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back
         and it can be used for the next call: in this way you acknowledge that
         you have received the events that came with that ackId.
+        
         If you have several instances of the same bot, they must share the same feed so 
         that events are spread across all bot instances. To do so, you must: share the same 
-        service account provide the same "tag" and same "filters" values
+        service account provide the same "tag" and same "filters" values.
+        
+        The Datahose API is an add-on to the Symphony Services, and is subject to additional charges. 
+        Prior to using Datahose in your Symphony environment(s), you will need to enter into a specific contract.
       operationId: readEvents
       parameters:
         - name: sessionToken
@@ -3736,11 +3740,15 @@ paths:
           schema:
             type: string
       requestBody:
-        description: body containing all information of events to be fetched
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/V5EventsReadBody'
+            example:
+              type: "datahose"
+              tag: "mybotusername"
+              eventTypes: ["MESSAGE_SENT"]
+              updatePresence: false
         required: true
       responses:
         200:
@@ -3783,6 +3791,16 @@ components:
           type: integer
           format: int32
         message:
+          type: string
+    IngestionError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        ingestionStatus:
           type: string
     V2Error:
       required:
@@ -4749,9 +4767,6 @@ components:
               description: Timestamp when the signal was created, in milliseconds since
                 Jan 1 1970
               format: int64
-            companyWide:
-              type: boolean
-              description: Whether the signal is a push signal
     SignalList:
       type: array
       items:
@@ -4943,6 +4958,7 @@ components:
     V1DLPPolicyRequest:
       required:
         - contentTypes
+        - dictionaryIds
         - name
         - scopes
         - type
@@ -5807,7 +5823,7 @@ components:
           deprecated: true
         type:
           type: string
-          description: type of the feed. Known values are "fanout" and "datahose"
+          description: The type of feed. Only allowed value is "datahose".
       description: Container for the feed ID
       example:
         id: 371f465fb97b5d1027d20a5e7085863a_f
@@ -5855,7 +5871,7 @@ components:
       properties:
         type:
           type: string
-          description: Type of the feed. Allowed values are "fanout" and "datahose"
+          description: The type of feed. Only allowed value is "datahose".
         tag:
           maxLength: 80
           minLength: 1
@@ -5864,7 +5880,7 @@ components:
         eventTypes:
           type: array
           description: |
-            At least one value is required if the type of feed is "datahose". Values must be a valid Real-Time Event type, i.e. one of:
+            At least one value is required. Values must be valid Real-Time Events, i.e. one of:
             * MESSAGESENT
             * MESSAGESUPPRESSED
             * SYMPHONYELEMENTSACTION
