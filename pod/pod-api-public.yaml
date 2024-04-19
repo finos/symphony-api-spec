@@ -16,7 +16,7 @@ info:
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
 servers:
-  - url: /
+  - url: 'YOUR-POD-SUBDOMAIN.symphony.com'
 host: 'yourpodURL.symphony.com'
 basePath: '/pod'
 paths:
