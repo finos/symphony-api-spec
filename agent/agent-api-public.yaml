@@ -26,8 +26,7 @@ info:
     all events were added in 1.46.
   version: 24.3.2
 servers:
-  - url: 'YOUR-POD-SUBDOMAIN.symphony.com'
-basePath: '/agent'
+  - url: 'YOUR-POD-SUBDOMAIN.symphony.com/agent'
 paths:
   /v3/health:
     get:
