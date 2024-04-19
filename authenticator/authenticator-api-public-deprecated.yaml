@@ -18,9 +18,7 @@ info:
     and pass both of the session tokens returned as headers in all
     subsequent requests to the Symphony API.
 servers:
-  - url: 'yourkeymanagerURL.symphony.com'
-host: 'yourkeymanagerURL.symphony.com'
-basePath: '/keymanager'
+  - url: 'yourkeymanagerURL.symphony.com/keymanager'
 paths:
   '/v1/authenticate':
     post:
