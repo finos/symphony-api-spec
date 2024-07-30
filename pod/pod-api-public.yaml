@@ -15,8 +15,8 @@ info:
     system even if ome subset of the request would have succeeded.
     - If this contract cannot be met for any reason then this is an error
     and the response code will be 50X.
-servers:
-  - url: 'yourpodURL.symphony.com/pod'
+host: 'yourpodURL.symphony.com'
+basePath: '/pod'
 paths:
   '/v1/companycert/list':
     get:
