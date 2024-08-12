@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 24.3.2
+  version: 24.8.1
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
@@ -341,6 +341,12 @@ paths:
             Messages sort direction : ASC or DESC (default to DESC)
           schema:
             type: string
+        - name: tier
+          in: query
+          description: |
+            Target search tier : hot, warm or all (default to hot)
+          schema:
+            type: string
         - name: sessionToken
           in: header
           description: Session authentication token.
@@ -414,6 +420,12 @@ paths:
           in: query
           description: |
             Messages sort direction : ASC or DESC (default to DESC)
+          schema:
+            type: string
+        - name: tier
+          in: query
+          description: |
+            Target search tier : hot, warm or all (default to hot)
           schema:
             type: string
         - name: sessionToken
@@ -4655,6 +4667,25 @@ components:
           description: List of affected users by the action (i.e. owners of the room)
           items:
             $ref: '#/components/schemas/V4User'
+    V4GenericSystemEvent:
+      type: object
+      properties:
+        stream:
+          $ref: '#/components/schemas/V4Stream'
+        eventTimestamp:
+          type: integer
+          description: The timestamp when the event was emitted
+          format: int64
+        sourceSystem:
+          type: string
+          description: The name of the system that emitted the event
+        eventSubtype:
+          type: string
+          description: The identifier of the type of generic event
+        parameters:
+          type: object
+          description: Free-form properties that provide context about the event
+          additionalProperties: true
     V4Payload:
       type: object
       properties:
@@ -4690,6 +4721,8 @@ components:
           $ref: '#/components/schemas/V4SymphonyElementsAction'
         userRequestedToJoinRoom:
           $ref: '#/components/schemas/V4UserRequestedToJoinRoom'
+        genericSystemEvent:
+          $ref: '#/components/schemas/V4GenericSystemEvent'
     V4Event:
       type: object
       properties:
@@ -4723,6 +4756,7 @@ components:
               - MESSAGESUPPRESSED
               - SYMPHONYELEMENTSACTION
               - USERREQUESTEDTOJOINROOM
+              - GENERICSYSTEMEVENT
         diagnostic:
           type: string
           description: |
