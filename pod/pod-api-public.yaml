@@ -2578,6 +2578,133 @@ paths:
             application/json:
               code: 500
               message: // Server error, see response body for further details.
+  '/v1/users/{uid}/sessions/{sid}/logout':
+    post:
+      summary: |
+        Terminates the session having the identifier {sid} for the user having the identifier {uid}
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: the userid of the owner of the session to be terminated.
+          in: path
+          required: true
+          type: string
+        - name: sid
+          description: the identifier of the session to terminate
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/users/{uid}/sessions/logout':
+    post:
+      summary: |
+        Terminates all the sessions of the user {uid}
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: the userid of the owner of the sessions to be terminated.
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+  '/v1/users/{uid}/sessions':
+    get:
+      summary: |
+        List all user active sessions active.
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          description: The user id of the initiator of the session.
+          in: path
+          required: true
+          type: string
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V1UserSessions'
+        '204':
+          description: 'No user found.'
+        '400':
+          description: 'Client error.'
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'            
   '/v1/user/presence/register':
     post:
       summary: Register interest in a user's presence status
