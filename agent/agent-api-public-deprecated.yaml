@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 24.8.1
+  version: 24.12.1
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
@@ -93,7 +93,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -255,7 +254,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: id
@@ -356,7 +354,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -437,7 +434,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -516,7 +512,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -606,7 +601,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -928,7 +922,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -1523,7 +1516,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: page
@@ -1590,7 +1582,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -1648,7 +1639,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -1714,7 +1704,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -1778,7 +1767,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -1834,7 +1822,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -1889,7 +1876,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -1945,7 +1931,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: page
@@ -2008,7 +1993,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -2065,7 +2049,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: dictId
@@ -2131,7 +2114,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: dictId
@@ -2195,7 +2177,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: dictId
@@ -2251,7 +2232,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: dictId
@@ -2315,7 +2295,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: dictId
@@ -2410,7 +2389,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -2491,7 +2469,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -2572,7 +2549,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -2625,7 +2601,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: page
@@ -2691,7 +2666,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -2749,7 +2723,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -2816,7 +2789,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -2881,7 +2853,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -2937,7 +2908,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -2992,7 +2962,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: policyId
@@ -3076,7 +3045,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3158,7 +3126,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3240,7 +3207,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3305,7 +3271,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3364,7 +3329,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: startTimestamp
@@ -3480,7 +3444,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
         - name: tag
@@ -3541,7 +3504,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -3606,7 +3568,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3668,7 +3629,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -3748,7 +3708,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -3817,7 +3776,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -3897,7 +3855,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4093,7 +4050,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4164,7 +4120,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4275,7 +4230,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4366,7 +4320,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -4435,7 +4388,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -4510,7 +4462,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -4707,7 +4658,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4804,7 +4754,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       responses:
@@ -4882,7 +4831,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -4966,7 +4914,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -5123,7 +5070,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -5185,7 +5131,6 @@ paths:
         - name: keyManagerToken
           in: header
           description: Key Manager authentication token.
-          required: true
           schema:
             type: string
       requestBody:
@@ -6832,6 +6777,9 @@ components:
     V1DLPSignal:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique ID of the Signal
         name:
           type: string
           description: Name of the Signal
@@ -7432,9 +7380,9 @@ components:
       enum:
         - UP
         - DOWN
-  #
-  # Deprecated definitions
-  #
+    #
+    # Deprecated definitions
+    #
     MessageSubmission:
       type: object
       properties:
