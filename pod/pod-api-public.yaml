@@ -9938,6 +9938,51 @@ definitions:
         $ref: '#/definitions/IntegerList'
       avatar:
         $ref: '#/definitions/Avatar'
+  V1UserSessions:
+    description: V1 Detailed Sessions Record.
+    type: object
+    properties:
+      sessions:
+        type: array
+        items:
+          $ref: '#/definitions/V1Session'
+  V1Session:
+    description: V1 Detailed Session record.
+    type: object
+    properties:
+      sessionId:
+        type: string
+        description: The id of the user session
+      clientIp:
+        type: string
+        description: The ip address of the session initiator
+      userId:
+        type: integer
+        format: int64
+        description: The user id of the session initiator
+      userAgent:
+        type: string
+        description: The user agent of the session
+      browser:
+        type: string
+        description: The browser section of the user agent
+      os:
+        type: string
+        description: The os section of the user agent
+      device:
+        type: string
+        description: The device section of the user agent
+      deviceHash:
+        type: string
+        description: A hash uniquely identifying the device of the requester
+      creationTime:
+        type: integer
+        format: int64
+        description: The timestamp of the creation time the user session
+      expirationDelay:
+        type: integer
+        format: int64
+        description: The timestamp of the expiry time of the user session
   Password:
     description: Password. Stored as derived password in both the Pod and the Key Manager using PBKDF2 function. Number of iterations should be 10000 and desired length 256 bits.
     type: object
