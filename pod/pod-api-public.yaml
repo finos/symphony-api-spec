@@ -2581,17 +2581,17 @@ paths:
   '/v1/users/{uid}/sessions/{sid}/logout':
     post:
       summary: |
-        Terminates the session having the identifier {sid} for the user having the identifier {uid}
+        Ends the session identified by {sid} for the user with the identifier {uid}.
       produces:
         - application/json
       parameters:
         - name: uid
-          description: the userid of the owner of the session to be terminated.
+          description: The identifier of the user who owns the session to be terminated.
           in: path
           required: true
           type: string
         - name: sid
-          description: the identifier of the session to terminate
+          description: The identifier of the session to be terminated.
           in: path
           required: true
           type: string
@@ -2626,12 +2626,12 @@ paths:
   '/v1/users/{uid}/sessions/logout':
     post:
       summary: |
-        Terminates all the sessions of the user {uid}
+        Ends all sessions for the user identified by {uid}.
       produces:
         - application/json
       parameters:
         - name: uid
-          description: the userid of the owner of the sessions to be terminated.
+          description: The identifier of the user whose sessions are to be terminated.
           in: path
           required: true
           type: string
@@ -2666,12 +2666,12 @@ paths:
   '/v1/users/{uid}/sessions':
     get:
       summary: |
-        List all user active sessions active.
+        Lists all sessions for the user identified by {uid}.
       produces:
         - application/json
       parameters:
         - name: uid
-          description: The user id of the initiator of the session.
+          description: The identifier of the user whose sessions are to be listed.
           in: path
           required: true
           type: string
