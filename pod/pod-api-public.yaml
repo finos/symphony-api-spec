@@ -1644,7 +1644,7 @@ paths:
           type: integer
           required: false
         - name: includeNonDiscoverable
-          description: Whether the non discoverable rooms should be returned. false by default.
+          description: Whether the non discoverable rooms should be returned. false by default. Parameter introduced in sbe-25.5.0
           in: query
           type: boolean
           default: false
