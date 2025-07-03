@@ -6048,6 +6048,8 @@ components:
         formValues:
           type: object
           description: The values (in JSON format) answered on the Form
+          additionalProperties:
+            type: string
     V4UserRequestedToJoinRoom:
       type: object
       properties:

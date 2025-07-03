@@ -5279,6 +5279,8 @@ definitions:
       formValues:
         description: "The values (in JSON format) answered on the Form"
         type: object
+        additionalProperties:
+            type: string
   V4UserRequestedToJoinRoom:
     type: object
     properties:
