@@ -2548,10 +2548,6 @@ paths:
                   id: 654321
         '204':
           description: 'No user found.'
-          examples:
-            application/json:
-              code: 204
-              message: // No user found. See response body for further details.
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -3215,10 +3211,6 @@ paths:
                       url: ../avatars/static/50/default.png
         '204':
           description: 'No user found.'
-          examples:
-            application/json:
-              code: 204
-              message: // No user found. See response body for further details.
         '400':
           description: 'Client error, see response body for further details.'
           schema:
