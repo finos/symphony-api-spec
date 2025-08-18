@@ -1649,19 +1649,6 @@ paths:
           type: boolean
           default: false
           required: false
-        - name: searchFields
-          in: body
-          description: The fields on which to search
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - "name"
-                - "description"
-                - "keywords.key"
-                - "keywords.value"
         - name: query
           description: The search query object.
           in: body
@@ -8786,6 +8773,16 @@ definitions:
           type: string
         example:
           - industry
+      searchFields:
+        description: The room fields on which to search
+        type: array
+        items:
+          type: string
+        example:
+          - name
+          - description
+          - keywords_key
+          - keywords_value
       active:
         description: Restrict the search to active/inactive rooms. If unspecified, search all rooms.
         type: boolean
