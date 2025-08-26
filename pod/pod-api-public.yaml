@@ -8774,7 +8774,7 @@ definitions:
         example:
           - industry
       searchFields:
-        description: The room fields on which to search
+        description: The room fields on which to search. Parameter introduced in sbe-25.10.0
         type: array
         items:
           type: string
