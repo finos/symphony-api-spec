@@ -8773,6 +8773,16 @@ definitions:
           type: string
         example:
           - industry
+      searchFields:
+        description: The room fields on which to search. Parameter introduced in sbe-25.10.0
+        type: array
+        items:
+          type: string
+        example:
+          - name
+          - description
+          - keywords_key
+          - keywords_value
       active:
         description: Restrict the search to active/inactive rooms. If unspecified, search all rooms.
         type: boolean
