@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 24.12.1
+  version: 25.8.1
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
@@ -45,6 +45,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/V3Health'
+              example: {
+                "status": "UP"
+              }
   /v3/health/extended:
     get:
       tags:
@@ -65,12 +68,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/V3Health'
+              example: {
+                "services": {
+                  "pod": {
+                    "status": "UP",
+                    "version": "24.1.1-411-36efd5b"
+                  },
+                  "key_manager": {
+                    "status": "UP",
+                    "version": "24.1.1-411-36efd5b"
+                  },
+                  "datafeed": {
+                    "status": "UP",
+                    "version": "2.11.6"
+                  }
+                },
+                "status": "UP",
+                "users": {
+                  "agentservice": {
+                    "authType": "RSA",
+                    "status": "UP"
+                  },
+                  "ceservice": {
+                    "authType": "RSA",
+                    "status": "UP"
+                  }
+                },
+                "version": "24.3.2-778"
+              }
         503:
           description: Agent is unhealthy, some components are `DOWN`.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/V3Health'
+              example: {
+                "services": {
+                  "pod": {
+                    "status": "UP",
+                    "version": "24.1.1-411-36efd5b"
+                  },
+                  "key_manager": {
+                    "status": "DOWN",
+                    "version": "24.1.1-411-36efd5b"
+                  },
+                  "datafeed": {
+                    "status": "UP",
+                    "version": "2.11.6"
+                  }
+                },
+                "status": "UP",
+                "users": {
+                  "agentservice": {
+                    "authType": "RSA",
+                    "status": "UP"
+                  },
+                  "ceservice": {
+                    "authType": "RSA",
+                    "status": "UP"
+                  }
+                },
+                "version": "24.3.2-778"
+              }
   /v4/message/import:
     post:
       tags:
@@ -3430,9 +3489,7 @@ paths:
 
         The datafeed provides messages and events from all conversations that the user
         is in. The types of events surfaced in the datafeed can be found in the [Real Time Events](./docs/real-time-events.md) list.
-
-        Returns the list of the datafeeds for the user.
-        Any datafeed ID of the list can then be used as input to the Read Messages/Events Stream v4 endpoint.
+        In most cases, only one active datafeed per user is required at a time.
       operationId: listDatafeed
       parameters:
         - name: sessionToken
@@ -3599,17 +3656,17 @@ paths:
     post:
       tags:
         - Datafeed
-      summary: Read the specified real time message / event stream ("datafeed").
+      summary: Read messages and events from the real time feed identified by its {datafeedId}.
       description: |
-        _Available on Agent 2.57.0 and above._
+        Available on Agent 2.57.0 and above.
 
         The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        is in, in real time. The types of events surfaced in the datafeed can be found in the Real Time Events list.
         (see definition on top of the file)
 
         Read the specified datafeed.
 
-        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back and it can be used for
+        The ackId sent as parameter must be null for the first call. In the response an ackId will be sent back and it must be used for
         the next call: in this way you acknowledge that you have received the events that came with that ackId; datafeed will remove the events
         associated with that ackId from your queue
       operationId: readDatafeed
@@ -3632,7 +3689,6 @@ paths:
           schema:
             type: string
       requestBody:
-        description: ackId received from last POST Base64 encoded.
         content:
           application/json:
             schema:
@@ -3646,7 +3702,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/V5EventList'
         400:
-          description: Bad request.
+          description: "Do not retry: the feed no longer exists, please create a new feed. The datafeed has a 30 minutes ttl. Alternatively, the format of the provided ackId may be incorrect."
           content:
             application/json:
               schema:
@@ -3658,13 +3714,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/V2Error'
         403:
-          description: Forbidden.
+          description: Too many feeds created. This happens when you reached 20 active feeds. Usually, only one active feed is required per service account.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/V2Error'
         500:
-          description: Internal server error.
+          description: Internal server error. Please retry reading the datafeed with an exponential backoff.
           content:
             application/json:
               schema:
@@ -3676,10 +3732,10 @@ paths:
         - Datahose
       summary: Creates and Reads a real time feed of messages and events of your pod (Datahose)
       description: |
-        _Available on Agent 22.5.1 and above._
+        Available on Agent 22.5.1 and above.
         
         This API provides a real time feed of all the messages and events in the pod, 
-        even from conversations where the calling service user is not a member. The types of events surfaced 
+        even from conversations where the calling service account is not a member. The types of events surfaced 
         can be found in the Real Time Events list.
         In case you retrieving SOCIALMESSAGE events, the credentials of the ceservice 
         account must be properly configured in the Agent.
@@ -3687,7 +3743,7 @@ paths:
         The types of events returned can be found in the Real Time
         Events list (see definition on top of the file). 
         
-        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back
+        The ackId sent as parameter must be empty for the first call. In the response an ackId will be sent back
         and it can be used for the next call: in this way you acknowledge that
         you have received the events that came with that ackId.
         
@@ -6048,8 +6104,6 @@ components:
         formValues:
           type: object
           description: The values (in JSON format) answered on the Form
-          additionalProperties:
-            type: string
     V4UserRequestedToJoinRoom:
       type: object
       properties:
@@ -7272,7 +7326,7 @@ components:
           type: string
           description: |
             A unique id for events that can be deleted from a client's.
-            Empty for the first read. If set to null or missing, it will be considered empty feed.
+            Parameter must be omitted or set to empty string for the first read. For successive reads, must be set to the ackId received in the last Datafeed Read.
         updatePresence:
           type: boolean
           description: Set to false to avoid updating the user's presence when reading events. Default is true.
@@ -7330,11 +7384,25 @@ components:
           items:
             type: string
           x-since: 22.7
+        scopes:
+          type: array
+          description: |
+            Allows to filter events by scope
+            Scopes supported:
+            * INTERNAL: Only events related to chats that are Internal are received. Shared Wall posts are included
+            * EXTERNAL: Only events related to chats that are External are received. Connection Requested/Accepted events are included
+            * FEDERATED: Only events related to chats that are Federated are received. Events that are not related to streams (Shared Wall Post, Connection Requested/Accepted) are not included.
+            If more than one scope is set, then events included in the union of scopes will be received.
+            If not set, then all events will be received.
+          items:
+            type: string
+          x-since: 25.8
         ackId:
           type: string
           description: |
-            Should be empty for the first call, acknowledges that the current
-            batch of messages have been successfully received by the client.
+            Must be omitted or set as an empty string for the first call. 
+            In successive calls, it must be set to the last read ackId. 
+            It acknowledges that the current batch of messages have been successfully received by the client.
         updatePresence:
           type: boolean
           description: |
