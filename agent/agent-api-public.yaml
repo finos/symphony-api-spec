@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 25.8.1
+  version: ${project.version}
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
@@ -3599,7 +3599,7 @@ paths:
     delete:
       tags:
         - Datafeed
-      summary: Delete the specified real time message / event stream ("datafeed").
+      summary: Delete the specified datafeed.
       description: |
         _Available on Agent 2.57.0 and above._
 
@@ -3656,17 +3656,17 @@ paths:
     post:
       tags:
         - Datafeed
-      summary: Read the specified real time message / event stream ("datafeed").
+      summary: Read messages and events from the real time feed identified by its {datafeedId}.
       description: |
-        _Available on Agent 2.57.0 and above._
+        Available on Agent 2.57.0 and above.
 
         The datafeed provides messages and events from all conversations that the user
-        is in. The types of events surfaced in the datafeed can be found in the Real Time Events list.
+        is in, in real time. The types of events surfaced in the datafeed can be found in the Real Time Events list.
         (see definition on top of the file)
 
         Read the specified datafeed.
 
-        The ackId sent as parameter can be empty for the first call. In the response an ackId will be sent back and it can be used for
+        The ackId sent as parameter must be null for the first call. In the response an ackId will be sent back and it must be used for
         the next call: in this way you acknowledge that you have received the events that came with that ackId; datafeed will remove the events
         associated with that ackId from your queue
       operationId: readDatafeed
@@ -3732,7 +3732,7 @@ paths:
         - Datahose
       summary: Creates and Reads a real time feed of messages and events of your pod (Datahose)
       description: |
-        _Available on Agent 22.5.1 and above._
+        Available on Agent 22.5.1 and above.
         
         This API provides a real time feed of all the messages and events in the pod, 
         even from conversations where the calling service account is not a member. The types of events surfaced 
@@ -3773,7 +3773,7 @@ paths:
               $ref: '#/components/schemas/V5EventsReadBody'
             example:
               type: "datahose"
-              tag: "mybotusername"
+              tag: "mybotusername11"
               eventTypes: ["MESSAGE_SENT"]
               updatePresence: false
         required: true
@@ -5964,7 +5964,7 @@ components:
             If not set, then all events will be received.
           items:
             type: string
-          x-since: 25.8
+          x-since: 25.7 #TODO update this is this slips to 25.8 before merging
         ackId:
           type: string
           description: |
