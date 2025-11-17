@@ -1,9 +1,11 @@
 {
 	"info": {
-		"_postman_id": "b0d4d0d6-5cf3-424b-8546-59fd8c8271b7",
+		"_postman_id": "20684533-2732-4f9b-9aac-c30e58175bd6",
 		"name": "Symphony REST APIs",
 		"description": "[Full documentation on the developer's website](https://developers.symphony.com/restapi/reference)",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46553950",
+		"_collection_link": "https://aiden-9924293.postman.co/workspace/Aiden's-Workspace~3a9f6ca3-9fb0-4bed-8b18-be1ce9e6789b/collection/46553950-20684533-2732-4f9b-9aac-c30e58175bd6?action=share&source=collection_link&creator=46553950"
 	},
 	"item": [
 		{
@@ -82,7 +84,6 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
 								"value": "application/json",
 								"type": "text"
 							}
@@ -175,9 +176,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -268,9 +268,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -320,9 +319,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "sessiontoken",
@@ -381,9 +379,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -432,9 +429,8 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -601,14 +597,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"name": "Content-Type",
 								"value": "application/json",
 								"type": "text"
 							},
 							{
 								"key": "sessionToken",
-								"type": "text",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"type": "text"
 							},
 							{
 								"key": "keyManagerToken",
@@ -9540,9 +9535,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -9590,9 +9585,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -9651,9 +9646,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -9712,9 +9707,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -9773,9 +9768,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -9834,9 +9829,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -9897,9 +9892,9 @@
 						"method": "GET",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -9947,9 +9942,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -10008,9 +10003,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -10069,9 +10064,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -10130,9 +10125,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -10191,9 +10186,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -13863,22 +13858,22 @@
 							],
 							"request": {
 								"method": "POST",
-                                "header": [
-                                  {
-                                    "key": "sessionToken",
-                                    "value": "{{sessionToken}}",
-                                    "description": "Session authentication token."
-                                  },
-                                  {
-                                    "key": "keyManagerToken",
-                                    "value": "{{keyManToken}}",
-                                    "description": "Key Manager authentication token."
-                                  },
-                                  {
-                                    "key": "Accept",
-                                    "value": "application/json"
-                                  }
-                                ],
+								"header": [
+									{
+										"key": "sessionToken",
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
+									},
+									{
+										"key": "keyManagerToken",
+										"value": "{{keyManToken}}",
+										"description": "Key Manager authentication token."
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"type\": \"datahose\",\n    \"tag\": \"{{botName}}\",\n    \"eventTypes\": [\"MESSAGESENT\", \"ROOMUPDATED\"],\n    \"ackId\": \"{{ackId}}\"\n}",
@@ -29485,9 +29480,9 @@
 						"method": "GET",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -29517,9 +29512,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -29560,9 +29555,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -29603,9 +29598,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -29646,9 +29641,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -29689,9 +29684,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -30772,9 +30767,9 @@
 						"method": "GET",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -30804,9 +30799,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -30847,9 +30842,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -30890,9 +30885,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -30933,9 +30928,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -30976,9 +30971,9 @@
 								"method": "GET",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -43961,9 +43956,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -44001,9 +43996,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44052,9 +44047,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44103,9 +44098,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44154,9 +44149,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44205,9 +44200,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44258,9 +44253,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"description": "Session authentication token.",
 								"key": "sessionToken",
-								"value": "{{sessionToken}}"
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token."
 							},
 							{
 								"key": "Accept",
@@ -44298,9 +44293,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44349,9 +44344,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44400,9 +44395,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44451,9 +44446,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -44502,9 +44497,9 @@
 								"method": "POST",
 								"header": [
 									{
-										"description": "Session authentication token.",
 										"key": "sessionToken",
-										"value": "{{sessionToken}}"
+										"value": "{{sessionToken}}",
+										"description": "Session authentication token."
 									},
 									{
 										"key": "Accept",
@@ -45491,6 +45486,328 @@
 							],
 							"cookie": [],
 							"body": "{\r\n  \"code\": 94,\r\n  \"message\": \"message36\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "List users application visibility and entitlements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "sessionToken",
+								"value": "{{sessionToken}}",
+								"description": "Session authentication token.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{podUrl}}/users/v5/app/:groupAppId?installed=true",
+							"protocol": "https",
+							"host": [
+								"{{podUrl}}"
+							],
+							"path": [
+								"users",
+								"v5",
+								"app",
+								":groupAppId"
+							],
+							"query": [
+								{
+									"key": "installed",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "groupAppId",
+									"value": "string"
+								}
+							]
+						},
+						"description": "Lists users with application, visiblity and subscription entitlements."
+					},
+					"response": [
+						{
+							"name": "Paged List of users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"users\": [\n    {\n      \"userId\": 71811853191697,\n      \"enable\": false,\n      \"listed\": true,\n      \"product\": {\n        \"name\": \"string\",\n        \"type\": \"default\",\n        \"subscribed\": false\n      }\n    },\n    {\n      \"userId\": 71811853191697,\n      \"enable\": true,\n      \"listed\": false,\n      \"product\": {\n        \"name\": \"string\",\n        \"type\": \"default\",\n        \"subscribed\": true\n      }\n    }\n  ],\n  \"page\": {\n    \"size\": 6040,\n    \"number\": 4525,\n    \"totalElements\": 197,\n    \"totalPages\": 2585,\n    \"first\": true,\n    \"last\": true,\n    \"hasNext\": true,\n    \"hasPrevious\": false,\n    \"sort\": [\n      {\n        \"property\": \"string\",\n        \"direction\": \"ASC\"\n      },\n      {\n        \"property\": \"string\",\n        \"direction\": \"DESC\"\n      }\n    ]\n  }\n}"
+						},
+						{
+							"name": "Client error, see response body for further details.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": 505,\n  \"message\": \"Operation not supported\"\n}"
+						},
+						{
+							"name": "Forbidden, Caller lacks necessary entitlement.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": 505,\n  \"message\": \"Operation not supported\"\n}"
+						},
+						{
+							"name": "App not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": 505,\n  \"message\": \"Operation not supported\"\n}"
+						},
+						{
+							"name": "Server error, see response body for further details.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": 505,\n  \"message\": \"Operation not supported\"\n}"
+						},
+						{
+							"name": "Not Implemented.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"v5",
+										"app",
+										":groupAppId"
+									],
+									"query": [
+										{
+											"key": "installed",
+											"value": "false"
+										}
+									],
+									"variable": [
+										{
+											"key": "groupAppId"
+										}
+									]
+								}
+							},
+							"status": "Not Implemented",
+							"code": 501,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": 505,\n  \"message\": \"Operation not supported\"\n}"
 						}
 					]
 				}
