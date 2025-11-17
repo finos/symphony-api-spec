@@ -1,0 +1,201 @@
+openapi: 3.0.3
+info:
+  title: SBE Users API
+  description: |-
+    Users related API
+  version: 5.0.0
+externalDocs:
+  description: Overall Symphony public API
+  url: https://example.on.symphony.com/users/v5
+servers:
+  - url: https://localhost:8443
+tags:
+  - name: App Users
+    description: App users and entitlements API
+paths:
+  /users/v5/app/{groupAppId}:
+    get:
+      tags:
+        - App
+      summary: List users application visibility and entitlements.
+      description: Lists users with application, visiblity and subscription entitlements.
+      operationId: findAppUsers
+      x-spring-paginated: true
+      parameters:
+        - name: groupAppId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+        - name: installed
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Filter users with app installed
+      responses:
+        '200':
+          description: Paged List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUsersResponse'
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: App not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageWithCode'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+components:
+  responses:
+    ClientError:
+      description: Client error, see response body for further details.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+    Forbidden:
+      description: Forbidden, Caller lacks necessary entitlement.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+    NoContent:
+      description: Not content.
+    Ok:
+      description: Ok
+    ServerError:
+      description: Server error, see response body for further details.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+    Unauthorized:
+      description: Unauthorized, Invalid credentials.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+    UserNotFound:
+      description: Not found, user id cannot be located.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+    NotImplemented:
+      description: Not Implemented.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+
+  schemas:
+    UserId:
+      type: integer
+      format: int64
+      minimum: 1
+      example: 71811853191697
+    MessageWithCode:
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 505
+        message:
+          type: string
+          example: "Operation not supported"
+    AppUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppUser'
+        page:
+          $ref: '#/components/schemas/PageMeta'
+
+    AppUser:
+      type: object
+      properties:
+        userId:
+          $ref: '#/components/schemas/UserId'
+        enable:
+          type: boolean
+        listed:
+          type: boolean
+        product:
+          $ref: '#/components/schemas/AppSubscription'
+      required:
+        - userId
+        - visible
+
+    AppSubscription:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: "default"
+        subscribed:
+          type: boolean
+      required:
+        - name
+        - type
+
+    DirectionEnum:
+      type: string
+      enum:
+        - ASC
+        - DESC
+    Sort:
+      type: object
+      properties:
+        property:
+          type: string
+          description: The property to sort by.
+        direction:
+          $ref: '#/components/schemas/DirectionEnum'
+    PageMeta:
+      type: object
+      description: Metadata about the paginated response.
+      properties:
+        size:
+          type: integer
+          description: The number of items in the current page.
+        number:
+          type: integer
+          description: The page number (0-based).
+        totalElements:
+          type: integer
+          format: int64
+          description: The total number of items available.
+        totalPages:
+          type: integer
+          description: The total number of pages available.
+        first:
+          type: boolean
+          description: True if this is the first page.
+        last:
+          type: boolean
+          description: True if this is the last page.
+        hasNext:
+          type: boolean
+          description: True if there is a next page.
+        hasPrevious:
+          type: boolean
+          description: True if there is a previous page.
+        sort:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sort'
