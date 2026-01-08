@@ -725,16 +725,12 @@ components:
       description: |
         The File Management API uses **JWT (JSON Web Tokens)** for authentication.
 
-        ### Obtaining a Token
+        ##### Obtaining a Token
         To retrieve a valid token, you must call the `login/idm/tokens` endpoint.
         * **Requirements:** Use a **Service Account** that has been assigned the **Content Export Reader** role.
         * **Response:** The JWT will be returned in the `access_token` field of the JSON response.
         * **Reference:** For detailed steps on the handshake, see the **OAuth2 Authenticate** documentation.
 
-        ### Using the Token
+        ##### Using the Token
         Once obtained, include the token in the `Authorization` header for all API requests:
         `Authorization: Bearer <access_token>`
-
-        ### Error Codes
-        * `401 Unauthorized`: Token is missing, expired, or invalid.
-        * `403 Forbidden`: Authenticated but lacks the **Content Export Reader** role.
