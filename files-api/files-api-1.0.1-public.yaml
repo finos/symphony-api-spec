@@ -55,11 +55,12 @@ paths:
         - name: scope
           in: query
           description: |
-            Optional field used to get access with specific entitlements, use space separated list to define more than one.
             Use scope 'sym-files' in order get access to the Content Export Files endpoints.
-          required: false
+            This field used to get access with specific entitlements, use space separated list to define more than one.
+          required: true
           schema:
             type: string
+            example: "sym-files"
       responses:
         "200":
           description: OK.
