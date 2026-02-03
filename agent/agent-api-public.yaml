@@ -5887,6 +5887,9 @@ components:
           maxLength: 100
           type: string
           description: A unique identifier to ensure uniqueness of the datafeed.
+        includeInvisible:
+          type: boolean
+          description: Set to true to retrieve invisible rooms related events. Default is false.
     AckId:
       type: object
       properties:
