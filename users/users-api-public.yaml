@@ -13,10 +13,10 @@ tags:
   - name: App Users
     description: App users and entitlements API
 paths:
-  /users/v5/app/{groupAppId}:
+  /v5/users/apps/{groupAppId}:
     get:
       tags:
-        - App
+        - Apps
       summary: List users application visibility and entitlements.
       description: Lists users with application, visiblity and subscription entitlements.
       operationId: findAppUsers

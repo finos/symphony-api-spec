@@ -45506,15 +45506,15 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{podUrl}}/users/v5/app/:groupAppId?installed=true",
+							"raw": "https://{{podUrl}}/v5/users/apps/:groupAppId?installed=true",
 							"protocol": "https",
 							"host": [
 								"{{podUrl}}"
 							],
 							"path": [
-								"users",
 								"v5",
-								"app",
+								"users",
+								"apps",
 								":groupAppId"
 							],
 							"query": [
@@ -45544,14 +45544,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
@@ -45590,14 +45590,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
@@ -45636,14 +45636,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
@@ -45682,14 +45682,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
@@ -45728,14 +45728,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
@@ -45774,14 +45774,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/users/v5/app/:groupAppId?installed=false",
+									"raw": "{{baseUrl}}/v5/users/apps/:groupAppId?installed=false",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"users",
 										"v5",
-										"app",
+										"users",
+										"apps",
 										":groupAppId"
 									],
 									"query": [
