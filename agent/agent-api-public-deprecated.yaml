@@ -640,6 +640,16 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: until
+          in: query
+          description: |
+            Timestamp of last required message.
+
+            This is a long integer value representing milliseconds since
+            Jan 1 1970
+          schema:
+            type: integer
+            format: int64
         - name: skip
           in: query
           description: No. of messages to skip.
