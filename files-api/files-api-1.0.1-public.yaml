@@ -1,0 +1,737 @@
+openapi: 3.0.3
+info:
+  title: File Management API
+  description: |
+    API for managing various types of files, with a focus on Content Export (CE) files.
+
+    ### Authentication
+    To interact with the File Management endpoints, you must provide a JWT in the `Authorization` header.
+    
+    **Steps to authenticate:**
+    1. **Call the Token Endpoint:** Post to `/login/idm/tokens` using a valid `sessionToken` in the header.
+    2. **Required Role:** Your Service Account must have the **Content Export Reader** role.
+    3. **Scope:** Use scope `sym-files` to access Content Export Files endpoints.
+    4. **Extract JWT:** The token is returned in the `access_token` field of the response.
+    5. **Authorize Requests:** Use the format `Authorization: Bearer <access_token>`.
+    
+    For more details, refer to the "OAuth2 Authenticate" section of the Symphony documentation.
+  version: 1.0.1
+
+servers:
+  - url: https://{vanity}.symphony.com
+    description: Symphony provided tenant URL
+    variables:
+      vanity:
+        description: Customer ID assigned by the service provider
+        default: yourpodURL
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Authentication
+    description: Operations related to identity and token management.
+  - name: Files
+    description: Operations related to file management
+
+paths:
+  # --- Authentication ---
+  /login/idm/tokens:
+    post:
+      tags:
+        - Authentication
+      summary: Returns a valid OAuth2 access token from a given session token
+      description: |
+        Used to interact with the File Management endpoints. **Required Role:** Your Service Account must have the **Content Export Reader** role.
+      operationId: getAccessToken
+      security: [] # No token needed to obtain a token
+      parameters:
+        - name: sessionToken
+          in: header
+          description: User session authentication token
+          required: true
+          schema:
+            type: string
+        - name: scope
+          in: query
+          description: |
+            Use scope 'sym-files' in order get access to the Content Export Files endpoints.
+            This field used to get access with specific entitlements, use space separated list to define more than one.
+          required: true
+          schema:
+            type: string
+            example: "sym-files"
+      responses:
+        "200":
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtToken'
+        "401":
+          description: Client is unauthorized to access this resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthErr'
+        "403":
+          description: Forbidden to access this endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthErr'
+        "500":
+          description: Server error, see response body for further details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthErr'
+
+  # --- File Management ---
+  /files/v1/:
+    get:
+      tags:
+        - Files
+      summary: Get a List of Files
+      description: Retrieves a paginated and filterable list of files.
+      operationId: getFileList
+      parameters:
+      - name: type
+        in: query
+        description: Mandatory query parameter to specify the file type. For Content
+          Export files, use 'ContentExport'.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/FileType'
+        x-annotations:
+        - '@SupportedFileType'
+      - name: page
+        in: query
+        description: Page number for pagination.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          default: 1
+      - name: pageSize
+        in: query
+        description: Number of files per page (max 100).
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sortBy
+        in: query
+        description: Field to sort by.
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SortableField'
+      - name: sortOrder
+        in: query
+        description: Sort order.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+      - name: name
+        in: query
+        description: Filter files by name. Supports partial matching (case-insensitive).
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        examples:
+          partialMatch:
+            value: POD_ID
+          anotherExample:
+            value: zip
+      - name: upload-after
+        in: query
+        description: Filter by upload timestamp greater than (ISO 8601).
+        schema:
+          type: string
+          format: date-time
+      - name: upload-before
+        in: query
+        description: Filter by upload timestamp less than (ISO 8601).
+        schema:
+          type: string
+          format: date-time
+      - name: jobType
+        in: query
+        description: Filter by job type. **Only applicable when `type=ContentExport`**.
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/JobType'
+      - name: fileFormat
+        in: query
+        description: Filter by file format. **Only applicable when `type=ContentExport`**.
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/FileFormat'
+      - name: startTime-after
+        in: query
+        description: Filter by start timestamp greater than (ISO 8601). **Only applicable
+          when `type=ContentExport`**.
+        schema:
+          type: string
+          format: date-time
+      - name: endTime-before
+        in: query
+        description: Filter by end timestamp less than (ISO 8601). **Only applicable
+          when `type=ContentExport`**.
+        schema:
+          type: string
+          format: date-time
+      - name: generationDate
+        in: query
+        description: Filter by generation date. **Only applicable when `type=ContentExport`**.
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: A list of files.
+          headers:
+            X-Total-Count:
+              description: Total number of files before pagination.
+              style: simple
+              explode: false
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileMetadata'
+              examples:
+                success:
+                  value:
+                  - id: internal_file_id_1
+                    name: s_POD_ID_SD-2025-01-01-00_ED-2025-05-12-09_GD-2025-05-12_1747050746368.zip.pgp
+                    size: 1234567
+                    uploadTime: 2024-05-15T10:00:00Z
+                    contentType: application/pgp-encrypted
+                    integrityHash: e79e8e823f2df5091d1e4e1583816c07977d3f11b676f91c9f8dcc53c26e271d
+                    type: ContentExport
+                    encryption:
+                      encryptionKeyId: key_123
+                      alg: AES256-GCM
+                    typeSpecificMetadata:
+                      jobType: ADHOC
+                      fileFormat: Symphony
+                      startTime: 2024-05-10T14:30:00Z
+                      endTime: 2025-05-12-09T14:30:00Z
+                      generationDate: 2025-05-12
+                  - id: internal_file_id_2
+                    name: s_POD_ID_CD-2024-10-23_GD-2024-11-08_1731059488177.zip.pgp
+                    size: 876543
+                    uploadTime: 2024-05-10T14:30:00Z
+                    contentType: application/pgp-encrypted
+                    integrityHash: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2
+                    type: ContentExport
+                    encryption:
+                      encryptionKeyId: key_456
+                      alg: AES256-GCM
+                    typeSpecificMetadata:
+                      jobType: SCHEDULED
+                      fileFormat: Actiance
+                      startTime: 2024-10-23T14:30:00Z
+                      endTime: 2024-11-08T14:30:00Z
+                      generationDate: 2024-11-08
+        "400":
+          description: Bad Request - Invalid query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidParameter:
+                  value:
+                    error: Invalid query parameters
+        "401":
+          description: Unauthorized - Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid session token
+        "403":
+          description: Forbidden - Invalid entitlements.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid entitlements
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                internalError:
+                  value:
+                    error: Failed to retrieve file list
+  /files/v1/{fileId}:
+    get:
+      tags:
+        - Files
+      summary: Download a File (via Signed URL)
+      description: Provides a signed URL to download a specific file directly from
+        Google Cloud Storage.
+      operationId: downloadFile
+      parameters:
+      - name: fileId
+        in: path
+        description: The unique ID of the file to download.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: internal_file_id_1
+      - name: type
+        in: query
+        description: Mandatory query parameter to specify the file type. For Content
+          Export files, use 'ContentExport'.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/FileType'
+        x-annotations:
+        - '@SupportedFileType'
+      responses:
+        "200":
+          description: Redirect to the signed URL for download.
+          headers:
+            Location:
+              description: The signed URL for direct file download.
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Redirecting to signed URL for download.
+                  signedUrl:
+                    type: string
+                    format: uri
+                    example: https://storage.googleapis.com/your-bucket/your-file-ce.zip.pgp?X-Goog-Algorithm=...&X-Goog-Credential=...&X-Goog-Expires=...&X-Goog-Signature=...
+        "401":
+          description: Unauthorized - Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid session token
+        "403":
+          description: Forbidden - Invalid entitlements.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid entitlements
+        "404":
+          description: Not Found - File not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notFound:
+                  value:
+                    error: File not found
+        "400":
+          description: Bad Request - Invalid query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidParameter:
+                  value:
+                    error: Invalid query parameters
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                internalError:
+                  value:
+                    error: Failed to download file
+  /files/v1/{fileId}/metadata:
+    get:
+      tags:
+        - Files
+      summary: Get File Metadata
+      description: Retrieves all metadata of a specific file. This endpoint is subject
+        to audit.
+      operationId: getFileMetadata
+      parameters:
+      - name: fileId
+        in: path
+        description: The unique ID of the file.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: internal_file_id_1
+      - name: type
+        in: query
+        description: Mandatory query parameter to specify the file type. For Content
+          Export files, use 'ContentExport'.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/FileType'
+        x-annotations:
+        - '@SupportedFileType'
+      responses:
+        "200":
+          description: File metadata retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+              examples:
+                success:
+                  value:
+                    id: internal_file_id_1
+                    name: s_POD_ID_SD-2025-01-01-00_ED-2025-05-12-09_GD-2025-05-12_1747050746368.zip.pgp
+                    size: 1234567
+                    uploadTime: 2024-05-15T10:00:00Z
+                    contentType: application/pgp-encrypted
+                    integrityHash: e79e8e823f2df5091d1e4e1583816c07977d3f11b676f91c9f8dcc53c26e271d
+                    type: ContentExport
+                    encryption:
+                      encryptionKeyId: key_123
+                      alg: AES256-GCM
+                    typeSpecificMetadata:
+                      jobType: ADHOC
+                      fileFormat: Symphony
+                      startTime: 2025-01-01-00T10:00:00Z
+                      endTime: 2025-05-12-09T11:00:00Z
+                      generationDate: 2025-05-12
+        "401":
+          description: Unauthorized - Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid session token
+        "403":
+          description: Forbidden - Invalid entitlements.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                unauthorized:
+                  value:
+                    error: Invalid entitlements
+        "404":
+          description: Not Found - File not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notFound:
+                  value:
+                    error: File not found
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                internalError:
+                  value:
+                    error: Failed to retrieve file metadata
+
+components:
+  schemas:
+    JwtToken:
+      type: object
+      properties:
+        token_type:
+          type: string
+          description: Type of token, string "Bearer"
+          example: Bearer
+        expires_in:
+          type: integer
+          format: int64
+          description: Duration of time the access token is granted for in seconds
+          example: 3600
+        access_token:
+          type: string
+          description: |
+            A JWT containing the caller's username or application, an expiration date and a set of entitlements related to the specified scope.
+
+    AuthErr:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    FileFormat:
+      type: string
+      description: Content export format.
+      example: Symphony
+      enum:
+        - ACTIANCE
+        - SYMPHONY
+        - EML
+    JobType:
+      type: string
+      description: Indicates how the file was submitted.
+      example: ADHOC
+      enum:
+        - ADHOC
+        - SCHEDULED
+        - CURL
+    SortableField:
+      type: string
+      description: Indicates how the answer will be sorted.
+      enum:
+        - name
+        - generationDate
+        - uploadTime
+        - size
+        - jobType
+        - fileFormat
+        - startTime
+        - endTime
+    FileType:
+      type: string
+      description: The type of file being managed.
+      enum:
+        - ContentExport
+    FileMetadata:
+      required:
+        - id
+        - name
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique file identifier.
+          example: internal_file_id_1
+        name:
+          type: string
+          description: File name.
+          example: s_POD_ID_SD-2025-01-01-00_ED-2025-05-12-09_GD-2025-05-12_1747050746368.zip.pgp
+        size:
+          type: integer
+          description: File size in bytes.
+          format: int64
+          example: 1234567
+        uploadTime:
+          type: string
+          description: Timestamp of when the file was uploaded (ISO 8601 format).
+          format: date-time
+          example: 2024-05-15T10:00:00Z
+        contentType:
+          type: string
+          description: MIME type of the file.
+          example: application/pgp-encrypted
+        integrityHash:
+          type: string
+          description: A cryptographic hash of the file content.
+          example: e79e8e823f2df5091d1e4e1583816c07977d3f11b676f91c9f8dcc53c26e271d
+        type:
+          type: string
+          description: The type of file.
+          example: ContentExport
+        encryption:
+          type: object
+          properties:
+            encryptionKeyId:
+              type: string
+              description: An identifier for the key used to encrypt the file.
+              example: key_123
+            alg:
+              type: string
+              description: Encryption algorithm used.
+              example: AES256-GCM
+          description: Encryption details for the file.
+      discriminator:
+        propertyName: type
+        mapping:
+          ContentExport: '#/components/schemas/ContentExportFile'
+    ContentExportMetadata:
+      required:
+        - fileFormat
+        - jobType
+      type: object
+      properties:
+        jobType:
+          $ref: '#/components/schemas/JobType'
+        fileFormat:
+          $ref: '#/components/schemas/FileFormat'
+        startTime:
+          type: string
+          description: Start timestamp of the data covered by the file (ISO 8601 format).
+          format: date-time
+          example: 2024-05-15T10:00:00Z
+        endTime:
+          type: string
+          description: End timestamp of the data covered by the file (ISO 8601 format).
+          format: date-time
+          example: 2024-05-15T10:00:00Z
+        generationDate:
+          type: string
+          description: Generation date of the file (ISO 8601 format).
+          format: date
+          example: 2025-05-12
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A descriptive error message.
+          example: Invalid query parameter sortBy
+    ContentExportFile:
+      type: object
+      properties:
+        typeSpecificMetadata:
+          $ref: '#/components/schemas/ContentExportMetadata'
+      description: A file of type ContentExport, including all base metadata plus type-specific details.
+      allOf:
+        - $ref: '#/components/schemas/FileMetadata'
+  parameters:
+    uploadAfter:
+      name: upload-after
+      in: query
+      description: Filter by upload timestamp greater than (ISO 8601).
+      schema:
+        type: string
+        format: date-time
+    uploadBefore:
+      name: upload-before
+      in: query
+      description: Filter by upload timestamp less than (ISO 8601).
+      schema:
+        type: string
+        format: date-time
+    startTimeAfter:
+      name: startTime-after
+      in: query
+      description: Filter by start timestamp greater than (ISO 8601). **Only applicable when `type=ContentExport`**.
+      schema:
+        type: string
+        format: date-time
+    endTimeBefore:
+      name: endTime-before
+      in: query
+      description: Filter by end timestamp less than (ISO 8601). **Only applicable when `type=ContentExport`**.
+      schema:
+        type: string
+        format: date-time
+    generationDateFilter:
+      name: generationDate
+      in: query
+      description: Filter by generation date. **Only applicable when `type=ContentExport`**.
+      schema:
+        type: string
+        format: date
+    queryFileType:
+      name: type
+      in: query
+      description: Mandatory query parameter to specify the file type. For Content Export files, use 'ContentExport'.
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/FileType'
+      x-annotations:
+        - '@SupportedFileType'
+    fileFormatFilter:
+      name: fileFormat
+      in: query
+      description: Filter by file format. **Only applicable when `type=ContentExport`**.
+      required: false
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/FileFormat'
+    jobTypeFilter:
+      name: jobType
+      in: query
+      description: Filter by job type. **Only applicable when `type=ContentExport`**.
+      required: false
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/JobType'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The File Management API uses **JWT (JSON Web Tokens)** for authentication.
+
+        ##### Obtaining a Token
+        To retrieve a valid token, you must call the `login/idm/tokens` endpoint.
+        * **Requirements:** Use a **Service Account** that has been assigned the **Content Export Reader** role.
+        * **Response:** The JWT will be returned in the `access_token` field of the JSON response.
+        * **Reference:** For detailed steps on the handshake, see the **OAuth2 Authenticate** documentation.
+
+        ##### Using the Token
+        Once obtained, include the token in the `Authorization` header for all API requests:
+        `Authorization: Bearer <access_token>`
