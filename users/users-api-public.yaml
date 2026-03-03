@@ -22,6 +22,11 @@ paths:
       operationId: findAppUsers
       x-spring-paginated: true
       parameters:
+        - name: sessionToken
+          description: App session authentication token.
+          in: header
+          required: true
+          type: string
         - name: groupAppId
           in: path
           required: true
