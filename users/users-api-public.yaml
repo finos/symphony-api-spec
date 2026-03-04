@@ -23,10 +23,11 @@ paths:
       x-spring-paginated: true
       parameters:
         - name: sessionToken
-          description: App session authentication token.
           in: header
           required: true
-          type: string
+          schema:
+            type: string
+            description: App session authentication token.
         - name: groupAppId
           in: path
           required: true
