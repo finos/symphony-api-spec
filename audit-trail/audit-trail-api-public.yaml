@@ -1,0 +1,936 @@
+openapi: 3.0.1
+info:
+  description: Audit Trail 2.0 is a multi tenant micro service to store and retrieve
+    audit event. Audit Events are published to an audit topic. They are coming from
+    SBE directly with the right format for all legacy events and they are generated
+    by a dedicated transformer for new MT micro services. All events are categorized
+    by pre-defined categories. Audit events are displayed by different screens in
+    Admin and Compliance portal. These screens use endpoints defined here to retrieve
+    different audit trail events.
+  title: Audit Trail 2.0 API Specification
+  version: 1.0.0
+servers:
+  - url: /at2
+tags:
+  - description: |
+      Audits endpoints
+    name: Audits
+  - description: |
+      Filters Values endpoints
+    name: Filters Values
+  - description: |
+      Categories permissions endpoints
+    name: Categories Permissions
+paths:
+  /v1/audits:
+    get:
+      description: |
+        This operation returns paginated list of audit trail events. You can narrow down search results by specifying categories, action, originating userId, attribute, groupId, authorization role, streamId, affected userId, temporary authId, disclaimerId or policyId parameter. Pages can contain up to 100 records. This operation returns only audits for the categories the requester is entitled to.
+      operationId: getAuditTrailEvents
+      parameters:
+        - description: |
+            start range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            end range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            List of Audit Trail categories restriction
+          explode: false
+          in: query
+          name: categories
+          required: true
+          schema:
+            example: login,malwarescan
+            type: string
+          style: form
+        - description: |
+            "Affected User Id" filter single value restriction
+          explode: false
+          in: query
+          name: affectedUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Originating User Id" filter single value restriction (a.k.a. "Performed by)"
+          explode: false
+          in: query
+          name: originatingUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Action Id" filter single value restriction
+          explode: false
+          in: query
+          name: actionId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Attribute" filter single value restriction
+          explode: false
+          in: query
+          name: attribute
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Group Id" filter single value restriction (used by Info barrier, Role Scope...)
+          explode: false
+          in: query
+          name: groupId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Authorization Role" filter single value restriction
+          explode: false
+          in: query
+          name: authorizationRole
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Stream Id" filter single value restriction (using either Base64 or Base64URL encoding)
+          explode: false
+          in: query
+          name: streamId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Policy Id" filter single value restriction
+          explode: false
+          in: query
+          name: policyId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Application Id" filter single value restriction
+          explode: false
+          in: query
+          name: applicationId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Temporary Authorization Id" filter single value restriction
+          explode: false
+          in: query
+          name: tempAuthId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Disclaimer Id" filter single value restriction
+          explode: false
+          in: query
+          name: disclaimerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            Used format for output date values.<br/> Possible values:<br/> <ul> <li>STANDARD_AT_ACP_DATE - MM-dd-YYYY - as historically used in Symphony Audit Trails</li> </ul> or anything supported by java11 DateTimeFormatter (https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html)<br/> <ul> <li>BASIC_ISO_DATE</li> <li>ISO_DATE</li> <li>ISO_DATE_TIME</li> <li>ISO_INSTANT</li> <li>ISO_LOCAL_DATE</li> <li>ISO_LOCAL_DATE_TIME</li> <li>ISO_LOCAL_TIME</li> <li>ISO_OFFSET_DATE</li> <li>ISO_OFFSET_DATE_TIME</li> <li>ISO_OFFSET_TIME</li> <li>ISO_ORDINAL_DATE</li> <li>ISO_TIME</li> <li>ISO_WEEK_DATE</li> <li>ISO_ZONED_DATE_TIME</li> <li>RFC_1123_DATE_TIME</li> <li>any supported date/time pattern - YYYYMMddHHmmss, ....</li> </ul>
+          explode: false
+          in: query
+          name: dateFormat
+          required: false
+          schema:
+            default: STANDARD_AT_ACP_DATE
+            type: string
+          style: form
+        - description: Specifies the maximum number of objects to return. It is possible
+            that fewer than the specified number is returned, either due to reaching
+            the end of the record set or due to data access rules that filter results
+            of the back end query.  The number of returned objects should not be used
+            to determine if there are more objects to retrieve.  Instead, the presence
+            of the "next" and "previous" (see below) fields should be used.
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 100
+            format: int32
+            maximum: 100
+            minimum: 1
+            type: integer
+        - description: Cursor value that specifies that the returned page of data should
+            consist of records that come before this cursor value (essentially the "previous"
+            page).
+          in: query
+          name: before
+          required: false
+          schema:
+            type: string
+        - description: Cursor value that specifies that the returned page of data should
+            consist of records that come after this cursor value (essentially the "next"
+            page).
+          in: query
+          name: after
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/at-events-paginated-list'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/at-events-full-list'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized. Returned if JWT token verification failed.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden.  Returned if the caller doesn't have the required
+            entitlements to call an endpoint.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found.  Returned if specified key is not found.
+      summary: Get Audit Trail Events
+      tags:
+        - Audits
+  /v1/audits/stream:
+    get:
+      description: |
+        This operation returns streamed list of audit trail events.  You can narrow down search results by specifying categories, action, originating userId, attribute, groupId, authorization role, streamId, affected userId, temporary authId, disclaimerId or policyId parameter.  Pages can contain an unlimited number of records. This operation returns only audits for the categories the requester is entitled to.
+      operationId: getAuditTrailStream
+      parameters:
+        - description: |
+            start range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            end range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            List of Audit Trail categories restriction
+          explode: false
+          in: query
+          name: categories
+          required: true
+          schema:
+            example: login,malwarescan
+            type: string
+          style: form
+        - description: |
+            "Affected User Id" filter single value restriction
+          explode: false
+          in: query
+          name: affectedUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Originating User Id" filter single value restriction (a.k.a. "Performed by)"
+          explode: false
+          in: query
+          name: originatingUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Action Id" filter single value restriction
+          explode: false
+          in: query
+          name: actionId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Attribute" filter single value restriction
+          explode: false
+          in: query
+          name: attribute
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Group Id" filter single value restriction (used by Info barrier, Role Scope...)
+          explode: false
+          in: query
+          name: groupId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Authorization Role" filter single value restriction
+          explode: false
+          in: query
+          name: authorizationRole
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Stream Id" filter single value restriction (using either Base64 or Base64URL encoding)
+          explode: false
+          in: query
+          name: streamId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Policy Id" filter single value restriction
+          explode: false
+          in: query
+          name: policyId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Application Id" filter single value restriction
+          explode: false
+          in: query
+          name: applicationId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Temporary Authorization Id" filter single value restriction
+          explode: false
+          in: query
+          name: tempAuthId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Disclaimer Id" filter single value restriction
+          explode: false
+          in: query
+          name: disclaimerId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            Used format for output date values.<br/> Possible values:<br/> <ul> <li>STANDARD_AT_ACP_DATE - MM-dd-YYYY - as historically used in Symphony Audit Trails</li> </ul> or anything supported by java11 DateTimeFormatter (https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html)<br/> <ul> <li>BASIC_ISO_DATE</li> <li>ISO_DATE</li> <li>ISO_DATE_TIME</li> <li>ISO_INSTANT</li> <li>ISO_LOCAL_DATE</li> <li>ISO_LOCAL_DATE_TIME</li> <li>ISO_LOCAL_TIME</li> <li>ISO_OFFSET_DATE</li> <li>ISO_OFFSET_DATE_TIME</li> <li>ISO_OFFSET_TIME</li> <li>ISO_ORDINAL_DATE</li> <li>ISO_TIME</li> <li>ISO_WEEK_DATE</li> <li>ISO_ZONED_DATE_TIME</li> <li>RFC_1123_DATE_TIME</li> <li>any supported date/time pattern - YYYYMMddHHmmss, ....</li> </ul>
+          explode: false
+          in: query
+          name: dateFormat
+          required: false
+          schema:
+            default: STANDARD_AT_ACP_DATE
+            type: string
+          style: form
+        - description: Specifies the maximum number of objects to return. It is possible
+            that fewer than the specified number is returned, either due to reaching
+            the end of the record set or due to data access rules that filter results
+            of the back end query.  The number of returned objects should not be used
+            to determine if there are more objects to retrieve.  Instead, the presence
+            of the "next" and "previous" (see below) fields should be used.
+          in: query
+          name: limit
+          required: false
+          schema:
+            format: int32
+            minimum: 1
+            type: integer
+        - description: |
+            Content-type expected in return
+          explode: false
+          in: header
+          name: Content-Type
+          required: false
+          schema:
+            enum:
+              - text/csv
+            type: string
+          style: simple
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/streaming-response-body'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized. Returned if JWT token verification failed.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden.  Returned if the caller doesn't have the required
+            entitlements to call an endpoint.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found.  Returned if specified key is not found.
+      summary: Get Audit Trail Stream
+      tags:
+        - Audits Stream
+  /v1/filters/values:
+    get:
+      description: |
+        This operation returns the possible distinct values for each of the filter names provided in the "filters" parameter. The scope of the filter values is restricted with the same type of filters we use to restrict the list of Audit Trail Events we retrieve in the /audits endpoint. Beware that a given filter may be included, rather in the list of filters, rather included in the filter restrictions. E.g: we can search the distinct "action" values, or we can search for the values of other filters for a given "action=sentMessage". This operation returns only audits for the categories the requester is entitled to.
+      operationId: getFilterValues
+      parameters:
+        - description: |
+            Names of the filters for which we want to retrieve their distinct values
+          explode: false
+          in: query
+          name: filters
+          required: true
+          schema:
+            example: action,originatingUser,affectedUser,group,attribute
+            type: string
+          style: form
+        - description: |
+            start range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            end range date restriction. Date must be formatted the following way: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+          explode: false
+          in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            List of Audit Trail categories restriction
+          explode: false
+          in: query
+          name: categories
+          required: true
+          schema:
+            example: login,malwarescan
+            type: string
+          style: form
+        - description: |
+            "Affected User Id" filter single value restriction
+          explode: false
+          in: query
+          name: affectedUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Originating User Id" filter single value restriction (a.k.a. "Performed by)"
+          explode: false
+          in: query
+          name: originatingUserId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Action Id" filter single value restriction
+          explode: false
+          in: query
+          name: actionId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Attribute" filter single value restriction
+          explode: false
+          in: query
+          name: attribute
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Group Id" filter single value restriction (used by Info barrier, Role Scope...)
+          explode: false
+          in: query
+          name: groupId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Authorization Role" filter single value restriction
+          explode: false
+          in: query
+          name: authorizationRole
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Stream Id" filter single value restriction (using either Base64 or Base64URL encoding)
+          explode: false
+          in: query
+          name: streamId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Policy Id" filter single value restriction
+          explode: false
+          in: query
+          name: policyId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Application Id" filter single value restriction
+          explode: false
+          in: query
+          name: applicationId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Temporary Authorization Id" filter single value restriction
+          explode: false
+          in: query
+          name: tempAuthId
+          required: false
+          schema:
+            type: string
+          style: form
+        - description: |
+            "Disclaimer Id" filter single value restriction
+          explode: false
+          in: query
+          name: disclaimerId
+          required: false
+          schema:
+            type: string
+          style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/filters-values-list'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized. Returned if JWT token verification failed.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found.  Returned if specified key is not found.
+      summary: Get distinct values of a list of filters
+      tags:
+        - Filters Values
+  /v1/categories/permissions:
+    get:
+      description: |
+        This operation returns the categories permissions of audit trail events.
+      operationId: getCategoriesPermissions
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/categories-permissions'
+          description: Success
+      summary: Get Categories Permissions
+      tags:
+        - Categories Permissions
+components:
+  schemas:
+    at-events-paginated-list:
+      description: |
+        A paged list of Audit Trail events
+      example:
+        pagination:
+          next: next
+          cursors:
+            before: before
+            after: after
+          previous: previous
+        data:
+          - createdDate: 2000-01-23T04:56:07.000+00:00
+            details:
+              - complexValue:
+                  - value: value
+                    key: key
+                  - value: value
+                    key: key
+                value: value
+                key: key
+              - complexValue:
+                  - value: value
+                    key: key
+                  - value: value
+                    key: key
+                value: value
+                key: key
+            id: id
+            category: category
+          - createdDate: 2000-01-23T04:56:07.000+00:00
+            details:
+              - complexValue:
+                  - value: value
+                    key: key
+                  - value: value
+                    key: key
+                value: value
+                key: key
+              - complexValue:
+                  - value: value
+                    key: key
+                  - value: value
+                    key: key
+                value: value
+                key: key
+            id: id
+            category: category
+        warnings:
+          - code: code
+            message: message
+          - code: code
+            message: message
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/at-event'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        warnings:
+          items:
+            $ref: '#/components/schemas/warning'
+          type: array
+      required:
+        - data
+        - pagination
+      type: object
+    at-event:
+      description: |
+        An Audit Trail Event
+      example:
+        createdDate: 2000-01-23T04:56:07.000+00:00
+        details:
+          - complexValue:
+              - value: value
+                key: key
+              - value: value
+                key: key
+            value: value
+            key: key
+          - complexValue:
+              - value: value
+                key: key
+              - value: value
+                key: key
+            value: value
+            key: key
+        id: id
+        category: category
+      properties:
+        id:
+          description: Unique ID of the resource
+          type: string
+        createdDate:
+          description: Date/time resouces was created in ISO-8601 format (YYYY-MM-DDThh:mm:ss.sZ)
+          format: date-time
+          type: string
+        category:
+          description: |
+            Category
+          type: string
+        details:
+          description: |
+            Audit Event details
+          items:
+            $ref: '#/components/schemas/at-event-detail'
+          type: array
+      required:
+        - category
+        - createdDate
+        - details
+        - id
+      type: object
+    at-event-detail:
+      description: |
+        An Audit Trail Event detail
+      example:
+        complexValue:
+          - value: value
+            key: key
+          - value: value
+            key: key
+        value: value
+        key: key
+      properties:
+        key:
+          description: |
+            Audit Trail event detail key
+          type: string
+        value:
+          description: |
+            Audit Trail event detail single value
+          type: string
+        complexValue:
+          description: Generic Key Value List
+          items:
+            $ref: '#/components/schemas/key-value'
+          type: array
+      required:
+        - key
+      type: object
+    at-events-full-list:
+      description: |
+        The full list of Audit Trail events
+      items:
+        $ref: '#/components/schemas/at-event'
+      type: array
+    Error:
+      description: Common error response body
+      properties:
+        code:
+          description: An internal code that can be used by support/developers to
+            quickly locate the line of code that generated the error response.
+          type: string
+        message:
+          description: A human-readable error message
+          type: string
+        context:
+          additionalProperties:
+            type: string
+          description: A name-value map of variables and their value necessary to
+            construct the message
+          type: object
+        details:
+          description: Additional data that might be included
+          type: object
+      required:
+        - code
+        - message
+    streaming-response-body:
+      description: |
+        Only used to reference org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+      type: StreamingResponseBody
+    filters-values-list:
+      description: |
+        List of distinct values by Filter
+      items:
+        $ref: '#/components/schemas/filter-values'
+      type: array
+    filter-values:
+      description: |
+        List of distinct values of a Filter
+      example:
+        values:
+          - values
+          - values
+        name: name
+        complexValues:
+          - null
+          - null
+      properties:
+        name:
+          description: |
+            Filter's Name
+          type: string
+        values:
+          description: |
+            Filter's Simple Values
+          items:
+            type: string
+          type: array
+        complexValues:
+          description: |
+            Filter's Complex Values
+          items:
+            $ref: '#/components/schemas/key-value-list'
+          type: array
+      required:
+        - name
+      type: object
+    categories-permissions:
+      description: |
+        List of allowed categories and list of forbidden categories
+      example:
+        allowed:
+          - allowed
+          - allowed
+        forbidden:
+          - forbidden
+          - forbidden
+      properties:
+        allowed:
+          description: |
+            Only present if there are allowed categories
+          items:
+            type: string
+          nullable: true
+          type: array
+        forbidden:
+          description: |
+            Only present if there are forbidden categories
+          items:
+            type: string
+          nullable: true
+          type: array
+      type: object
+    Pagination:
+      description: Pagination information
+      example:
+        next: next
+        cursors:
+          before: before
+          after: after
+        previous: previous
+      properties:
+        previous:
+          description: Path to retrieve the previous page of data. If not present,
+            the current page is the first page of data.
+          type: string
+        next:
+          description: Path to retrieve the next page of data. If not present, the
+            current page is the last page of data.
+          type: string
+        cursors:
+          $ref: '#/components/schemas/PaginationCursors'
+      required:
+        - cursors
+    PaginationCursors:
+      description: Cursors for pagination
+      example:
+        before: before
+        after: after
+      properties:
+        before:
+          description: Cursor that points to the start of the current page of data.  If
+            not present, the current page is the first page.
+          type: string
+        after:
+          description: Cursor that points to the end of the current page of data.  If
+            not present, the current page is the last page.
+          type: string
+    warnings:
+      items:
+        $ref: '#/components/schemas/warning'
+      type: array
+    warning:
+      description: |
+        Warning object
+      example:
+        code: code
+        message: message
+      properties:
+        code:
+          description: |
+            Application specific warning code.
+          type: string
+        message:
+          description: |
+            Textual message of the warning
+          type: string
+      required:
+        - code
+        - message
+      type: object
+    key-value-list:
+      description: Generic Key Value List
+      items:
+        $ref: '#/components/schemas/key-value'
+      type: array
+    key-value:
+      description: Generic Key Value
+      example:
+        value: value
+        key: key
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
