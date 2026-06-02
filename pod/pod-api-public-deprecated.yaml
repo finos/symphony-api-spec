@@ -6316,6 +6316,16 @@ definitions:
         description: 'Note: only available if the application has the extended user or contact permission'
       roles:
         $ref: '#/definitions/StringList'
+      userMetadata:
+        type: object
+        description: 'Metadata map of key/values'
+        additionalProperties:
+          type: object
+        example:
+          com_symphony_metadataKey1: "value"
+          com_symphony_metadataKey2:
+            - "value1"
+            - "value2"
   V2UserList:
     description: List of User record version 2
     type: object
@@ -7141,6 +7151,16 @@ definitions:
         $ref: '#/definitions/V2UserKeyRequest'
       previousKey:
         $ref: '#/definitions/V2UserKeyRequest'
+      userMetadata:
+        type: object
+        description: 'Metadata map of key/values'
+        additionalProperties:
+          type: object
+        example:
+          com_symphony_metadataKey1: "value"
+          com_symphony_metadataKey2:
+            - "value1"
+            - "value2"
   V2UserKeyRequest:
     description: User RSA key information.
     type: object
