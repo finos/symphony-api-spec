@@ -1,4 +1,4 @@
-[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
+[![FINOS - Graduated](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-graduated.svg)](https://community.finos.org/docs/governance/lifecycle-stages/graduated)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6747/badge)](https://bestpractices.coreinfrastructure.org/projects/6747)
 
 # symphony-api-spec
@@ -63,4 +63,3 @@ Copyright 2022 Symphony LLC
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
-
