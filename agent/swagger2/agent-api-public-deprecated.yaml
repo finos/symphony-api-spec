@@ -421,6 +421,70 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/V2Error'
+  '/v4/message/search/semantic':
+    post:
+      summary: Semantic search for messages
+      description: |
+          Disclaimer : Internal use only. This is not officially supported yet.
+          Search messages semantically according to the natural-language query provided in the request body.
+          The "text" field holds the query and the optional "threadId" field restricts the search to a single stream.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: query
+          description: The semantic search query.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SemanticSearchQuery'
+        - name: skip
+          description: |
+            No. of results to skip.
+          in: query
+          type: integer
+        - name: limit
+          description: |
+            Max no. of results to return. If no value is provided, 25 is the default.
+          in: query
+          type: integer
+          required: false
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: keyManagerToken
+          description: Key Manager authentication token.
+          in: header
+          required: false
+          type: string
+      tags:
+        - Messages
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/V4MessageList'
+        '204':
+          description: No Messages.
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/V2Error'
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/V2Error'
   '/v1/stream/{sid}/attachment':
     get:
       summary: Download an attachment.
@@ -4849,6 +4913,15 @@ definitions:
         type: integer
         format: int64
         description: Search for messages sent before this timestamp
+  SemanticSearchQuery:
+    type: object
+    properties:
+      text:
+        type: string
+        description: The natural-language query to search for semantically.
+      threadId:
+        type: string
+        description: Restrict the semantic search to this stream/thread.
   V4MessageImportList:
     description: |
       An ordered list of historic messages to be imported.
