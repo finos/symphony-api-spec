@@ -8,7 +8,7 @@ externalDocs:
   description: Overall Symphony public API
   url: https://example.on.symphony.com/users/v5
 servers:
-  - url: https://localhost:8443
+  - url: https://yourpodURL.symphony.com
 tags:
   - name: App Users
     description: App users and entitlements API
