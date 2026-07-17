@@ -13,6 +13,66 @@ tags:
   - name: App Users
     description: App users and entitlements API
 paths:
+  /v1/groups/sdl/{groupId}:
+    get:
+      tags:
+        - Groups
+      summary: Get SDL group information
+      operationId: getSDLGroupById
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/GroupId'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+        400:
+          $ref: '#/components/responses/ClientError'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/ServerError'
+  /v1/groups/sdl/list:
+    get:
+      tags:
+        - Groups
+      summary: List SDL groups ordered by id
+      operationId: listSDLGroups
+      parameters:
+        - name: lastGroupId
+          in: query
+          schema:
+            $ref: "#/components/schemas/GroupId"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 50
+          description: Number of Groups provided in response
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupResponse'
+        400:
+          $ref: '#/components/responses/ClientError'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/ServerError'
   /v5/users/apps/{groupAppId}:
     get:
       tags:
@@ -106,6 +166,101 @@ components:
             $ref: "#/components/schemas/MessageWithCode"
 
   schemas:
+    GroupId:
+      description: Group identifier
+      type: integer
+      format: int64
+      minimum: 1
+      example: 71811853191697
+    GroupResponse:
+      description: Group account base properties
+      type: object
+      properties:
+        groupId:
+          $ref: "#/components/schemas/GroupId"
+        name:
+          type: string
+          description: Group name.
+        username:
+          type: string
+          description: Username identificator of the Group
+        type:
+          type: string
+          description: Group type
+          enum:
+            - SDL
+        active:
+          type: boolean
+          description: Define if group is currently active or deleted.
+        displayName:
+          type: string
+          description: Display name
+        companyName:
+          type: string
+          description: Company name
+        email:
+          type: string
+          description: Email address
+        members:
+          type: array
+          description: Group account members
+          items:
+            $ref: '#/components/schemas/GroupMember'
+        restrictedTenants:
+          type: array
+          items:
+            $ref: "#/components/schemas/TenantId"
+        avatars:
+          $ref: "#/components/schemas/Images"
+        eTag:
+          type: string
+          description: Group account eTag
+        createdDate:
+          type: integer
+          format: int64
+          description: Group account creation timestamp (Unix epoch milliseconds)
+        createdBy:
+          type: string
+          description: Group account creator
+        updatedDate:
+          type: integer
+          format: int64
+          description: Group account last modification timestamp (Unix epoch milliseconds)
+        updatedBy:
+          type: string
+          description: Group account updater
+        marketCoverage:
+          type: array
+          items:
+            type: string
+        instrument:
+          type: array
+          items:
+            type: string
+        responsibility:
+          type: array
+          items:
+            type: string
+        function:
+          type: array
+          items:
+            type: string
+    GroupMember:
+      description: A member of a group account
+      type: object
+      properties:
+        userId:
+          $ref: "#/components/schemas/UserId"
+        tenantId:
+          type: integer
+          format: int32
+          description: Member's tenant identifier
+
+
+        addedDate:
+          type: integer
+          format: int64
+          description: Timestamp when the member was added (Unix epoch milliseconds)
     UserId:
       type: integer
       format: int64
@@ -129,7 +284,23 @@ components:
             $ref: '#/components/schemas/AppUser'
         page:
           $ref: '#/components/schemas/PageMeta'
-
+    Images:
+      properties:
+        50:
+          type: string
+        150:
+          type: string
+        500:
+          type: string
+        600:
+          type: string
+        orig:
+          type: string
+    TenantId:
+      type: integer
+      format: int32
+      minimum: 1
+      example: 1008    
     AppUser:
       type: object
       properties:
