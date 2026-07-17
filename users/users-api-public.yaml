@@ -186,7 +186,7 @@ components:
           description: Username identificator of the Group.
         type:
           type: string
-          description: Group type.
+          description: Group type
           enum:
             - SDL
         active:
@@ -214,21 +214,21 @@ components:
           $ref: "#/components/schemas/Images"
         eTag:
           type: string
-          description: Group account's eTag.
+          description: Group account eTag.
         createdDate:
           type: integer
           format: int64
-          description: Group account's creation timestamp (Unix epoch milliseconds).
+          description: Group account creation timestamp (Unix epoch milliseconds)
         createdBy:
           type: string
-          description: Group account's creator.
+          description: Group account creator
         updatedDate:
           type: integer
           format: int64
-          description: Group account's last modification timestamp (Unix epoch milliseconds).
+          description: Group account last modification timestamp (Unix epoch milliseconds)
         updatedBy:
           type: string
-          description: Group account's updater.
+          description: Group account updater
         marketCoverage:
           type: array
           items:
