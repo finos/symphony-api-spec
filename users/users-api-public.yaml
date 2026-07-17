@@ -167,13 +167,13 @@ components:
 
   schemas:
     GroupId:
-      description: Group identifier.
+      description: Group identifier
       type: integer
       format: int64
       minimum: 1
       example: 71811853191697
     GroupResponse:
-      description: Group account's base properties.
+      description: Group account base properties
       type: object
       properties:
         groupId:
@@ -183,7 +183,7 @@ components:
           description: Group name.
         username:
           type: string
-          description: Username identificator of the Group.
+          description: Username identificator of the Group
         type:
           type: string
           description: Group type
@@ -194,16 +194,16 @@ components:
           description: Define if group is currently active or deleted.
         displayName:
           type: string
-          description: Display name.
+          description: Display name
         companyName:
           type: string
-          description: Company name.
+          description: Company name
         email:
           type: string
-          description: Email address.
+          description: Email address
         members:
           type: array
-          description: Group account's members.
+          description: Group account members
           items:
             $ref: '#/components/schemas/GroupMember'
         restrictedTenants:
