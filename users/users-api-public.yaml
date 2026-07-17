@@ -183,7 +183,7 @@ components:
           description: Group name.
         username:
           type: string
-          description: Username identificatior of the Group.
+          description: Username identificator of the Group.
         type:
           type: string
           description: Group type.
