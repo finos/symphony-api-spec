@@ -20,6 +20,12 @@ paths:
       summary: Get SDL group information
       operationId: getSDLGroupById
       parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Session authentication token.  
         - name: groupId
           in: path
           required: true
@@ -45,6 +51,12 @@ paths:
       summary: List SDL groups ordered by id
       operationId: listSDLGroups
       parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Session authentication token.
         - name: lastGroupId
           in: query
           schema:
