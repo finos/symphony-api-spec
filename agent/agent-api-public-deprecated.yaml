@@ -537,6 +537,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/V2Error'
       x-codegen-request-body-name: query
+  /v4/message/search/semantic:
+    post:
+      tags:
+        - Messages
+      summary: Semantic search for messages
+      description: |
+        Disclaimer : Internal use only. This is not officially supported yet.
+        Search messages semantically according to the natural-language query provided in the request body.
+        The "text" field holds the query and the optional "threadId" field restricts the search to a single stream.
+      parameters:
+        - name: skip
+          in: query
+          description: No. of results to skip.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Max no. of results to return. If no value is provided, 25 is the default.
+          schema:
+            type: integer
+        - name: sessionToken
+          in: header
+          description: Session authentication token.
+          required: true
+          schema:
+            type: string
+        - name: keyManagerToken
+          in: header
+          description: Key Manager authentication token.
+          schema:
+            type: string
+      requestBody:
+        description: The semantic search query.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SemanticSearchQuery'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V4MessageList'
+        204:
+          description: No Messages.
+          content: {}
+        400:
+          description: Client error, see response body for further details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Error'
+        401:
+          description: 'Unauthorized: Session tokens invalid.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Error'
+        403:
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Error'
+        500:
+          description: Server error, see response body for further details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Error'
+      x-codegen-request-body-name: query
   /v1/stream/{sid}/attachment:
     get:
       tags:
@@ -5678,6 +5751,15 @@ components:
           type: integer
           description: Search for messages sent before this timestamp
           format: int64
+    SemanticSearchQuery:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The natural-language query to search for semantically.
+        threadId:
+          type: string
+          description: Restrict the semantic search to this stream/thread.
     V4MessageImportList:
       type: array
       description: |
