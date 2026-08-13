@@ -4,31 +4,31 @@ This file lists the maintainers of this repository.
 
 ## Current maintainers
 
-| GitHub Username | Name | Organization | Email |
-|----------------|------|--------------|-------|
-| @FabienVSymphony | Fabien Vicente | Symphony | *please add email* |
-| @Yannick-Malins | Yannick | @SymphonyOSF | *please add email* |
-| @aurelie-forzani | Aurelie Forzani | *please add organization* | *please add email* |
-| @benoit-sy | Benoit Charbonnier | *please add organization* | *please add email* |
-| @corinnekubler | *please add name* | *please add organization* | *please add email* |
-| @ffileppo-symphony | *please add name* | *please add organization* | *please add email* |
+| GitHub Username | Name | Organization | Email (optional) |
+|----------------|------|--------------|------------------|
+| @FabienVSymphony | Fabien Vicente | Symphony |  |
+| @Yannick-Malins | Yannick | @SymphonyOSF |  |
+| @aurelie-forzani | Aurelie Forzani | *please add organization* |  |
+| @benoit-sy | Benoit Charbonnier | *please add organization* |  |
+| @corinnekubler | *please add name* | *please add organization* |  |
+| @ffileppo-symphony | *please add name* | *please add organization* |  |
 | @jspasquali | jpasquali | *please add organization* | jean.pasquali@gmail.com |
-| @justinesymphony | *please add name* | Symphony | *please add email* |
-| @kgning1 | *please add name* | *please add organization* | *please add email* |
-| @l-michalet | Lucas Michalet | *please add organization* | *please add email* |
-| @mgeorges-symphony | Matthias GEORGES | *please add organization* | *please add email* |
-| @odastier-sym | Olivier D'ASTIER | *please add organization* | *please add email* |
-| @sbenmoussati | Salah Benmoussati | *please add organization* | *please add email* |
-| @symphony-elias | Elias Croze | *please add organization* | *please add email* |
-| @symphony-enrico | Enrico Molino | Symphony | *please add email* |
-| @symphony-mariacristina | Mariacristina De Dominicis | Symphony | *please add email* |
-| @symphony-soufiane | Soufiane Aourinmouche | @SymphonyOSF | *please add email* |
-| @symphonydarlys | Darlys Maldonado | Symphony | *please add email* |
-| @symphonyjenkinsauto | *please add name* | *please add organization* | *please add email* |
-| @symphonyjenkinsauto-gke | *please add name* | *please add organization* | *please add email* |
-| @thibauult | Thibault Pensec | @SymphonyOSF  | *please add email* |
-| @vanhauphan | Van Hau PHAN | *please add organization* | *please add email* |
-| @vladokrsymphony | Vlado Kragujevski | *please add organization* | *please add email* |
+| @justinesymphony | *please add name* | Symphony |  |
+| @kgning1 | *please add name* | *please add organization* |  |
+| @l-michalet | Lucas Michalet | *please add organization* |  |
+| @mgeorges-symphony | Matthias GEORGES | *please add organization* |  |
+| @odastier-sym | Olivier D'ASTIER | *please add organization* |  |
+| @sbenmoussati | Salah Benmoussati | *please add organization* |  |
+| @symphony-elias | Elias Croze | *please add organization* |  |
+| @symphony-enrico | Enrico Molino | Symphony |  |
+| @symphony-mariacristina | Mariacristina De Dominicis | Symphony |  |
+| @symphony-soufiane | Soufiane Aourinmouche | @SymphonyOSF |  |
+| @symphonydarlys | Darlys Maldonado | Symphony |  |
+| @symphonyjenkinsauto | *please add name* | *please add organization* |  |
+| @symphonyjenkinsauto-gke | *please add name* | *please add organization* |  |
+| @thibauult | Thibault Pensec | @SymphonyOSF  |  |
+| @vanhauphan | Van Hau PHAN | *please add organization* |  |
+| @vladokrsymphony | Vlado Kragujevski | *please add organization* |  |
 
 For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 
