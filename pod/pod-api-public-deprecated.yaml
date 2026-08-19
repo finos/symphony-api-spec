@@ -2793,6 +2793,201 @@ paths:
           description: 'Server error, see response body for further details.'
           schema:
             $ref: '#/definitions/Error'
+  '/v1/admin/sso/configuration':
+    get:
+      summary: Get the SSO configuration of the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+      tags:
+        - SsoConfiguration
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SsoConfiguration'
+          examples:
+            application/json:
+              ssoEnabled: true
+              idpEntityId: https://idp.example.com/metadata
+              idpSsoEndpoint: https://idp.example.com/sso/saml
+              idpSigningCertificate: -----BEGIN CERTIFICATE-----MIIH/TC...p9DBiB/-----END CERTIFICATE-----
+              symphonyAcsUrl: https://yourpodURL.symphony.com/login/sso/acs
+              symphonyEntityId: https://yourpodURL.symphony.com
+              forceAuthn: true
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 400
+              message: // Client error, see response body for further details.
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 401
+              message: Invalid session
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 403
+              message: The user lacks the required entitlement to perform this operation
+        '404':
+          description: 'The SSO configuration does not exist and could not be initialized.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 404
+              message: // Not Found. The SSO configuration does not exist and could not be initialized. See response body for further details.
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 500
+              message: // Server error, see response body for further details.
+    post:
+      summary: Create or update the SSO configuration of the company (pod)
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: payload
+          description: The SSO configuration to store.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SsoConfiguration'
+      tags:
+        - SsoConfiguration
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+          examples:
+            application/json:
+              format: TEXT
+              message: Success
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 400
+              message: // Client error, see response body for further details.
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 401
+              message: Invalid session
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 403
+              message: The user lacks the required entitlement to perform this operation
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 500
+              message: // Server error, see response body for further details.
+    patch:
+      summary: Partially update the SSO configuration of the company (pod)
+      description: >
+        Updates only the fields present in the payload. Fields left out keep their currently stored
+        value. The resulting configuration is validated as a whole, so a partial update that leaves
+        the configuration incomplete or invalid is rejected.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: payload
+          description: The SSO configuration fields to update.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SsoConfiguration'
+      tags:
+        - SsoConfiguration
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+          examples:
+            application/json:
+              format: TEXT
+              message: Success
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 400
+              message: // Client error, see response body for further details.
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 401
+              message: Invalid session
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 403
+              message: The user lacks the required entitlement to perform this operation
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 500
+              message: // Server error, see response body for further details.
   '/v2/admin/user/list':
     get:
       summary: Retrieve a list of all users in the company (pod)
@@ -6649,6 +6844,41 @@ definitions:
           - XML
       message:
         type: string
+  SsoConfiguration:
+    type: object
+    properties:
+      ssoEnabled:
+        description: Whether SSO authentication is enabled for the pod.
+        type: boolean
+        example: true
+      idpEntityId:
+        description: Entity id of the identity provider.
+        type: string
+        example: https://idp.example.com/metadata
+      idpSsoEndpoint:
+        description: Url the user is redirected to in order to authenticate.
+        type: string
+        example: https://idp.example.com/sso/saml
+      idpSigningCertificate:
+        description: PEM encoded certificate used to verify the identity provider's assertions.
+        type: string
+        example: -----BEGIN CERTIFICATE-----MIIH/TC...p9DBiB/-----END CERTIFICATE-----
+      symphonyAcsUrl:
+        description: >
+          Assertion consumer service url the identity provider posts back to. Derived from the
+          pod's base url when the configuration has not been created yet.
+        type: string
+        example: https://yourpodURL.symphony.com/login/sso/acs
+      symphonyEntityId:
+        description: >
+          Entity id Symphony identifies itself with. Derived from the pod's base url when the
+          configuration has not been created yet.
+        type: string
+        example: https://yourpodURL.symphony.com
+      forceAuthn:
+        description: Whether to force users to re-authenticate with the Identity Provider during SSO,
+          even if they have an existing active session.
+        type: boolean
   AvatarUpdate:
     type: object
     properties:
