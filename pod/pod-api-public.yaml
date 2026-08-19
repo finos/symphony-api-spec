@@ -4695,6 +4695,7 @@ paths:
               idpSigningCertificate: -----BEGIN CERTIFICATE-----MIIH/TC...p9DBiB/-----END CERTIFICATE-----
               symphonyAcsUrl: https://yourpodURL.symphony.com/login/sso/acs
               symphonyEntityId: https://yourpodURL.symphony.com
+              forceAuthn: true
         '400':
           description: 'Client error, see response body for further details.'
           schema:
@@ -4749,6 +4750,71 @@ paths:
           type: string
         - name: payload
           description: The SSO configuration to store.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SsoConfiguration'
+      tags:
+        - SsoConfiguration
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+          examples:
+            application/json:
+              format: TEXT
+              message: Success
+        '400':
+          description: 'Client error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 400
+              message: // Client error, see response body for further details.
+        '401':
+          description: 'Unauthorized: Session tokens invalid.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 401
+              message: Invalid session
+        '403':
+          description: 'Forbidden: Caller lacks necessary entitlement.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 403
+              message: The user lacks the required entitlement to perform this operation
+        '500':
+          description: 'Server error, see response body for further details.'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              code: 500
+              message: // Server error, see response body for further details.
+    patch:
+      summary: Partially update the SSO configuration of the company (pod)
+      description: >
+        Updates only the fields present in the payload. Fields left out keep their currently stored
+        value. The resulting configuration is validated as a whole, so a partial update that leaves
+        the configuration incomplete or invalid is rejected.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: sessionToken
+          description: Session authentication token.
+          in: header
+          required: true
+          type: string
+        - name: payload
+          description: The SSO configuration fields to update.
           in: body
           required: true
           schema:
@@ -9161,6 +9227,10 @@ definitions:
           configuration has not been created yet.
         type: string
         example: https://yourpodURL.symphony.com
+      forceAuthn:
+        description: Whether to force users to re-authenticate with the Identity Provider during SSO,
+          even if they have an existing active session.
+        type: boolean
   AvatarUpdate:
     type: object
     properties:
