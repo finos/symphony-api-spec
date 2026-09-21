@@ -678,7 +678,7 @@ paths:
             application/octet-stream:
               schema:
                 $ref: '#/components/schemas/Error'
-  /agent/v1/stream/{sid}/context:
+  /v1/stream/{sid}/context:
     get:
       summary: Get Stream Context
       description: Get the context of a stream (conversation details, membership, laste messages) in markdown format.
