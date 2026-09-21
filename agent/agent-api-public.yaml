@@ -698,6 +698,11 @@ paths:
           description: Session authentication token.
           schema:
             type: string
+        - name: keyManagerToken
+          in: header
+          description: Key Manager authentication token.
+          schema:
+            type: string
       responses:
         200:
           description: OK
