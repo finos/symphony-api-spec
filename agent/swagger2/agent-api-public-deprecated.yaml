@@ -550,7 +550,7 @@ paths:
       description: Get the context of a stream in markdown format.
       operationId: v1StreamContext
       tags:
-        - "V1"
+        - "StreamContext"
       produces:
         - "text/markdown"
       parameters:

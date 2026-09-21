@@ -684,7 +684,7 @@ paths:
       description: Get the context of a stream (conversation details, membership, laste messages) in markdown format.
       operationId: v1StreamContext
       tags:
-        - V1
+        - StreamContext
       parameters:
         - name: sid
           in: path
