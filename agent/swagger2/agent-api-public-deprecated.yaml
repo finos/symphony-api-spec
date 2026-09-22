@@ -564,6 +564,11 @@ paths:
           required: true
           description: "Session authentication token."
           type: "string"
+        - name: "keyManagerToken"
+          description: "Key Manager authentication token."
+          in: "header"
+          required: true
+          type: "string"
       responses:
         '200':
           description: "OK"
