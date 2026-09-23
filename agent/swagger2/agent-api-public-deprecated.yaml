@@ -575,18 +575,6 @@ paths:
           schema:
             type: "string"
             example: "## Stream Context\n\n* **Stream ID**: Wl21s7GRn3uH75jGf5QoUX___qf_5c-5dab"
-        '401':
-          description: 'Unauthorized: Session tokens invalid.'
-          schema:
-            $ref: '#/definitions/Error'
-        '403':
-          description: 'Forbidden: Caller lacks necessary entitlement.'
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: 'Server error, see response body for further details.'
-          schema:
-            $ref: '#/definitions/Error'
 
   '/v4/stream/{sid}/message':
     get:
