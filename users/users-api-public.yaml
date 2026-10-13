@@ -491,6 +491,9 @@ components:
         type:
           type: string
           description: Recipient type, e.g. "user", "stream", or "folder".
+        name:
+          type: string
+          description: Display name of the recipient (populated with prettyName when type is "user").
         streamIds:
           type: array
           items:
