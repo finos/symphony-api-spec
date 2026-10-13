@@ -543,7 +543,6 @@ paths:
         - Messages
       summary: Semantic search for messages
       description: |
-        Disclaimer : Internal use only. This is not officially supported yet.
         Search messages semantically according to the natural-language query provided in the request body.
         The "text" field holds the query and the optional "threadId" field restricts the search to a single stream.
       parameters:
