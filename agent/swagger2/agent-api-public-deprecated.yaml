@@ -6022,7 +6022,7 @@ definitions:
           description:  Description of the Room.
         streamId:
           type: string
-          description:  streamId of the Room.
+          description:  StreamId of the Room.
         state:
           type: string
           description:  State of the Room (example CREATED etc)
