@@ -426,7 +426,7 @@ paths:
       summary: Semantic search for messages
       description: |
           Search messages semantically according to the natural-language query provided in the request body.
-          The "text" field holds the query and the optional "threadId" field restricts the search to a single stream.
+          The "text" field holds the query and the optional "streamId" field restricts the search to a single stream.
       consumes:
         - application/json
       produces:
@@ -4790,7 +4790,7 @@ definitions:
           description:  Description of the Room.
         streamId:
           type: string
-          description:  ThreadId of the Room.
+          description:  StreamId of the Room.
         state:
           type: string
           description:  State of the Room (example CREATED etc)
