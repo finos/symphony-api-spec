@@ -135,7 +135,7 @@ paths:
           $ref: '#/components/responses/ServerError'
         '501':
           $ref: '#/components/responses/NotImplemented'
-  /v5/users/clientdata:
+  /v5/users/current/clientdata:
     get:
       tags:
         - ClientData
@@ -167,6 +167,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Client data not found
         '500':
           $ref: '#/components/responses/ServerError'
 
