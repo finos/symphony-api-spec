@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 25.8.1
+  version: 26.10
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
