@@ -209,6 +209,21 @@ paths:
         schema:
           type: string
           format: date
+      - name: location
+        in: query
+        description: Business location of the exported content. **Only applicable when `type=ContentExport`**.
+        schema:
+          type: string
+      - name: division
+        in: query
+        description: Business division of the exported content. **Only applicable when `type=ContentExport`**.
+        schema:
+          type: string
+      - name: department
+        in: query
+        description: Business department of the exported content. **Only applicable when `type=ContentExport`**.
+        schema:
+          type: string
       responses:
         "200":
           description: A list of files.
