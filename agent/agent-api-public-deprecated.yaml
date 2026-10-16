@@ -24,7 +24,7 @@ info:
     To know more about the endpoints, refer to Create Messages/Events
     Stream and Read Messages/Events Stream. Unless otherwise specified,
     all events were added in 1.46.
-  version: 25.8.1
+  version: 26.10
 servers:
   - url: 'youragentURL.symphony.com/agent'
 paths:
@@ -544,7 +544,7 @@ paths:
       summary: Semantic search for messages
       description: |
         Search messages semantically according to the natural-language query provided in the request body.
-        The "text" field holds the query and the optional "threadId" field restricts the search to a single stream.
+        The "text" field holds the query and the optional "streamId" field restricts the search to a single stream.
       parameters:
         - name: skip
           in: query
@@ -679,32 +679,85 @@ paths:
                 $ref: '#/components/schemas/Error'
   /v1/stream/{sid}/context:
     get:
-      summary: Get Stream Context
-      description: Get the context of a stream (conversation details, membership, laste messages) in markdown format.
-      operationId: v1StreamContext
       tags:
-        - StreamContext
+        - Messages
+      summary: Get stream context in Markdown format
+      description: |
+        Generates a Markdown representation of a stream's context, including room
+        metadata, member list, and the most recent decrypted conversation messages.
+        When messageId is provided, the conversation is instead made of the messages
+        surrounding that message: the message itself, up to numberOfMessagesBefore messages
+        before it and up to numberOfMessagesAfter messages after it (at most 101 messages
+        in total). In both cases, the conversation messages are listed in chronological
+        order (oldest first).
+        Requires Premium APIs entitlement for the requesting tenant.
+      operationId: v1StreamContext
       parameters:
         - name: sid
           in: path
+          description: Stream ID (URL-safe Base64 encoded)
           required: true
-          description: Stream ID
           schema:
             type: string
+        - name: messageId
+          in: query
+          description: |
+            Message ID (URL-safe Base64 encoded) of a message of the stream to center the
+            conversation on. If omitted, the most recent messages are included.
+          required: false
+          schema:
+            type: string
+        - name: numberOfMessages
+          in: query
+          description: |
+            Number of most recent messages to include (1 to 100). Only applies when messageId
+            is not provided: combined with messageId, the request is rejected (use
+            numberOfMessagesBefore and numberOfMessagesAfter instead).
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: numberOfMessagesBefore
+          in: query
+          description: |
+            Number of messages to include before the target message (0 to 100). Only applies
+            when messageId is provided, the request is rejected otherwise. The sum of
+            numberOfMessagesBefore and numberOfMessagesAfter must not exceed 100.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+            default: 20
+        - name: numberOfMessagesAfter
+          in: query
+          description: |
+            Number of messages to include after the target message (0 to 100). Only applies
+            when messageId is provided, the request is rejected otherwise. The sum of
+            numberOfMessagesBefore and numberOfMessagesAfter must not exceed 100.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+            default: 20
         - name: sessionToken
           in: header
+          description: Session authentication token
           required: true
-          description: Session authentication token.
           schema:
             type: string
         - name: keyManagerToken
           in: header
-          description: Key Manager authentication token.
+          description: Key Manager authentication token
+          required: false
           schema:
             type: string
       responses:
         200:
-          description: OK
+          description: Stream context formatted in Markdown
           content:
             text/markdown:
               schema:
@@ -6908,7 +6961,7 @@ components:
           description: Description of the Room.
         streamId:
           type: string
-          description: ThreadId of the Room.
+          description: StreamId of the Room.
         state:
           type: string
           description: State of the Room (example CREATED etc)
