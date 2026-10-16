@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: '22.7.1'
+  version: '26.10'
   title: Agent API
   description: |
     This document refers to Symphony API calls to send and receive messages
@@ -545,35 +545,82 @@ paths:
             $ref: '#/definitions/Error'
   '/v1/stream/{sid}/context':
     get:
-      summary: Get Stream Context
-      description: Get the context of a stream in markdown format.
-      operationId: v1StreamContext
       tags:
-        - "StreamContext"
+        - Messages
+      summary: Get stream context in Markdown format
+      description: |
+        Generates a Markdown representation of a stream's context, including room
+        metadata, member list, and the most recent decrypted conversation messages.
+        When messageId is provided, the conversation is instead made of the messages
+        surrounding that message: the message itself, up to numberOfMessagesBefore messages
+        before it and up to numberOfMessagesAfter messages after it (at most 101 messages
+        in total). In both cases, the conversation messages are listed in chronological
+        order (oldest first).
+        Requires Premium APIs entitlement for the requesting tenant.
+      operationId: v1StreamContext
       produces:
-        - "text/markdown"
+        - text/markdown
       parameters:
-        - name: "sid"
-          in: "path"
+        - name: sid
+          in: path
+          description: Stream ID (URL-safe Base64 encoded)
           required: true
-          description: "Stream ID"
-          type: "string"
-        - name: "sessionToken"
-          in: "header"
+          type: string
+        - name: messageId
+          in: query
+          description: |
+            Message ID (URL-safe Base64 encoded) of a message of the stream to center the
+            conversation on. If omitted, the most recent messages are included.
+          required: false
+          type: string
+        - name: numberOfMessages
+          in: query
+          description: |
+            Number of most recent messages to include (1 to 100). Only applies when messageId
+            is not provided: combined with messageId, the request is rejected (use
+            numberOfMessagesBefore and numberOfMessagesAfter instead).
+          required: false
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 50
+        - name: numberOfMessagesBefore
+          in: query
+          description: |
+            Number of messages to include before the target message (0 to 100). Only applies
+            when messageId is provided, the request is rejected otherwise. The sum of
+            numberOfMessagesBefore and numberOfMessagesAfter must not exceed 100.
+          required: false
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 20
+        - name: numberOfMessagesAfter
+          in: query
+          description: |
+            Number of messages to include after the target message (0 to 100). Only applies
+            when messageId is provided, the request is rejected otherwise. The sum of
+            numberOfMessagesBefore and numberOfMessagesAfter must not exceed 100.
+          required: false
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 20
+        - name: sessionToken
+          in: header
+          description: Session authentication token
           required: true
-          description: "Session authentication token."
-          type: "string"
-        - name: "keyManagerToken"
-          description: "Key Manager authentication token."
-          in: "header"
-          required: true
-          type: "string"
+          type: string
+        - name: keyManagerToken
+          in: header
+          description: Key Manager authentication token
+          required: false
+          type: string
       responses:
         '200':
-          description: "OK"
+          description: Stream context formatted in Markdown
           schema:
             type: "string"
-            example: "## Stream Context\n\n* **Stream ID**: Wl21s7GRn3uH75jGf5QoUX___qf_5c-5dab"
 
   '/v4/stream/{sid}/message':
     get:
