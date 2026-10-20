@@ -376,7 +376,8 @@ components:
           type: string
           description: "Stream type"
         subType:
-          $ref: "#/components/schemas/StreamSubtype"
+          type: string
+          description: "Stream subtype"
         description:
           type: string
         keywords:
@@ -388,10 +389,3 @@ components:
       required:
         - id
         - createdBy
-
-    StreamSubtype:
-      type: string
-      description: "Stream subtype"
-      enum:
-        - INVISIBLE
-        - AI_AGENT
