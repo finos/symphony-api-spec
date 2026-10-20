@@ -373,7 +373,8 @@ components:
           type: string
           description: Room name
         type:
-          $ref: "#/components/schemas/StreamType"
+          type: string
+          description: "Stream type"
         subType:
           $ref: "#/components/schemas/StreamSubtype"
         description:
@@ -394,12 +395,3 @@ components:
       enum:
         - INVISIBLE
         - AI_AGENT
-
-    StreamType:
-      type: string
-      description: "Stream type"
-      enum:
-        - IM
-        - MIM
-        - POST
-        - ROOM
