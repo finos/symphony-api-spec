@@ -1,0 +1,391 @@
+openapi: 3.0.3
+info:
+  title: SBE Streams API
+  description: |-
+    Streams related API
+  version: 5.0.0
+externalDocs:
+  description: Overall Symphony public API
+  url: https://example.on.symphony.com/Streams/v4
+servers:
+  - url: https://yourpodURL.symphony.com
+
+tags:
+  - name: Streams
+    description: Create and manage chatrooms
+  - name: streamSearch
+    description: Search streams
+
+paths:
+  /v4/streams/user:
+    get:
+      tags:
+        - "streamSearch"
+      summary: Lists the authenticated user's active chat streams matching specified filtering criteria.
+      description: |-
+        Lists the authenticated user's active chat streams (direct messages, room chats, etc.) matching
+        specified filtering criteria. The results are ordered chronologically, with the most recently
+        active streams returned first. Supports filtering by unread status, hidden status, channel, and
+        internal/external status.
+      operationId: listUserStreams
+      parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Session authentication token.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 100
+            minimum: 1
+            maximum: 100
+          description: The maximum number of streams to return.
+        - name: includeHidden
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Whether to include hidden streams in the results.
+        - name: onlyUnread
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: If true, only returns streams that contain unread messages.
+        - name: channel
+          in: query
+          schema:
+            type: string
+          description: "Filter streams by channel type (e.g. SYMPHONY, WHATSAPP, WCHT...)."
+        - name: external
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: Filter streams to include external chats.
+        - name: internal
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: Filter streams to include internal chats.
+        - name: cursor
+          in: query
+          schema:
+            type: string
+          description: |-
+            Opaque pagination cursor returned as `nextCursor` by a previous call. Omit it to get the
+            first page. The cursor walks the user's stream memberships, so each page is a slice of
+            memberships whose streams are then ordered by last message time within the page.
+      responses:
+        '200':
+          description: Chronologically ordered list of active chat streams matching the filter criteria.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamArrayResponse'
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /v4/streams/search:
+    get:
+      tags:
+        - "streamSearch"
+      summary: Retrieve streams for a list of stream IDs via query parameters
+      description: >-
+        Returns a list of stream details for IDs that the requestor is authorized to access.
+      operationId: getStreamsSearch
+      parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Session authentication token.
+        - in: query
+          name: streamIds
+          required: true
+          description: Comma-separated list of stream IDs. Maximum 50 allowed.
+          style: form
+          explode: false
+          schema:
+            type: array
+            maxItems: 50
+            items:
+              $ref: '#/components/schemas/StreamId'
+        - name: includeHidden
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Whether to include hidden streams in the results.
+        - name: onlyUnread
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: If true, only returns streams that contain unread messages.
+        - name: channel
+          in: query
+          schema:
+            type: string
+          description: "Filter streams by channel type (e.g. SYMPHONY, WHATSAPP, WCHT...)."
+        - name: external
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: Filter streams to include external chats.
+        - name: internal
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: Filter streams to include internal chats.
+      responses:
+        '200':
+          description: List of streams matching the provided IDs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StreamResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestBulk'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/ForbiddenBulk'
+        '404':
+          $ref: '#/components/responses/NotFoundBulk'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+
+components:
+  responses:
+    ClientError:
+      description: Client error, see response body for further details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+    Unauthorized:
+      description: Unauthorized (missing or invalid credentials)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+
+    # SINGLE ENDPOINT ERRORS
+    BadRequestSingle:
+      description: Bad Request (e.g., malformed ID)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+    ForbiddenSingle:
+      description: Forbidden (Lacks entitlement, disabled room, quarantined attachment, or share history disabled)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+            notAMember:
+              summary: "Membership Denied"
+              value:
+                timestamp: "2026-04-29T12:28:40.223+00:00"
+                status: 403
+                error: "Forbidden"
+                message: "User is not a member of the room"
+                path: "/v2/messages/Lz892sblB8H1F8_d9ffbLn___mIxKZnDbD=="
+            inactiveRoom:
+              summary: "Room Inactive"
+              value:
+                timestamp: "2026-04-29T16:15:22.000+00:00"
+                status: 403
+                error: "Forbidden"
+                message: "Message belongs to an inactive or disabled room"
+                path: "/v2/messages/Lz892sblB8H1F8_d9ffbLn___mIxKZnDbD=="
+            quarantined:
+              summary: "Attachment Quarantined"
+              value:
+                timestamp: "2026-04-29T16:16:33.000+00:00"
+                status: 403
+                error: "Forbidden"
+                message: "Message content failed security scan and is quarantined"
+                path: "/v2/messages/Lz892sblB8H1F8_d9ffbLn___mIxKZnDbD=="
+            noShareHistory:
+              summary: "Share History Disabled"
+              value:
+                timestamp: "2026-04-29T16:17:44.000+00:00"
+                status: 403
+                error: "Forbidden"
+                message: "Share history is not enabled and user is not a recipient."
+                path: "/v2/messages/Lz892sblB8H1F8_d9ffbLn___mIxKZnDbD=="
+    NotFoundSingle:
+      description: Not Found (Message or Stream does not exist, or Message has been deleted)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+    BadRequestBulk:
+      description: Bad Request (e.g., exceeded limit, malformed IDs, or no accessible messages)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+    ForbiddenBulk:
+      description: Forbidden (Missing authentication entitlements, or ALL requested messages belong to inactive/disabled rooms)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+    NotFoundBulk:
+      description: Not Found (None of the requested messages or streams exist in the database, or all have been deleted)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageWithCode'
+
+    ServerError:
+      description: Server error, see response body for further details.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageWithCode"
+
+  schemas:
+
+    MessageWithCode:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: "The time the error occurred"
+        status:
+          type: integer
+          format: int32
+          description: "The HTTP status code"
+        error:
+          type: string
+          description: "The HTTP error reason phrase"
+        message:
+          type: string
+          description: "Detailed error message"
+        path:
+          type: string
+          description: "The URI path that caused the error"
+
+    UserId:
+      type: integer
+      format: int64
+      description: "Symphony user unique identifier"
+      minimum: 1
+
+    StreamId:
+      type: string
+      description: "Symphony stream unique identifier"
+
+    StreamConfiguration:
+      type: object
+      description: Stream Room configuration properties
+      properties:
+        membersCanInvite:
+          type: boolean
+          description: "If true, any chatroom participant can add new participants. If false, only owners can add new participants."
+          default: true
+        discoverable:
+          type: boolean
+          description: "If true, this chatroom (name, description and messages) can be searched and listed by non-participants. If false, only participants can search"
+          default: true
+        public:
+          type: boolean
+          description: "If true, this is a public chatroom. Otherwise, a private chatroom."
+          default: true
+        readOnly:
+          type: boolean
+          description: "If true, only stream owners can send messages."
+          default: false
+        copyProtected:
+          type: boolean
+          description: "If true, clients disable the clipboard copy for content in this stream."
+          default: false
+        viewHistory:
+          type: boolean
+          description: "If true, new members can view the room chat history of the room."
+          default: true
+        crossPod:
+          type: boolean
+          description: "If true, stream is a crossPod stream"
+          default: false
+        multiLateral:
+          type: boolean
+          description: "If true, stream is a multiLateral stream"
+          default: false
+
+    StreamKeyword:
+      type: object
+      description: Key value keyword definition
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+
+    StreamArrayResponse:
+      type: object
+      properties:
+        streams:
+          type: array
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+        nextCursor:
+          type: string
+          description: |-
+            Cursor to pass to the next call to get the following page. Absent when there is no
+            further page.
+
+    StreamResponse:
+      type: object
+      description: Stream Room
+      properties:
+        id:
+          $ref: "#/components/schemas/StreamId"
+        active:
+          type: boolean
+        creationDate:
+          type: integer
+          format: int64
+        createdBy:
+          description: "User id of the creator of the room"
+          $ref: "#/components/schemas/UserId"
+        name:
+          type: string
+          description: Room name
+        type:
+          type: string
+          description: "Stream type"
+        subType:
+          type: string
+          description: "Stream subtype"
+        description:
+          type: string
+        keywords:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreamKeyword"
+        configuration:
+          $ref: "#/components/schemas/StreamConfiguration"
+      required:
+        - id
+        - createdBy
