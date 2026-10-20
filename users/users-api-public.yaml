@@ -3,7 +3,7 @@ info:
   title: SBE Users API
   description: |-
     Users related API
-  version: 5.3.0
+  version: 5.4.0
 externalDocs:
   description: Overall Symphony public API
   url: https://rest-api.symphony.com/
@@ -12,6 +12,8 @@ servers:
 tags:
   - name: App Users
     description: App users and entitlements API
+  - name: ClientData
+    description: Client data API
   - name: Groups
     description: Groups API
   - name: SbeUsers
@@ -137,6 +139,42 @@ paths:
           $ref: '#/components/responses/ServerError'
         '501':
           $ref: '#/components/responses/NotImplemented'
+  /v5/users/current/clientdata:
+    get:
+      tags:
+        - ClientData
+      summary: Retrieve authenticated user's client data
+      description: Retrieves folders, workspaces, and distribution lists for the authenticated user.
+      operationId: getClientData
+      parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Session authentication token.
+        - name: appId
+          in: query
+          required: false
+          description: Application ID to retrieve client data for, defaults to symphonyPrime.
+          schema:
+            type: string
+            default: symphonyPrime
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDataResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Client data not found
+        '500':
+          $ref: '#/components/responses/ServerError'
   /v5/users:
     get:
       tags:
@@ -456,6 +494,81 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Sort'
+    ClientDataResponse:
+      type: object
+      description: Aggregated client data for the authenticated user.
+      properties:
+        folders:
+          type: array
+          description: Custom folders of conversation streams.
+          items:
+            $ref: '#/components/schemas/ClientDataStructure'
+        workspaces:
+          type: array
+          description: Multi-chat workspaces.
+          items:
+            $ref: '#/components/schemas/ClientDataStructure'
+        distributionLists:
+          type: array
+          description: Distribution lists.
+          items:
+            $ref: '#/components/schemas/DistributionLists'
+    ClientDataStructure:
+      type: object
+      required:
+        - id
+        - name
+        - streamIds
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the structure.
+        name:
+          type: string
+          description: Name of the structure.
+        streamIds:
+          type: array
+          description: Conversation stream IDs contained in this structure.
+          items:
+            type: string
+    DistributionLists:
+      type: object
+      required:
+        - id
+        - name
+        - recipients
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the distribution list.
+        name:
+          type: string
+          description: Name of the distribution list.
+        recipients:
+          type: array
+          description: Recipients of the distribution list (users and streams).
+          items:
+            $ref: '#/components/schemas/DistributionListRecipient'
+    DistributionListRecipient:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          description: Identifier of the recipient (user id, stream id, or folder id).
+        type:
+          type: string
+          description: Recipient type, e.g. "user", "stream", or "folder".
+        name:
+          type: string
+          description: Display name of the recipient (populated with prettyName when type is "user").
+        streamIds:
+          type: array
+          items:
+            type: string
+          description: List of stream IDs contained in the folder (populated when type is "folder").
 
     Avatar:
       type: object
@@ -534,4 +647,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserLookupError'
-
