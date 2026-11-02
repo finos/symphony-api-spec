@@ -3768,6 +3768,14 @@ definitions:
       threadId:
         type: string
         description: Restrict the semantic search to this stream/thread.
+      fromDate:
+        type: integer
+        format: int64
+        description: Search for messages sent on or after this timestamp (epoch ms)
+      toDate:
+        type: integer
+        format: int64
+        description: Search for messages sent before this timestamp (epoch ms)
   V4MessageImportList:
     description: |
       An ordered list of historic messages to be imported.
