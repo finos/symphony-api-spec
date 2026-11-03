@@ -4412,6 +4412,14 @@ components:
         threadId:
           type: string
           description: Restrict the semantic search to this stream/thread.
+        fromDate:
+          type: integer
+          description: Search for messages sent on or after this timestamp (epoch ms)
+          format: int64
+        toDate:
+          type: integer
+          description: Search for messages sent before this timestamp (epoch ms)
+          format: int64
     V4MessageImportList:
       type: array
       description: |
