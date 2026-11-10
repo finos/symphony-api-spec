@@ -4420,6 +4420,30 @@ components:
           type: integer
           description: Search for messages sent before this timestamp (epoch ms)
           format: int64
+        mode:
+          type: string
+          description: |
+            The hybrid search mode to use to rank the results. Accepted values are:
+            - exact: highly favors exact word matches over message meaning
+            - semantic: highly favors message meaning matches over exact word
+            - balanced: an intermediate hybrid mix of keyword and semantic matching
+            - advanced: custom mix of keyword and semantic matching, to be set with `semanticWeight` and `exactWeight`
+          enum:
+            - exact
+            - semantic
+            - balanced
+            - advanced
+          default: balanced
+        semanticWeight:
+          type: integer
+          description: Weight of semantic matching. Required when `mode` is `advanced`, ignored otherwise.
+          minimum: 0
+          maximum: 100
+        exactWeight:
+          type: integer
+          description: Weight of exact word matching. Required when `mode` is `advanced`, ignored otherwise.
+          minimum: 0
+          maximum: 100
     V4MessageImportList:
       type: array
       description: |
