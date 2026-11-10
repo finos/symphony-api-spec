@@ -17,17 +17,23 @@ tags:
     description: Search streams
 
 paths:
-  /v4/streams/user:
+  /v4/streams/info:
     get:
       tags:
         - "streamSearch"
-      summary: Lists the authenticated user's active chat streams matching specified filtering criteria.
+      summary: Lists the authenticated user's streams matching specified filtering criteria.
       description: |-
-        Lists the authenticated user's active chat streams (direct messages, room chats, etc.) matching
-        specified filtering criteria. The results are ordered chronologically, with the most recently
-        active streams returned first. Supports filtering by unread status, hidden status, channel, and
-        internal/external status.
-      operationId: listUserStreams
+        Lists the streams of the authenticated user (direct messages, room chats, etc.) matching
+        specified filtering criteria. Supports filtering by unread status, hidden status, channel,
+        origin (internal/external) and stream subtype.
+
+        Two modes:
+        - Without `streamIds`: lists the user's active streams, most recently active first, one
+          page at a time using `limit` and `lastStreamId`.
+        - With `streamIds`: returns only the requested streams the requestor is authorized to
+          access, in a single response. `limit` is ignored, `lastStreamId` is rejected and
+          `nextStreamId` is never set. Inaccessible or unknown IDs are silently dropped.
+      operationId: listStreamsInfo
       parameters:
         - name: sessionToken
           in: header
@@ -35,6 +41,18 @@ paths:
           schema:
             type: string
           description: Session authentication token.
+        - in: query
+          name: streamIds
+          description: |-
+            Comma-separated list of stream IDs to restrict the result to. Maximum 50 allowed.
+            Cannot be combined with `lastStreamId`.
+          style: form
+          explode: false
+          schema:
+            type: array
+            maxItems: 50
+            items:
+              $ref: '#/components/schemas/StreamId'
         - name: limit
           in: query
           schema:
@@ -43,7 +61,19 @@ paths:
             default: 100
             minimum: 1
             maximum: 100
-          description: The maximum number of streams to return.
+          description: |-
+            The maximum number of streams to return. Ignored when `streamIds` is set. With
+            `onlyUnread`, a page may hold fewer streams while `nextStreamId` is still set: only a
+            missing `nextStreamId` means there is no further page.
+        - name: lastStreamId
+          in: query
+          schema:
+            type: string
+          description: |-
+            Last stream id received from the previous call, as returned in `nextStreamId`. Omit it to
+            get the first page. The next page starts after the current position of that stream:
+            streams receiving messages while paging may be skipped or repeated, and a fresh call
+            without `lastStreamId` shows them first. Cannot be combined with `streamIds`.
         - name: includeHidden
           in: query
           schema:
@@ -61,35 +91,31 @@ paths:
           schema:
             type: string
           description: "Filter streams by channel type (e.g. SYMPHONY, WHATSAPP, WCHT...)."
-        - name: external
-          in: query
-          schema:
-            type: boolean
-            default: true
-          description: Filter streams to include external chats.
-        - name: internal
-          in: query
-          schema:
-            type: boolean
-            default: true
-          description: Filter streams to include internal chats.
-        - name: includeAgentStreams
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to include AI_AGENT subtype streams in the results.
-        - name: cursor
+        - name: origin
           in: query
           schema:
             type: string
+            enum:
+              - INTERNAL
+              - EXTERNAL
           description: |-
-            Opaque pagination cursor returned as `nextCursor` by a previous call. Omit it to get the
-            first page. The cursor walks the user's stream memberships, so each page is a slice of
-            memberships whose streams are then ordered by last message time within the page.
+            Origin of the streams: INTERNAL for streams within the company, EXTERNAL for streams
+            shared with other companies. If not specified, both internal and external streams are
+            returned.
+        - name: includeSubtypes
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/StreamSubtype'
+          style: form
+          description: |-
+            List of stream subtypes to restrict the result to: only streams of these subtypes are
+            returned. If not specified, only regular streams are returned, INVISIBLE
+            and AI_AGENT streams are excluded.
       responses:
         '200':
-          description: Chronologically ordered list of active chat streams matching the filter criteria.
+          description: Streams matching the filter criteria.
           content:
             application/json:
               schema:
@@ -100,88 +126,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/ServerError'
-
-  /v4/streams/search:
-    get:
-      tags:
-        - "streamSearch"
-      summary: Retrieve streams for a list of stream IDs via query parameters
-      description: >-
-        Returns a list of stream details for IDs that the requestor is authorized to access.
-      operationId: getStreamsSearch
-      parameters:
-        - name: sessionToken
-          in: header
-          required: true
-          schema:
-            type: string
-          description: Session authentication token.
-        - in: query
-          name: streamIds
-          required: true
-          description: Comma-separated list of stream IDs. Maximum 50 allowed.
-          style: form
-          explode: false
-          schema:
-            type: array
-            maxItems: 50
-            items:
-              $ref: '#/components/schemas/StreamId'
-        - name: includeHidden
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to include hidden streams in the results.
-        - name: onlyUnread
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: If true, only returns streams that contain unread messages.
-        - name: channel
-          in: query
-          schema:
-            type: string
-          description: "Filter streams by channel type (e.g. SYMPHONY, WHATSAPP, WCHT...)."
-        - name: external
-          in: query
-          schema:
-            type: boolean
-            default: true
-          description: Filter streams to include external chats.
-        - name: internal
-          in: query
-          schema:
-            type: boolean
-            default: true
-          description: Filter streams to include internal chats.
-        - name: includeAgentStreams
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to include AI_AGENT subtype streams in the results.
-      responses:
-        '200':
-          description: List of streams matching the provided IDs.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/StreamResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestBulk'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/ForbiddenBulk'
-        '404':
-          $ref: '#/components/responses/NotFoundBulk'
-        '500':
-          $ref: '#/components/responses/ServerError'
-
 
 components:
   responses:
@@ -277,6 +221,13 @@ components:
 
   schemas:
 
+    StreamSubtype:
+      type: string
+      description: "Stream subtype"
+      enum:
+        - INVISIBLE
+        - AI_AGENT
+
     MessageWithCode:
       type: object
       properties:
@@ -361,11 +312,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StreamResponse'
-        nextCursor:
+        nextStreamId:
           type: string
           description: |-
-            Cursor to pass to the next call to get the following page. Absent when there is no
-            further page.
+            Stream id to pass as `lastStreamId` to the next call to get the following page. Absent
+            when there is no further page.
 
     StreamResponse:
       type: object
