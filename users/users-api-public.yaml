@@ -3,17 +3,15 @@ info:
   title: SBE Users API
   description: |-
     Users related API
-  version: 5.4.0
+  version: 5.5.0
 externalDocs:
   description: Overall Symphony public API
   url: https://rest-api.symphony.com/
 servers:
   - url: https://yourpodURL.symphony.com
 tags:
-  - name: App Users
+  - name: Apps
     description: App users and entitlements API
-  - name: ClientData
-    description: Client data API
   - name: Groups
     description: Groups API
   - name: SbeUsers
@@ -24,6 +22,7 @@ paths:
       tags:
         - Groups
       summary: Get SDL group information
+      deprecated: true
       operationId: getSDLGroupById
       parameters:
         - name: sessionToken
@@ -31,7 +30,7 @@ paths:
           required: true
           schema:
             type: string
-            description: Session authentication token.  
+            description: Session authentication token.
         - name: groupId
           in: path
           required: true
@@ -48,6 +47,10 @@ paths:
           $ref: '#/components/responses/ClientError'
         401:
           $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/GroupNotFound'
         500:
           $ref: '#/components/responses/ServerError'
   /v1/groups/sdl/list:
@@ -55,6 +58,7 @@ paths:
       tags:
         - Groups
       summary: List SDL groups ordered by id
+      deprecated: true
       operationId: listSDLGroups
       parameters:
         - name: sessionToken
@@ -75,7 +79,21 @@ paths:
             minimum: 1
             maximum: 100
             default: 50
-          description: Number of Groups provided in response
+          description: Number of Groups provided in response.
+        - name: username
+          in: query
+          description: Filter groups by exact username match.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+        - name: name
+          in: query
+          description: Filter groups by exact name match.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
       responses:
         200:
           description: Ok
@@ -89,6 +107,8 @@ paths:
           $ref: '#/components/responses/ClientError'
         401:
           $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
         500:
           $ref: '#/components/responses/ServerError'
   /v5/users/apps/{groupAppId}:
@@ -142,7 +162,7 @@ paths:
   /v5/users/current/clientdata:
     get:
       tags:
-        - ClientData
+        - SbeUsers
       summary: Retrieve authenticated user's client data
       description: Retrieves folders, workspaces, and distribution lists for the authenticated user.
       operationId: getClientData
@@ -155,8 +175,8 @@ paths:
             description: Session authentication token.
         - name: appId
           in: query
-          required: false
           description: Application ID to retrieve client data for, defaults to symphonyPrime.
+          required: false
           schema:
             type: string
             default: symphonyPrime
@@ -167,14 +187,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientDataResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           description: Client data not found
-        '500':
-          $ref: '#/components/responses/ServerError'
   /v5/users:
     get:
       tags:
@@ -239,6 +253,106 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/ServerError'
+  /v5/users/list:
+    get:
+      tags:
+        - SbeUsers
+      summary: List users of a tenant.
+      description: Lists users of the tenant with filtering and pagination.
+      operationId: listUsers
+      parameters:
+        - name: sessionToken
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Session authentication token.
+        - name: limit
+          in: query
+          description: Maximum number of records to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: lastUserId
+          in: query
+          description: Id of the last user received in the previous page. Only users with a greater id are returned.
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: roles
+          in: query
+          description: Only return users having at least one of these role ids
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: userId
+          in: query
+          description: Only return the user with this id.
+          required: false
+          schema:
+            $ref: '#/components/schemas/UserId'
+        - name: active
+          in: query
+          description: If true only active users are returned, if false only inactive ones, if absent both.
+          required: false
+          schema:
+            type: boolean
+        - name: createdDateFrom
+          in: query
+          description: Only return users created at or after this time, in Unix epoch milliseconds.
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: createdDateTo
+          in: query
+          description: Only return users created before this time, in Unix epoch milliseconds.
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: enabledEntitlements
+          in: query
+          description: >-
+            Only return users having all of these boolean entitlements enabled
+          required: false
+          schema:
+            type: array
+            maxItems: 100
+            items:
+              type: string
+        - name: disabledEntitlements
+          in: query
+          description: >-
+            Only return users having all of these boolean entitlements disabled
+          required: false
+          schema:
+            type: array
+            maxItems: 100
+            items:
+              type: string
+      responses:
+        '200':
+          description: Paged list of tenant users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArrayResponse'
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
 
 components:
   responses:
@@ -282,16 +396,18 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MessageWithCode"
+    GroupNotFound:
+      description: Not found, group cannot be located.
 
   schemas:
     GroupId:
-      description: Group identifier
+      description: Group identifier.
       type: integer
       format: int64
       minimum: 1
       example: 71811853191697
     GroupResponse:
-      description: Group account base properties
+      description: Group account's base properties.
       type: object
       properties:
         groupId:
@@ -301,10 +417,10 @@ components:
           description: Group name.
         username:
           type: string
-          description: Username identificator of the Group
+          description: Username identificatior of the Group.
         type:
           type: string
-          description: Group type
+          description: Group type.
           enum:
             - SDL
         active:
@@ -312,16 +428,16 @@ components:
           description: Define if group is currently active or deleted.
         displayName:
           type: string
-          description: Display name
+          description: Display name.
         companyName:
           type: string
-          description: Company name
+          description: Company name.
         email:
           type: string
-          description: Email address
+          description: Email address.
         members:
           type: array
-          description: Group account members
+          description: Group account's members.
           items:
             $ref: '#/components/schemas/GroupMember'
         restrictedTenants:
@@ -332,21 +448,21 @@ components:
           $ref: "#/components/schemas/Images"
         eTag:
           type: string
-          description: Group account eTag
+          description: Group account's eTag.
         createdDate:
           type: integer
           format: int64
-          description: Group account creation timestamp (Unix epoch milliseconds)
+          description: Group account's creation timestamp (Unix epoch milliseconds).
         createdBy:
           type: string
-          description: Group account creator
+          description: Group account's creator.
         updatedDate:
           type: integer
           format: int64
-          description: Group account last modification timestamp (Unix epoch milliseconds)
+          description: Group account's last modification timestamp (Unix epoch milliseconds).
         updatedBy:
           type: string
-          description: Group account updater
+          description: Group account's updater.
         marketCoverage:
           type: array
           items:
@@ -364,7 +480,7 @@ components:
           items:
             type: string
     GroupMember:
-      description: A member of a group account
+      description: A member of a group account.
       type: object
       properties:
         userId:
@@ -372,13 +488,11 @@ components:
         tenantId:
           type: integer
           format: int32
-          description: Member's tenant identifier
-
-
+          description: Member's tenant identifier.
         addedDate:
           type: integer
           format: int64
-          description: Timestamp when the member was added (Unix epoch milliseconds)
+          description: Timestamp when the member was added (Unix epoch milliseconds).
     UserId:
       type: integer
       format: int64
@@ -418,7 +532,7 @@ components:
       type: integer
       format: int32
       minimum: 1
-      example: 1008    
+      example: 1008
     AppUser:
       type: object
       properties:
@@ -432,7 +546,7 @@ components:
           $ref: '#/components/schemas/AppSubscription'
       required:
         - userId
-        - visible
+        - listed
 
     AppSubscription:
       type: object
@@ -444,9 +558,14 @@ components:
           example: "default"
         subscribed:
           type: boolean
+        sku:
+          type: string
+          example: "123"
+          nullable: false
       required:
         - name
         - type
+        - subscribed
 
     DirectionEnum:
       type: string
@@ -496,21 +615,17 @@ components:
             $ref: '#/components/schemas/Sort'
     ClientDataResponse:
       type: object
-      description: Aggregated client data for the authenticated user.
       properties:
         folders:
           type: array
-          description: Custom folders of conversation streams.
           items:
             $ref: '#/components/schemas/ClientDataStructure'
         workspaces:
           type: array
-          description: Multi-chat workspaces.
           items:
             $ref: '#/components/schemas/ClientDataStructure'
         distributionLists:
           type: array
-          description: Distribution lists.
           items:
             $ref: '#/components/schemas/DistributionLists'
     ClientDataStructure:
@@ -528,9 +643,9 @@ components:
           description: Name of the structure.
         streamIds:
           type: array
-          description: Conversation stream IDs contained in this structure.
           items:
             type: string
+          description: List of Stream IDs in this structure.
     DistributionLists:
       type: object
       required:
@@ -540,13 +655,13 @@ components:
       properties:
         id:
           type: string
-          description: Unique identifier of the distribution list.
+          description: Unique identifier of the blast distribution list.
         name:
           type: string
-          description: Name of the distribution list.
+          description: Name of the blast distribution list.
         recipients:
           type: array
-          description: Recipients of the distribution list (users and streams).
+          description: Recipients of the blast list (users and streams).
           items:
             $ref: '#/components/schemas/DistributionListRecipient'
     DistributionListRecipient:
@@ -647,3 +762,124 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserLookupError'
+
+    UserResponse:
+      type: object
+      properties:
+        userId:
+          $ref: '#/components/schemas/UserId'
+        username:
+          type: string
+        emailAddress:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        active:
+          type: boolean
+        createdDate:
+          type: integer
+          format: int64
+          description: User creation timestamp (Unix epoch milliseconds).
+        roles:
+          type: array
+          description: Role ids of the user.
+          items:
+            type: string
+        displayName:
+          type: string
+        company:
+          type: string
+        title:
+          type: string
+        department:
+          type: string
+        division:
+          type: string
+        location:
+          type: string
+        jobFunction:
+          type: string
+        workPhoneNumber:
+          type: string
+        mobilePhoneNumber:
+          type: string
+        smsNumber:
+          type: string
+        accountType:
+          type: string
+          enum: [NORMAL, SYSTEM]
+        assetClasses:
+          type: array
+          items:
+            type: string
+        industries:
+          type: array
+          items:
+            type: string
+        marketCoverage:
+          type: array
+          items:
+            type: string
+        responsibility:
+          type: array
+          items:
+            type: string
+        function:
+          type: array
+          items:
+            type: string
+        instrument:
+          type: array
+          items:
+            type: string
+        avatars:
+          type: array
+          items:
+            $ref: '#/components/schemas/Avatar'
+        entitlements:
+          type: array
+          description: >-
+            Names of the boolean entitlements enabled on the user.
+            They may differ from the `enabledEntitlements` and `disabledEntitlements` filters, which also
+            take the pod and feature level values into account.
+          items:
+            type: string
+        createdBy:
+          type: string
+        lastUpdatedDate:
+          type: integer
+          format: int64
+          description: Last update timestamp (Unix epoch milliseconds).
+        lastLoginDate:
+          type: integer
+          format: int64
+          description: Last login timestamp (Unix epoch milliseconds).
+        deactivatedDate:
+          type: integer
+          format: int64
+          description: Deactivation timestamp (Unix epoch milliseconds).
+        suspended:
+          type: boolean
+        suspendedUntil:
+          type: integer
+          format: int64
+          description: End of the suspension (Unix epoch milliseconds).
+        suspensionReason:
+          type: string
+
+    UserArrayResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        lastUserId:
+          type: integer
+          format: int64
+          description: Id of the last user of the page, to pass as `lastUserId` to retrieve the next page.
+        hasNext:
+          type: boolean
+          description: True if there are more users to retrieve.
