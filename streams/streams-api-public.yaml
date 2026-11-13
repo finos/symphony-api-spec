@@ -3,12 +3,12 @@ info:
   title: SBE Streams API
   description: |-
     Streams related API
-  version: 5.0.0
+  version: 4.0.0
 externalDocs:
   description: Overall Symphony public API
-  url: https://example.on.symphony.com/Streams/v4
+  url: https://mytenant.symphony.com/v4/streams
 servers:
-  - url: https://yourpodURL.symphony.com
+  - url: https://mytenant.symphony.com/v4/streams
 
 tags:
   - name: Streams
