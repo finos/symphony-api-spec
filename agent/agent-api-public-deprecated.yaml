@@ -5852,6 +5852,29 @@ components:
           type: integer
           description: Search for messages sent before this timestamp (epoch ms)
           format: int64
+        channels:
+          type: array
+          items:
+            type: string
+            enum:
+              - symphony
+              - whatsapp
+              - wechat
+              - line
+              - sms
+              - phone
+          example: [ "whatsapp", "wechat" ]
+          description: >-
+            Restrict the semantic search to streams of any of these channels. If omitted or empty, streams of all channels
+            are searched.
+        audience:
+          type: string
+          enum:
+            - internal
+            - external
+          description: >-
+            Restrict the semantic search to internal streams (members from the same company only) or to external streams
+            (with members from other companies). If omitted, both are searched.
     V4MessageImportList:
       type: array
       description: |
